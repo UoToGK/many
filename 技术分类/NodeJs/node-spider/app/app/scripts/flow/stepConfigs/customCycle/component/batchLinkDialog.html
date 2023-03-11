@@ -1,0 +1,120 @@
+<md-dialog aria-label="Mango (Fruit)" ng-cloak>
+    <form>
+        <style scoped>
+            .smallWidth {
+                display: inline-block;
+                width: 60px;
+                height: 20px;
+                vertical-align: middle;
+                margin: 0 5px;
+            }
+            .group-css{
+                margin-left: 10px;
+                line-height: 24px;
+            }
+            .mbuttonwidth {
+                width: 85%;
+            }
+            #del{
+                float: right;
+                min-width: 10px;
+                min-height: 10px;
+                margin-top: 15px;
+            }
+        </style>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>批量网址</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="T.cancel()">
+                    <md-icon>close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content" style="min-width: 950px;">
+                <div class="row">
+                    <md-input-container class="mbuttonwidth">
+                        <label>地址格式</label>
+                        <input type="text"  placeholder="http://" ng-model="T.batchLink.linkName">
+                        <div class="hint" style="top:40px;">[地址参数]表示地址中具有一定规则性的区域，可用下列三种方式进行定义，可设置多个。</div>
+                    </md-input-container>
+                    <md-button ng-click="T.addBatchLink(T.batchLink)" class="btn-info btn-sm" style="margin-top: -28px">
+                        [地址参数]
+                    </md-button>
+                </div>
+                <div ng-repeat="item in T.batchLink.datas" style="line-height: 40px;">
+                    <label>[地址参数]</label>
+                    <md-button ng-click="T.delBatchLink(T.batchLink,$index)" class="btn-info btn-sm" id = 'del'>
+                        删除
+                    </md-button>
+                    <md-radio-group ng-model="item.type" style="margin: 0;">
+                        <div layout="row" layout-align="start center">
+                            <md-radio-button ng-value="0" class="md-primary" style="margin: 0">
+                                数字变化
+                            </md-radio-button>
+                            <div class="group-css">
+                                从<input type="text" class="form-control smallWidth" ng-model="item.numData.startNum" ng-disabled="item.type!=0"/>开始，
+                                每次递增<input type="text" class="form-control smallWidth" ng-model="item.numData.increment" ng-disabled="item.type!=0"/>，
+                                共<input type="text" class="form-control smallWidth" ng-model="item.numData.count" ng-disabled="item.type!=0"/>项
+                                <label class="checkbox-inline">
+                                    <input type="checkbox"  ng-model="item.numData.addZero" ng-disabled="item.type!=0">补零
+                                </label>
+                            </div>
+                        </div>
+                        <div layout="row" layout-align="start center">
+                            <md-radio-button ng-value="1" class="md-primary" style="margin: 0">
+                                字母变化
+                            </md-radio-button>
+                            <div class="group-css">
+                                从<input type="text" placeholder="a" class="form-control smallWidth" ng-model="item.letterData.startLetter" ng-disabled="item.type!=1"/>
+                                到<input type="text" class="form-control smallWidth" placeholder="z" ng-model="item.letterData.endLetter" ng-disabled="item.type!=1"/>(a-z,A-Z)
+                            </div>
+                        </div>
+                        <div layout="row" layout-align="start center">
+                            <md-radio-button ng-value="2" class="md-primary" style="margin: 0">
+                                时间变化
+                            </md-radio-button>
+                            <div class="group-css">
+                                从
+                                <md-datepicker ng-model="item.timeData.startTime" ng-disabled="item.type!=2"></md-datepicker>
+                                开始到
+                                <md-datepicker ng-model="item.timeData.endTime" ng-disabled="item.type!=2"></md-datepicker>
+                                结束，每隔
+                                <input class="form-control smallWidth" type="text" ng-model="item.timeData.increment" ng-disabled="item.type!=2">天
+                            </div>
+                            <div class="group-css">
+                                <md-select ng-model="item.timeData.formatStr" ng-disabled="item.type!=2" style="width: 150px;">
+                                    <md-option value="YYYYMMDD" selected>YYYYMMDD</md-option>
+                                    <md-option value="YYYYMM">YYYYMM</md-option>
+                                    <md-option value="MMDD">MMDD</md-option>
+                                    <md-option value="YYYY-MM-DD">YYYY-MM-DD</md-option>
+                                    <md-option value="YYYY-MM">YYYY-MM</md-option>
+                                    <md-option value="MM-DD">MM-DD</md-option>
+                                    <md-option value="YYYY/MM/DD">YYYY/MM/DD</md-option>
+                                    <md-option value="YYYY/MM">YYYY/MM</md-option>
+                                    <md-option value="MM/DD">MM/DD</md-option>
+                                    <md-option value="YYYY年MM月DD">YYYY年MM月DD</md-option>
+                                    <md-option value="YYYY年MM">YYYY年MM</md-option>
+                                    <md-option value="MM月DD">MM月DD</md-option>
+                                </md-select>
+                                <!--<input type="text" class="form-control" ng-model="item.timeData.formatStr"  placeholder="时间格式，如YYYYMMDD" ng-disabled="item.type!=2"/>-->
+                            </div>
+                        </div>
+                    </md-radio-group>
+                    <div class="hsplitter" style="top: 201px;"></div>
+                </md-input-container>
+
+            </div>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions class="text-right">
+            <md-button class="btn btn-info btn-sm" ng-click="T.answer(T.batchLink)">
+                确定
+            </md-button>
+            <md-button class="btn btn-info btn-sm" ng-click="T.answer(false)" style="margin-right:20px;">
+                取消
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

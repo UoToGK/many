@@ -1,0 +1,47 @@
+<div class="padding title-ground text-right">
+    <button class="btn btn-info btn-sm" type="button" ng-click="T.back()">返回</button>
+</div>
+
+<div class="title-ground padding margin">
+
+    <div class="text-center" style="font-weight: bold">任务名：{{T.taskName}}</div>
+    <div layout="row"  class="margin-bottom">
+        <div>
+            <label>批次:</label>
+            <span>{{T.batchId}}</span>
+        </div>
+        <div flex></div>
+        <div class="numTotal">
+            <label>成功采集数/总数:</label>
+            <span> {{T.successTotal}}/{{T.totalNum}}</span>条
+        </div>
+    </div>
+
+    <!--table 表格-->
+    <table class="table margin-top-md" >
+        <tr class="tableColor">
+            <th>序号</th>
+            <th>采集URL</th>
+            <th>数据完整率</th>
+            <th>数据状态</th>
+            <th>开始时间</th>
+            <th>结束时间</th>
+            <th>失败原因</th>
+        </tr>
+        <tr ng-repeat="batch in T.batchInfo">
+            <td>{{$index+1}}</td>
+            <td>{{batch.url}}</td>
+            <td>{{batch.integrityRate}}</td>
+            <td ng-if="batch.status==0">成功</td>
+            <td ng-if="batch.status==1" ng-class={'red':batch.status==1}>无效</td>
+            <td ng-if="batch.status==2" ng-class={'red':batch.status==2}>失败</td>
+            <td>{{batch.startTime}}</td>
+            <td>{{batch.endTime}}</td>
+            <td>{{batch.failureReason}}</td>
+        </tr>
+    </table>
+
+    <!--page 分页-->
+    <page class="text-right"></page>
+
+</div>

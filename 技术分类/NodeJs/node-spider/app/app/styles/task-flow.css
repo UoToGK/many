@@ -1,0 +1,264 @@
+.hint {
+  left: 2px;
+  right: auto;
+  bottom: 7px;
+  font-size: 12px;
+  line-height: 14px;
+  transition: all 0.3s cubic-bezier(0.55, 0, 0.55, 0.2);
+  color: grey;
+}
+md-input-container .hint {
+  position: absolute;
+}
+step-flow {
+  display: block;
+  text-align: center;
+  -webkit-user-select: none;
+  font-size: 12px;
+}
+step-flow .material-icons {
+  font-size: 14px;
+  vertical-align: middle;
+}
+step-flow .sortable-placeholder {
+  height: 1em;
+  background-color: #fffac1;
+}
+step-flow step-line {
+  position: relative;
+  display: inline-block;
+  min-height: 400px;
+  min-width: 10em;
+  padding-top: 3em;
+  padding-bottom: 2em;
+  margin: 1em 0;
+  text-align: center;
+  background-image: url(images/line-bg.png);
+  background-repeat: repeat-y;
+  background-position: center top;
+}
+step-flow step-line:before {
+  display: block;
+  position: absolute;
+  left: 50%;
+  margin-left: -8px;
+  width: 16px;
+  height: 16px;
+  background-color: #fff;
+  top: 0;
+  content: url(images/start_16px.png);
+  padding-bottom: .4em;
+}
+step-flow step-line:after {
+  display: block;
+  position: absolute;
+  left: 50%;
+  margin-left: -8px;
+  width: 16px;
+  height: 16px;
+  background-color: #fff;
+  bottom: 0;
+  content: url(images/stop_16px.png);
+  padding-top: .4em;
+}
+step-flow step-item {
+  cursor: default;
+  display: block;
+  background-color: #fff;
+  position: relative;
+  padding: .3em 0;
+}
+step-flow step-item:first-child {
+  padding-top: 0;
+}
+step-flow step-item:last-child {
+  padding-bottom: 0;
+}
+step-flow step-item .delete {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  margin-top: -7px;
+}
+step-flow step-item .delete:hover {
+  color: #ff6900;
+}
+step-flow step-item > label,
+step-flow step-item > .wrap > .title {
+  min-height: 16px;
+  line-height: 16px;
+  outline: none;
+}
+step-flow step-item > label i,
+step-flow step-item > .wrap > .title i,
+step-flow step-item > label span,
+step-flow step-item > .wrap > .title span {
+  vertical-align: middle;
+}
+step-flow step-item:hover > label .delete,
+step-flow step-item:hover > .wrap > .title .delete {
+  display: block;
+}
+step-flow step-item > label,
+step-flow step-item .ifs > label {
+  display: inline-block;
+  min-width: 9em;
+  margin: .2em;
+  background-color: #117199;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  position: relative;
+}
+step-flow step-item.active > label,
+step-flow step-item.active > .wrap,
+step-flow step-item label.active {
+  outline: rgba(255, 103, 6, 0.75) dotted 2px;
+}
+step-flow step-item:not(:last-child) {
+  margin-bottom: 1.2em;
+}
+step-flow step-item:not(:last-child):after {
+  font-family: 'Material Icons';
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+  content: "forward";
+  position: absolute;
+  color: #0087D3;
+  margin-left: -12px;
+  bottom: -20px;
+  font-size: 2em;
+  left: 50%;
+  transform: rotate(90deg);
+}
+step-flow step-item:not(:last-child) {
+  margin-bottom: 1.2em;
+}
+step-flow step-item:not(:last-child):after {
+  font-family: 'Material Icons';
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+  content: "forward";
+  position: absolute;
+  color: #0087D3;
+  margin-left: -12px;
+  bottom: -20px;
+  font-size: 2em;
+  left: 50%;
+  transform: rotate(90deg);
+}
+step-flow step-item .wrap {
+  display: inline-block;
+  min-width: 9em;
+  border: 1px solid black;
+  border-radius: 5px;
+}
+step-flow step-item .wrap > .title {
+  padding-top: .5em;
+  cursor: pointer;
+  position: relative;
+}
+step-flow step-item step-wrap-content {
+  background-image: url(images/line-bg.png);
+  background-repeat: repeat-y;
+  background-position: center top;
+  margin: .5em 1em 1em;
+  min-height: 2em;
+  min-width: 8em;
+  display: block;
+}
+step-flow step-item step-wrap-content:empty:before {
+  padding: .2em 0;
+  content: "asdf";
+  display: block;
+  background-color: #000;
+}
+step-flow step-item .ifs {
+  margin-top: .5em;
+}
+step-flow step-item .branchs {
+  padding: 1em;
+}
+step-flow step-item .branchs .branch {
+  min-width: 9em;
+  border: 1px solid black;
+  border-radius: 5px;
+  position: relative;
+}
+step-flow step-item .branchs .branch > step-wrap-content {
+  padding-top: .5em;
+}
+step-flow step-item .branchs .right {
+  margin-left: 1em;
+}
+step-flow step-item .branchs .right:after {
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: -1.2em;
+  padding: .5em;
+  margin-left: -1.3em;
+  background-color: #fff;
+  content: "true";
+}
+step-flow step-item .branchs .fault:after {
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: -1.2em;
+  padding: .5em;
+  margin-left: -1.3em;
+  background-color: #fff;
+  content: "false";
+}
+.behavior-list {
+  font-size: 12px;
+  line-height: 1.35;
+  margin: .5em 0;
+  padding-left: 1em;
+  width: 100%;
+}
+.behavior-list dt {
+  font-size: 1.25em;
+}
+.behavior-list dd {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 0;
+  padding: 5px 10px;
+}
+.behavior-list dd:empty {
+  display: none;
+}
+.table-captures {
+  font-size: 12px;
+  table-layout: fixed;
+}
+.table-captures tbody td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  vertical-align: middle !important;
+}
+.min-list .md-button {
+  min-height: 25px;
+  line-height: 25px;
+  font-size: 12px;
+}
+.min-list .hint {
+  font-size: 12px;
+}

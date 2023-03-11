@@ -1,0 +1,116 @@
+<style scope>
+    .yellow {
+        color: #f65c5c;
+    }
+    .chart{
+        width: 750px;height: 300px;
+    }
+    .btn-lg{
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+</style>
+<div class="padding title-ground">
+    <div class="navbar-title" layout="row" layout-align="left center">
+        <div class="imgTask margin-right"></div>
+        <b class="titleText">任务监控</b>
+    </div>
+</div>
+
+<div class="title-ground padding margin">
+    
+    <div class="blueColor padding-top padding-bottom margin-bottom-md padding-right">
+        <div class="margin-top" layout="row">
+            <div style="width:300px;" layout="row">
+                <label class="margin-top-sm labelWidth text-right">任务项目:</label>
+                <select class="form-control" style="background: none"
+                        ng-change="T.changeTask(T.item)" ng-model="T.item">
+                    <option value="">请选择任务项目</option>
+                    <option ng-repeat="item in T.projectList" value="{{item.id}}">{{item.name}}</option>
+                </select>
+            </div>
+            <div style="width:300px;" layout="row">
+                <label class="margin-top-sm labelWidth text-right">任务名称:</label>
+                <input type="text" ng-model="T.taskName" class="form-control"/>
+            </div>
+            <div style="margin-left:10px;">
+                <button class="btn btn-info btn-search btn-sm margin-right"
+                        ng-click="T.query()">搜索
+                </button>
+                <button class="btn btn-info btn-search btn-sm margin-right"
+                        ng-click="T.clear()">清空
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!--table 表格-->
+    <table class="table margin-top-md">
+        <tr class="tableColor">
+            <th>序号</th>
+            <th>任务名</th>
+            <th>初始化时间</th>
+            <th>上次执行时间</th>
+            <th>下次执行时间</th>
+            <th>采集总数</th>
+            <!--<th>采集主链接数(失败)</th>-->
+            <th>执行次数</th>
+            <th>操作</th>
+        </tr>
+        <tr ng-repeat="task in T.taskList">
+            <td>{{($index+1)+(T.$scope.size*(T.$scope.cp-1))}}</td>
+
+            <td><a ng-href="#/taskMonitor/taskBatch?pid={{item.id}}&taskName={{task.taskName}}&taskId={{task.taskId}}">{{task.taskName}}{{item.id}}</a>
+            </td>
+            <!--<td ng-class={'yellow':task.status=='3','red':task.status=='4'}>{{task.status | statusName}}</td>-->
+            <td>{{task.initTime|date:'yyyy-MM-dd HH:mm:ss' }}</td>
+            <td>{{task.predateTime|date:'yyyy-MM-dd HH:mm:ss' }}</td>
+            <td>{{task.nextDateTime|date:'yyyy-MM-dd HH:mm:ss' }}</td>
+            <td>{{task.successDataCounts}}</td>
+            <!--<td class="red">{{task.failureDataCounts}}</td>-->
+            <td>{{task.executeTimes}}</td>
+            <td>
+                <a data-toggle="modal" data-target="#myModal" ng-click="T.initBatchChart(task.taskId)">
+                    <span class="glyphicon glyphicon-stats btn-default" data-toggle="tooltip" data-placement="bottom" title="查看图表" style="cursor:pointer;"></span>
+                </a>
+                <a ng-click="T.cancelProcess(task.taskId)">
+                    <span class="glyphicon glyphicon-remove btn-default" data-toggle="tooltip" data-placement="bottom" title="取消执行" style="cursor:pointer;"></span>
+                </a>
+            </td>
+        </tr>
+    </table>
+
+
+    <!--page 分页-->
+    <page class="text-right"></page>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 800px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">查看图表</h4>
+
+            </div>
+            <div class="btn-group" data-toggle="buttons" style="margin: 10px 0 0 630px;">
+                <button type="button" class="btn btn-primary btn-lg" ng-click="T.initBatchChart()">
+                    批次
+                </button>
+                <button type="button" class="btn btn-primary btn-lg" ng-click="T.initYearChart()">
+                    每天
+                </button>
+                <button type="button" class="btn btn-primary btn-lg" ng-click="T.initMonthChart()">
+                    月份
+                </button>
+            </div>
+            <div class="modal-body" style="width: 100%;height: 100%;">
+                <div e-charts e-option="option" class="chart"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<loading></loading>

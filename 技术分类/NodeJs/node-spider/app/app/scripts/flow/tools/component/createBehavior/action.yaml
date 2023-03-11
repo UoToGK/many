@@ -1,0 +1,109 @@
+# 操作项
+fill:
+  text: 输入内容
+  desc: 将文字输入到文本框
+
+cycle:
+  text: 循环处理内容列表
+  name: 循环列表
+  desc: 用于选定采集文章的列表区域
+
+paging:
+  text: 循环点击“下一页”按钮
+  name: 循环分页
+  desc: 如果它是“下一页”按钮,请选择此选项来创建循环翻页
+
+select:
+  text: 切换下拉框的值
+  desc: 切换下拉框的值
+
+click:
+  text: 鼠标点击
+  name: 点击
+  desc: 发送鼠标点击事件，比如点击超链接，按钮等
+mouseout:
+  text: 鼠标离开触发
+  name: 鼠标离开触发
+  desc: 鼠标离开触发
+mouseover:
+  text: 鼠标进入触发
+  name: 鼠标进入触发
+  desc: 鼠标进入触发
+openLink:
+  text: 打开链接
+  desc: 访问此链接
+
+openLinkBlank:
+  text: 在新页卡打开链接
+  desc: 新页卡中访问此链接
+
+download:
+  text: 附件下载
+  desc: 对此超链接的文件进行提取，如 pdf,图片等
+
+contentList:
+  text: 提取数据列表
+  desc: 例如，将写字楼的属性列表提取到一个数组中
+
+base64:
+  text: 提取图片
+  desc: 将图片转为base64编码
+
+# 下面几个 `action` 的 `desc` 属性会自动生成
+imgURL:
+  text: 提取图片链接
+  name: 提取
+
+href:
+  text: 提取网址
+  name: 提取
+
+value:
+  text: 提取文本内容
+  name: 提取
+
+attr:
+  text: 提取这个节点的属性
+  name: 提取
+
+outerHTML:
+  text: 提取所选节点
+  name: 提取
+
+innerHTML:
+  text: 提取内容(含标签)
+  name: 提取
+
+innerText:
+  text: 提取内容
+  name: 提取
+  desc: 提取新闻标题
+#获取验证码
+getVerificationCode:
+  text: 获取验证码
+  name: 获取验证码
+  desc: 获取验证码
+pageUrl:
+  text: 提取页面链接
+  name: 提取页面链接
+  desc: 提取页面链接
+pageTitle:
+  text: 提取页面标题
+  name: 提取页面标题
+  desc: 提取页面标题
+pageContent:
+  text: 提取页面内容带标签
+  name: 提取页面内容带标签
+  desc: 提取页面内容带标签
+pageText:
+  text: 提取页面内容不带标签
+  name: 提取页面内容不带标签
+  desc: 提取页面内容不带标签
+pageSelectTag:
+  text: 提取页面p标签
+  name: 提取页面p标签
+  desc: 提取页面p标签
+pageAutoText:
+  text: 自动提取页面正文
+  name: 自动提取页面正文
+  desc: 自动提取页面正文

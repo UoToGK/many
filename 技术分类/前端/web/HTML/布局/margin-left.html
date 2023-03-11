@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>关于margin-left：-100% 的理解</title>
+  </head>
+  <style>
+    .main {
+      width: 100%;
+      min-height: 100px;
+      background-color: blue;
+      float: left;
+    }
+    .left {
+      width: 100px;
+      min-height: 100px;
+      background-color: red;
+      margin-left: -100%;
+      float: left;
+    }
+    .inner {
+      margin: 0 200px 0 100px;
+      min-height: 100px;
+      background-color: greenyellow;
+    }
+    .right {
+      float: left;
+      width: 200px;
+      min-height: 100px;
+      margin-left: -200px;
+      background: #0c9;
+    }
+  </style>
+  <body>
+    <div class="container">
+      <div class="main">
+        <div class="inner"></div>
+      </div>
+      <div class="left"></div>
+      <div class="right"></div>
+    </div>
+    <style>
+      .flex {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        min-height: 200px;
+      }
+      .flex > .item:nth-child(2) {
+        flex: 1;
+        background: red;
+      }
+      .item {
+        width: 200px;
+      }
+      .item:nth-child(1) {
+        /* width: 200px; */
+        flex-basis: 100px;
+        background: blue;
+      }
+      .item:nth-child(3) {
+        background: greenyellow;
+      }
+    </style>
+    <div class="flex">
+      <div class="item"></div>
+      <div class="item"></div>
+      <div class="item"></div>
+    </div>
+    <style>
+      .content {
+        position: relative;
+        width: 100%;
+        height: 200px;
+      }
+      .block {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        margin-left: -50px;
+        margin-top: -50px;
+        width: 100px;
+        height: 100px;
+        background: pink;
+      }
+    </style>
+
+    <div class="content">
+      <div class="block"></div>
+    </div>
+  </body>
+</html>

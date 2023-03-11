@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.slim.min.js"></script>
+    <style type="text/css">
+        div {
+            width: 200px;
+            height: 80px;
+        }
+
+        #fir {
+            background-color: blue;
+        }
+
+        #sec {
+            background-color: black;
+        }
+
+        #thr {
+            background-color: chartreuse;
+        }
+
+        #d_img {
+            width: 200px;
+            height: 80px;
+        }
+    </style>
+    <script type="text/javascript">
+        var cont = 0;
+        var in_moving = 0;
+        /**--01--*/
+        function f_ondragstart(e) {
+            document.getElementById("sp_start").innerHTML = e.target.id + ":被拖元素，开始被拖动";
+            //被拖动，就将拖动的元素，存入（setData）dataTransfer里面：键值对
+            e.dataTransfer.setData("who", e.target.id);
+            //--04--设置拖放过程中允许的效果（ondragstart中设置）
+            e.effectAllowed = "all";
+        }
+        function f_ondrag(e) {
+            cont++;
+            document.getElementById("sp_moving").innerHTML = e.target.id + ":被拖元素，被拖动过程中:" + cont;
+        }
+        function f_ondragenter(e) {
+            document.getElementById("sp_in").innerHTML = "进入:" + e.target.id;
+        }
+        /**--02--*/
+        function f_ondragover(e) {
+            //进入，就设置可以拖放进来（设置不执行默认：【默认的是不可以拖动进来】）
+            e.preventDefault();
+            //--05--设置具体效果
+            e.dataTransfer.dropEffect = "copy";
+            document.getElementById("sp_in_moving").innerHTML = "进入:" + e.target.id + ":" + in_moving;
+        }
+        function f_ondragleave(e) {
+            document.getElementById("sp_leave").innerHTML = "离开:" + e.target.id
+        }
+        /**--03--*/
+        function f_ondrop(e) {
+            //            document.getElementById("sp_on").innerHTML="到达目标:"+ e.target.id;/**/
+            //设置不执行默认：【默认的是不可以拖动进来】
+            e.preventDefault();
+            var who = e.dataTransfer.getData("who");
+            //添加子节点
+            document.getElementById(e.target.id).appendChild(document.getElementById(who));
+
+            document.getElementById("sp_on").innerHTML = who + ":到达目标:" + e.target.id;
+        }
+        function f_ondragend(e) {
+            document.getElementById("sp_end").innerHTML = "结束拖放:" + e.target.id;
+        }
+    </script>
+</head>
+
+<body>
+    <!--拖放：
+    拖动的对象，需要设置draggable属性为true(draggable="true"),
+    a元素需要href，img元素需要src。
+    1、被拖对象：dragstart事件，被拖动的元素，开始拖放触发
+    2、被拖对象：drag事件，被拖放的元素，拖放过程中
+    3、经过对象：dragenter事件，拖放过程中鼠标经过的元素，被拖放的元素“开始”进入其它元素范围内（刚进入）
+    4、经过对象：dragover事件，拖放过程中鼠标经过的元素，被拖放的元素正在本元素范围内移动(一直)
+    5、经过对象：dragleave事件，拖放过程中鼠标经过的元素，被拖放的元素离开本元素范围
+    6、目标地点：drop事件，拖放的目标元素，其他元素被拖放到本元素中
+    7、被拖对象：dragend事件，拖放的对象元素，拖放操作结束
+ -->
+</body>
+<div id="fir" ondragenter="f_ondragenter(event)" ondragover="f_ondragover(event)" ondragleave="f_ondragleave(event)"
+    ondrop="f_ondrop(event)">
+</div>
+
+<div id="sec" ondragenter="f_ondragenter(event)" ondragover="f_ondragover(event)" ondragleave="f_ondragleave(event)"
+    ondrop="f_ondrop(event)">
+</div>
+
+<div id="thr" ondragenter="f_ondragenter(event)" ondragover="f_ondragover(event)" ondragleave="f_ondragleave(event)"
+    ondrop="f_ondrop(event)">
+</div>
+
+<br>
+
+<img id="d_img" src="imgs/img.jpg" draggable="true" ondragstart="f_ondragstart(event)" ondrag="f_ondrag(event)"
+    ondragend="f_ondragend(event)">
+
+<br>
+<span id="sp_start"></span>
+<br>
+<span id="sp_moving"></span>
+<br>
+<span id="sp_in"></span>
+<br>
+<span id="sp_in_moving"></span>
+<br>
+<span id="sp_leave"></span>
+<br>
+<span id="sp_on"></span>
+<br>
+<span id="sp_end"></span>
+<p>
+    https://blog.csdn.net/lihefei_coder/article/details/88188229
+    vscode 快捷键
+</p>
+
+</html>

@@ -1,0 +1,302 @@
+
+<style>
+    .but{
+        float: left;
+        margin-left: 20px;
+    }
+    .btn-lg{
+        padding: 6px 12px;
+    }
+    .btn-primary{
+        background-color: #286090;
+        border-color: #204d74;
+        margin-right: 20px;
+    }
+    .padding-bottom{
+        padding-bottom:100px;
+    }
+    .form-control{
+        width: 75%;
+    }
+    .input-group1{
+        width:5px;
+        float: left;
+        margin: 0 20px;
+    }
+    .shijian{
+        margin-left: 0;
+    }
+    .modal-footer{
+        margin-top: 30px;
+    }
+
+    md-datepicker button, input, select, textarea{
+        vertical-align:middle !important;
+    }
+    .md-datepicker-input{
+        min-width: 230px !important;
+    }
+    .md-datepicker-calendar-pane{
+        z-index: 9999 !important;
+    }
+    .modal-body label{
+        width:111px;
+    }
+
+
+</style>
+
+<div class="padding title-ground" >
+    <div class="navbar-title layout-align-start-center layout-row " layout="row" layout-align="left center">
+        <div class="imgAgency margin-right"></div>
+        <b class="titleText">代理管理</b>
+    </div>
+</div>
+
+<div class="title-ground padding margin">
+    <div class="blueColor padding-top padding-bottom margin-bottom-md padding-right">
+        <form class="form-inline">
+            <div style="float: left">
+                <div class="form-group">
+                    <label class="labelWidth text-right">代理服务器:</label>
+                    <input type="text" class="form-control" ng-model="T.paging.params.ip" >
+                </div>
+                <div class="form-group">
+                    <label >代理类型:</label>
+                    <select style="width: 175px" class="form-control" style="background: none"
+                            ng-options="item.code as item.name for item in T.statusList"
+                            ng-model="T.paging.params.value">
+                    </select>
+                </div>
+            </div>
+            <div class="but">
+                <button type="button" class="btn btn-info btn-search btn-sm margin-right" ng-click="T.select()">搜索</button>
+                <button type="button" class="btn btn-info btn-search btn-sm margin-right" data-toggle="modal" data-target="#myModal" ng-click="T.toEdit({})">
+                    新增
+                </button>
+            </div>
+
+            <!--<div style="float: left;margin-top: 20px; ">-->
+                <!--<div class="form-group">-->
+                    <!--<label class="labelWidth text-right">代理ip:</label>-->
+                    <!--<input type="text" class="form-control" ng-model="T.paging.params.ips" >-->
+                <!--</div>-->
+                <!--<div class="form-group">-->
+                    <!--<label>代理port:</label>-->
+                    <!--<input type="text" class="form-control" ng-model="T.paging.params.port" >-->
+                <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="but" style="margin-top: 20px;">-->
+                <!--<button type="button" class="btn btn-info btn-search btn-sm margin-right" ng-click="T.validations()">验证</button>-->
+            <!--</div>-->
+        </form>
+    </div>
+
+
+
+    <!--table 表格-->
+    <table class="table margin-top-md">
+        <tr class="tableColor">
+            <th>序号</th>
+            <th>代理IP</th>
+            <th>端口</th>
+            <th>支持Http</th>
+            <th>支持Https</th>
+            <th>支持Socket</th>
+            <th>地址</th>
+            <th>等级</th>
+            <th>响应时间</th>
+            <th>有效期起</th>
+            <th>有效期止</th>
+            <th>操作</th>
+        </tr>
+
+        <tr ng-repeat="proxy in T.paging.resultList">
+            <td>{{($index+1)+(T.paging.currentPage*(T.paging.limit))}}</td>
+            <td>{{proxy.ip}}</td>
+            <td>{{proxy.port}}</td>
+            <td>{{proxy.isHttp | proxyStyle}}</td>
+            <td>{{proxy.isHttps | proxyStyle}}</td>
+            <td>{{proxy.isSocket | proxyStyle}}</td>
+            <td>{{proxy.address }}</td>
+            <td>{{proxy.anonymousClass | proxyAnonymousClass}}</td>
+            <td>{{proxy.responseTime}}</td>
+            <td>{{proxy.effectiveDateStart|date:'yyyy-MM-dd'}}</td>
+            <td>{{proxy.effectiveDateEnd|date:'yyyy-MM-dd'}}</td>
+            <td style="color:#999">
+                <a href="javascript:" style="text-decoration: none;" class="margin-right" onfocus="this.blur();"
+                   data-toggle="modal" data-target="#newUser" ng-click="T.toEdit(proxy)">
+                    <md-icon>edit</md-icon>
+                    <md-tooltip>修改</md-tooltip>
+                </a>
+                <a href="javascript:" style="text-decoration: none;" class="margin-right"
+                   ng-click="T.delete(proxy.id)" onfocus="this.blur();">
+                    <md-icon>delete</md-icon>
+                    <md-tooltip>删除</md-tooltip>
+                </a>
+                <a href="javascript:" style="text-decoration: none;" class="margin-right"
+                       ng-click="T.validation(proxy)" onfocus="this.blur;">
+                <md-icon>play_circle_outline</md-icon>
+                <md-tooltip>验证</md-tooltip>
+                 </a>
+            </td>
+        </tr>
+    </table>
+    <remote-paging option="T.paging"></remote-paging>
+</div>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">新增代理</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label style="float: left;width: 135px">代理IP：</label>
+                    <input type="text" class="form-control" ng-model="T.proxy.ip" required placeholder="IP只能输入数字">
+                </div>
+                <div class="form-group">
+                    <label style="float: left;width: 135px">端口：</label>
+                    <input type="text" class="form-control" ng-model="T.proxy.port" placeholder="端口只能输入数字">
+                </div>
+                <div class="form-group">
+                    <label style="float: left;width: 135px">代理等级：</label>
+                    <!--ng-options="item.code as item.name for item in T.anonymousClass"-->
+                    <!--<input type="text" class="form-control" ng-model="T.proxy.anonymousClass">-->
+                    <select class="form-control" style="background: none"
+                            ng-options="item.code as item.name for item in T.anonymousClass"
+                            ng-model="T.proxy.anonymousClass">
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label style="float: left;width: 135px">响应时间：</label>
+                    <!--<input type="text" class="form-control" ng-model="T.proxy.responseTime">-->
+                    <input type="text" class="form-control"  style="width: 67%;float: left" ng-model="T.proxy.responseTime">
+                    <span class="input-group-addon" style="width: 45px;height: 34px">秒</span>
+                </div>
+                <div class="form-group">
+                    <label style="float: left;width: 135px">所属区域：</label>
+                    <input type="text" class="form-control" ng-model="T.proxy.address" accept-charset="gb2312" >
+                </div>
+                <div class="form-group" id="radio">
+                    <!--<label style="float: left;width: 135px" class="margin-top-sm labelWidth">代理类型：</label>-->
+                    <!--<select class="form-control" style="background: none" ng-change="T.query()"-->
+                    <!--ng-options="item.code as item.name for item in T.statusList"-->
+                    <!--ng-model="T.proxy.value">-->
+                    <!--</select>-->
+                    <label style="float: left;width: 135px" class="margin-top-sm labelWidth">代理类型：</label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox" id="inlineCheckbox1" value="option1" ng-model="T.proxy.isHttp"> Http代理
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox" id="inlineCheckbox2" value="option2" ng-model="T.proxy.isHttps">Https代理
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox" id="inlineCheckbox3" value="option3" ng-model="T.proxy.isSocket">Socket代理
+                    </label>
+                </div>
+                <div class="margin-top" layout="row">
+                    <div class="form-group shijian">
+                        <label style="width: 135px;float: left" class="margin-top-sm">有效期：</label>
+                        <md-datepicker ng-model="T.proxy.effectiveDateStart" required  class="form-control" style="padding: 0;float: left;width: 190px"
+                                       md-placeholder="开始时间"></md-datepicker>
+                        <div class='input-group1'>-</div>
+                        <md-datepicker ng-model="T.proxy.effectiveDateEnd" required  class="form-control" style="padding: 0;float: left;width: 190px"
+                                       md-placeholder="结束时间"></md-datepicker>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info btn-sm" ng-click="T.save()">确定</button>
+                <button type="button" class="btn btn-default btn-sm"
+                        ng-click="T.cancel()" data-dismiss="modal">关闭</button>
+                <!--<button type="button" class="btn btn-default btn-sm"  ng-click="T.cleans()">清除</button>-->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 修改 -->
+<div class="modal fade" id="newUser" tabindex="-1" role="dialog"  style="margin-top:25px;"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width:650px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" ng-click="T.cancel()">&times;</span></button>
+                <h4 class="modal-title">修改</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label style="float: left;width: 135px">代理IP：</label>
+                    <input type="text" class="form-control" ng-model="T.proxy.ip" >
+                </div>
+                <div class="form-group">
+                    <label style="float: left;width: 135px">端口：</label>
+                    <input type="text" class="form-control" ng-model="T.proxy.port">
+                </div>
+                <div class="form-group">
+                    <label style="float: left;width: 135px">代理等级：</label>
+                    <select class="form-control" style="background: none" ng-change="T.anonymousClass"
+                            ng-options="item.code as item.name for item in T.anonymousClass"
+                            ng-model="T.proxy.anonymousClass">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label style="float: left;width: 135px">响应时间：</label>
+                    <!--<input type="text" class="form-control" ng-model="T.proxy.responseTime">-->
+                    <input type="text" class="form-control"  style="width: 67%;float: left" ng-model="T.proxy.responseTime">
+                    <span class="input-group-addon" style="width: 45px;height: 34px">秒</span>
+
+                </div>
+                <div class="form-group">
+                    <label style="float: left;width: 135px">所属区域：</label>
+                    <input type="text" class="form-control"  ng-model="T.proxy.address" >
+                </div>
+                <div class="form-group" >
+                    <!--<label style="float: left;width: 135px" class="margin-top-sm labelWidth">代理类型：</label>-->
+                    <!--<select class="form-control" style="background: none" ng-change="T.query()"-->
+                    <!--ng-options="item.code as item.name for item in T.statusList"-->
+                    <!--ng-model="T.proxy.value">-->
+                    <!--</select>-->
+                    <label style="float: left;width: 135px" class="margin-top-sm labelWidth">代理类型：</label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox" ng-checked="T.proxy.isHttp=='Y'" ng-model="T.proxy.isHttp" value="Y"> Http代理
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox" ng-checked="T.proxy.isHttps=='Y'" ng-model="T.proxy.isHttps" value="Y"> Https代理
+                    </label>
+                    <label class="checkbox-inline">
+                        <input type="checkbox" ng-checked="T.proxy.isSocket=='Y'" ng-model="T.proxy.isSocket" value="Y"> Socket代理
+                    </label>
+                </div>
+                <div class="margin-top" layout="row">
+                    <div class="form-group shijian">
+                        <label style="width: 135px;float: left" class="margin-top-sm">有效期：</label>
+                        <!--<input type="text"  class="form-control" ng-model="T.user.expiredDate">-->
+                        <md-datepicker class="form-control" style="padding: 0;float: left;width: 190px"
+                                       ng-model="T.proxy.effectiveDateStart"></md-datepicker>
+                        <div class='input-group1'>-</div>
+                        <md-datepicker class="form-control" style="padding: 0;float: left;width: 190px"
+                                       ng-model="T.proxy.effectiveDateEnd"></md-datepicker>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info btn-sm"
+                        ng-click="T.update()" data-dismiss="modal">提交</button>
+                <button type="button" class="btn btn-default btn-sm"
+                        ng-click="T.cancel()" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+

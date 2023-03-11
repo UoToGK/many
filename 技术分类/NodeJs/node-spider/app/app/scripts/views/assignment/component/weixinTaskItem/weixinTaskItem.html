@@ -1,0 +1,58 @@
+<md-dialog aria-label="Mango (Fruit)" ng-cloak>
+  <form>
+    <md-toolbar>
+      <div class="md-toolbar-tools">
+        <h2>微信公众号任务创建/修改</h2>
+        <span flex></span>
+        <md-button class="md-icon-button" ng-click="T.cancel()">
+          <md-icon>close</md-icon>
+        </md-button>
+      </div>
+    </md-toolbar>
+    <md-dialog-content>
+      <div class="md-dialog-content" style="width: 400px;">
+        <md-input-container class="md-block">
+          <input
+            type="text"
+            placeholder="任务名称"
+            ng-model="T.task.name"
+            md-autofocus
+          />
+        </md-input-container>
+        <small>微信公众号</small>
+        <md-chips
+          ng-model="T.steps"
+          md-on-add="T.add($chip,T.steps);"
+          md-enable-chip-edit="true"
+        >
+          <input
+            type="text"
+            ng-paste="T.paste($event,T.steps);"
+            placeholder="多条用分号分隔，输入后请回车确认"
+          />
+        </md-chips>
+        <br />
+        <!--<small>微信内容过滤关键词</small>-->
+        <!--<md-chips ng-model="T.filters"-->
+        <!--md-on-add="T.add($chip , T.filters);"-->
+        <!--md-enable-chip-edit="true">-->
+        <!--<input type="text" ng-paste="T.paste($event , T.filters);" placeholder="请输入过滤关">-->
+        <!--</md-chips>-->
+        <small>优先级</small>
+        <md-select ng-model="T.task.emergencyLevel" aria-label="任务优先级">
+          <md-option value="7">高</md-option>
+          <md-option value="5" selected>中</md-option>
+          <md-option value="3">低</md-option>
+        </md-select>
+      </div>
+    </md-dialog-content>
+    <md-dialog-actions class="text-right">
+      <md-button ng-click="T.answer(T.task)">
+        确定
+      </md-button>
+      <md-button ng-click="T.answer()" style="margin-right:20px;">
+        取消
+      </md-button>
+    </md-dialog-actions>
+  </form>
+</md-dialog>

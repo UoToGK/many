@@ -1,0 +1,180 @@
+<style>
+    td, th {
+        text-align: center;
+    }
+
+    .checkDataList {
+        width: 80%;
+        min-height: 100px;
+        background: #f1f1f1;
+        position: absolute;
+        left: 100px;
+        top: 30px;
+        /*padding:8px;*/
+        z-index: 2;
+    }
+
+    .checkTbale {
+        table-layout: fixed;
+    }
+
+    .checkTbale td, .checkTbale th {
+        width: 100px !important;
+        padding: 2px !important;
+        height: 36px !important;
+    }
+
+    /*.checkTbale tr td, .checkTbale tr th {*/
+        /*overflow: hidden;*/
+        /*white-space: nowrap;*/
+        /*text-overflow: ellipsis;*/
+        /*-o-text-overflow: ellipsis;*/
+        /*-moz-text-overflow: ellipsis;*/
+        /*-webkit-text-overflow: ellipsis;*/
+    /*}*/
+
+    md-datepicker button, input, select, textarea{
+        vertical-align:middle !important;
+    }
+    
+    .checkBlack {
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, .5);
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: 1;
+    }
+</style>
+
+<div class="title-ground padding margin">
+    
+    <div class="blueColor padding-top padding-bottom margin-bottom-md padding-right">
+        <div class="margin-top" layout="row">
+            <div style="width:300px;" layout="row">
+                <label class="margin-top-sm labelWidth text-right">状态:</label>
+                <select class="form-control" style="background: none" ng-change="T.getTaskInfoAjax(T.taskId)"
+                        ng-options="item.code as item.name for item in T.statusList"
+                        ng-model="T.status">
+                </select>
+            </div>
+            <div style="width:540px;" layout="row">
+                <label class="margin-top-sm text-right" style="width:270px;">开始时间：</label>
+                <md-datepicker ng-model="T.startPreTime" required  class="form-control" style="padding: 0;"></md-datepicker>
+                <div>-</div>
+                <md-datepicker ng-model="T.startNextTime" required  class="form-control" style="padding: 0;"></md-datepicker>
+            </div>
+            <div style="margin-left:20px;">
+                <button class="btn btn-info btn-search btn-sm margin-right"
+                        ng-click="T.getTaskInfoAjax(T.taskId)">搜索
+                </button>
+                <button class="btn btn-info btn-search btn-sm margin-right"
+                        ng-click="T.clear()">清空
+                </button>
+                <button class="btn btn-info btn-sm" type="button" ng-click="T.back()">返回</button>
+            </div>
+        </div>
+    </div>
+    
+    <div layout="row" class="margin-bottom">
+        <div flex="30"></div>
+        <div flex="40" style="text-align: center">
+            <label>任务名:</label>
+            <span>{{T.taskName}}</span>
+        </div>
+        <div flex="30" class="text-right numTotal">
+            <!--<label>当日采集数据总数:</label>-->
+            <!--<span> {{T.totalNum}}</span>条-->
+        </div>
+    </div>
+
+    <!--table 表格-->
+    <table class="table margin-top-md">
+        <tr>
+            <th>序号</th>
+            <th>批次号</th>
+            <th>状态</th>
+            <th>初始化时间</th>
+            <th>开始时间</th>
+            <th>结束时间</th>
+            <th>耗时</th>
+            <th>采集总数</th>
+            <!--<th>失败条数</th>-->
+            <th>失败原因</th>
+            <th>操作</th>
+        </tr>
+        <tr ng-repeat="batch in T.batchList">
+            <td>{{$index+1}}</td>
+            <td>
+                {{batch.batchId}}
+                <!--<a ng-href="#/taskMonitor/taskBatch/batchInfo?pid={{item.id}}&taskName={{T.taskName}}&batchId={{batch.batchId}}&taskId={{T.taskId}}&successTotal={{T.successTotal}}&totalNum={{T.totalNum}}">{{batch.batchId}}</a>-->
+            </td>
+            <td>
+                <span  ng-if="batch.status==0" ng-class={'red':batch.status==0}>未执行</span>
+                <span  ng-if="batch.status==1">开始</span>
+                <span  ng-if="batch.status==2">成功</span>
+                <span  ng-if="batch.status==3">部分失败</span>
+                <span  ng-if="batch.status==4">失败</span>
+                <span  ng-if="batch.status==5">已取消</span>
+            </td>
+            <td>{{batch.initTime|date:'yyyy-MM-dd HH:mm:ss' }}</td>
+            <!--<td ng-if="batch.status==1" ng-class={'red':batch.status==1}>未执行</td>-->
+            <!--<td ng-if="batch.status==2">成功</td>-->
+            <!--<td ng-if="batch.status==3">部分失败</td>-->
+            <!--<td ng-if="batch.status==4">失败</td>-->
+            <td>{{batch.startTime|date:'yyyy-MM-dd HH:mm:ss' }}</td>
+            <td>{{batch.endTime|date:'yyyy-MM-dd HH:mm:ss' }}</td>
+            <td>{{T.test(batch.startTime,batch.endTime)}}</td>
+            <!--<td>{{(batch.endTime-batch.startTime)|date:'HH:mm:ss'}}</td>-->
+            <td>{{batch.successDataCounts}}</td>
+            <!--<td class="red">{{batch.failureDataCounts}}</td>-->
+            <td>{{batch.failureReason}}</td>
+            <td>
+                <a href="javascript:;" data-toggle="modal" data-target="#checkDataList"
+                   ng-click="T.checkDataList(batch)">查看数据</a>
+                <a href="javascript:;" ng-click="T.cancelQueneTask(batch.taskId,batch.batchId)" ng-show="batch.status==0">
+                    取消执行
+                </a>
+                <a href="javascript:;" ng-click="T.exportData(batch)">导出数据</a>
+            </td>
+        </tr>
+    </table>
+
+    <!--page 分页-->
+    <page class="text-right"></page>
+
+</div>
+<!-- 查看数据 -->
+<!--<div class="checkBlack" ng-show="checkListShow" ng-click="T.checkBack()"></div>-->
+<!--<div class="checkDataList" ng-show="checkListShow">-->
+<div class="modal fade" id="checkDataList" tabindex="-1" role="dialog" style="margin-top:25px;"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width:740px">
+        <div class="modal-content" style="max-height: 700px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">查看数据</h4>
+            </div>
+            <div class="modal-body" style="overflow-x:scroll;max-height: 550px">
+                <table class="table checkTbale">
+                    <tr>
+                        <th class="tableColor">序号</th>
+                        <th class="tableColor" title="{{v}}" ng-repeat="(k,v) in columnMap">{{v}}</th>
+                    </tr>
+                    <tr ng-repeat="(k,v) in checkData">
+                        <td>{{k+1}}</td>
+                        <td style="overflow: hidden;text-overflow:ellipsis;white-space: nowrap;" ng-repeat="(key,vs) in columnMap" title="{{v[key]}}"><a>{{v[key]}}</a></td>
+                        <!--<td ng-repeat="(k,v) in checkData" title="{{v}}"><a ng-click="T.openUrl(res.parentUrl)">{{res.parentUrl}}</a></td>-->
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" ng-click="T.exportData(T.batch)">导出数据</button>
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--</div>-->

@@ -1,0 +1,265 @@
+<style scope>
+    .yellow {
+        color: #f65c5c;
+    }
+    md-datepicker button, input, select, textarea{
+        vertical-align:middle !important;
+    }
+   /* .md-datepicker-input{
+        min-width: 230px !important;
+    }*/
+    .md-datepicker-calendar-pane{
+        z-index: 9999 !important;
+    }
+    .modal-body label{
+        width:111px;
+    }
+</style>
+<div class="padding title-ground">
+    <div class="navbar-title" layout="row" layout-align="left center">
+        <div class="imgTask margin-right"></div>
+        <b class="titleText">计划批次监控</b>
+    </div>
+</div>
+
+<div class="title-ground padding margin">
+    <div class="blueColor padding-top padding-bottom margin-bottom-md padding-right">
+
+        <!--<div class="row margin-top">
+            <div  class="col-xs-6 col-md-3" layout="row">
+                <label class="margin-top-sm labelWidth text-right">状态:</label>
+                <select class="form-control" style="background: none" ng-change="T.query()"
+                        ng-options="item.code as item.name for item in T.statusList"
+                        ng-model="T.paging.params.status">
+                </select>
+            </div>
+            <div  class="col-xs-6 col-md-3" layout="row">
+                <label class="margin-top-sm text-right" style="width:130px;">时间区间：</label>
+                <md-datepicker ng-model="T.paging.params.startTime" required  class="form-control" style="padding: 0;"
+                               md-placeholder="开始时间"></md-datepicker>
+            </div>
+
+            <div  class="col-xs-6 col-md-3" layout="row">
+                <md-datepicker ng-model="T.paging.params.endTime" required  class="form-control" style="padding: 0;"
+                               md-placeholder="结束时间"></md-datepicker>
+            </div>
+            <div  class="col-xs-6 col-md-3">
+                <button class="btn btn-info btn-search btn-sm margin-right"
+                        ng-click="T.query()">搜索
+                </button>
+                <button class="btn btn-info btn-search btn-sm margin-right"
+                        ng-click="T.clear()">清空
+                </button>
+            </div>
+        </div>-->
+
+
+        <div class="margin-top" layout="row">
+            <div style="width:300px;" layout="row">
+                <label class="margin-top-sm labelWidth text-right">状态:</label>
+                <select class="form-control" style="background: none" ng-change="T.query()"
+                        ng-options="item.code as item.name for item in T.statusList"
+                        ng-model="T.paging.params.status">
+                </select>
+            </div>
+            <div style="width:540px;" layout="row">
+                <label class="margin-top-sm text-right" style="width:270px;">时间区间：</label>
+                <md-datepicker ng-model="T.paging.params.startTime" required  class="form-control" style="padding: 0;"
+                               md-placeholder="开始时间"></md-datepicker>
+                <div>-</div>
+                <md-datepicker ng-model="T.paging.params.endTime" required  class="form-control" style="padding: 0;"
+                               md-placeholder="结束时间"></md-datepicker>
+            </div>
+            <div style="margin-left:20px;">
+                <button class="btn btn-info btn-search btn-sm margin-right"
+                        ng-click="T.query()">搜索
+                </button>
+                <button class="btn btn-info btn-search btn-sm margin-right"
+                        ng-click="T.clear()">清空
+                </button>
+
+                <button class="btn btn-info btn-sm" type="button" ng-click="T.back()">返回</button>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!--table 表格-->
+    <table class="table margin-top-md">
+        <tr class="tableColor">
+            <th>序号</th>
+            <th>计划名称</th>
+            <th>批次号</th>
+            <th>初始化时间</th>
+            <th>开始时间</th>
+            <th>结束时间</th>
+            <th>耗时</th>
+            <th>待执行</th>
+            <th>执行中</th>
+            <th>成功</th>
+            <th>失败</th>
+            <th>采集量</th>
+            <th>操作</th>
+        </tr>
+        <tr ng-repeat="planBatch in T.paging.resultList">
+            <td>{{($index+1)+(T.paging.currentPage*(T.paging.limit))}}</td>
+            <td>{{planBatch.routinePlanName}}</td>
+            <td>{{planBatch.id}}</td>
+            <td>{{planBatch.initTime|date:'yyyy-MM-dd HH:mm:ss' }}</td>
+            <td>{{planBatch.startTime|date:'yyyy-MM-dd HH:mm:ss' }}</td>
+            <td>{{planBatch.endTime|date:'yyyy-MM-dd HH:mm:ss' }}</td>
+            <td>{{T.test(planBatch.startTime,planBatch.endTime)}}</td>
+            <td ng-click="T.detail('noExecuteTask',planBatch.id,'0')"><a>{{planBatch.taskCounts-planBatch.successTaskCounts-planBatch.failureTaskCounts-planBatch.executeTaskCounts}}</a></td>
+            <td ng-click="T.detail('doingTask',planBatch.id,'1')"><a>{{planBatch.executeTaskCounts||0}}</a></td>
+            <td ng-click="T.detail('successTask',planBatch.id,'2')"><a>{{planBatch.successTaskCounts||0}}</a></td>
+            <td ng-click="T.detail('failTask',planBatch.id,'4')"><a>{{planBatch.failureTaskCounts||0}}</a></td>
+            <td>{{planBatch.successDataCounts}}</td>
+            <td><a href="javascript:void(0);" ng-click="T.cancelPlan(planBatch);" ng-if="planBatch.status=='0' || planBatch.status=='1'">取消执行</a></td>
+        </tr>
+    </table>
+
+
+    <!--page 分页-->
+    <remote-paging option="T.paging"></remote-paging>
+</div>
+
+<div class="modal fade" id="noExecuteTask" tabindex="-1" role="dialog" style="margin-top:25px;"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width:800px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" ng-click="T.cancel()">&times;</span></button>
+                <h4 class="modal-title">待执行任务列表</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table margin-top-md">
+                    <tr class="tableColor">
+                        <th>序号</th>
+                        <th>任务名称</th>
+                        <th>批次号</th>
+                        <th>开始时间</th>
+                    </tr>
+
+                    <tr ng-repeat="planBatch in T.pagingDetail.resultList">
+                        <td>{{$index+1}}</td>
+                        <td>{{planBatch.taskName}}</td>
+                        <td>{{planBatch.batchId}}</td>
+                        <td>{{planBatch.initTime|date:'yyyy-MM-dd HH:mm:ss' }}</td>
+                    </tr>
+                </table>
+                <remote-paging option="T.pagingDetail"></remote-paging>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="successTask" tabindex="-1" role="dialog" style="margin-top:25px;"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width:800px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" ng-click="T.cancel()">&times;</span></button>
+                <h4 class="modal-title">成功任务列表</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table margin-top-md">
+                    <tr class="tableColor">
+                        <th>序号</th>
+                        <th>任务名称</th>
+                        <th>批次号</th>
+                        <th>开始时间</th>
+                        <th>结束时间</th>
+                        <th>耗时</th>
+                        <th>采集量</th>
+                    </tr>
+                    <tr ng-repeat="planBatch in T.pagingDetail.resultList">
+                        <td>{{$index+1}}</td>
+                        <td>{{planBatch.taskName}}</td>
+                        <td>{{planBatch.batchId}}</td>
+                        <td>{{planBatch.startTime|date:'yyyy-MM-dd HH:mm:ss' }}</td>
+                        <td>{{planBatch.endTime|date:'yyyy-MM-dd HH:mm:ss' }}</td>
+                        <td>{{T.test(planBatch.startTime,planBatch.endTime)}}</td>
+                        <td>{{planBatch.successDataCounts}}</td>
+                    </tr>
+                </table>
+                <remote-paging option="T.pagingDetail"></remote-paging>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="failTask" tabindex="-1" role="dialog" style="margin-top:25px;"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width:800px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" ng-click="T.cancel()">&times;</span></button>
+                <h4 class="modal-title">失败任务列表</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table margin-top-md">
+                    <tr class="tableColor">
+                        <th>序号</th>
+                        <th>任务名称</th>
+                        <th>批次号</th>
+                        <th>开始时间</th>
+                        <th>结束时间</th>
+                        <th>耗时</th>
+                        <th>错误信息</th>
+                        <th>采集量</th>
+                    </tr>
+                    <tr ng-repeat="planBatch in T.pagingDetail.resultList">
+                        <td>{{$index+1}}</td>
+                        <td>{{planBatch.taskName}}</td>
+                        <td>{{planBatch.batchId}}</td>
+                        <td>{{planBatch.startTime|date:'yyyy-MM-dd HH:mm:ss' }}</td>
+                        <td>{{planBatch.endTime|date:'yyyy-MM-dd HH:mm:ss' }}</td>
+                        <td>{{T.test(planBatch.startTime,planBatch.endTime)}}</td>
+                        <td>{{planBatch.failureReason}}</td>
+                        <td>{{planBatch.successDataCounts}}</td>
+                    </tr>
+                </table>
+                <remote-paging option="T.pagingDetail"></remote-paging>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="doingTask" tabindex="-1" role="dialog" style="margin-top:25px;"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width:700px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" ng-click="T.cancel()">&times;</span></button>
+                <h4 class="modal-title">执行中任务列表</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table margin-top-md">
+                    <tr class="tableColor">
+                        <th>序号</th>
+                        <th>任务名称</th>
+                        <th>批次号</th>
+                        <th>开始时间</th>
+                        <th>耗时</th>
+                    </tr>
+                    <tr ng-repeat="planBatch in T.pagingDetail.resultList">
+                        <td>{{$index+1}}</td>
+                        <td>{{planBatch.taskName}}</td>
+                        <td>{{planBatch.batchId}}</td>
+                        <td>{{planBatch.startTime|date:'yyyy-MM-dd HH:mm:ss' }}</td>
+                        <td>{{T.perform(planBatch.startTime)}}</td>
+                    </tr>
+                </table>
+                <remote-paging option="T.pagingDetail"></remote-paging>
+            </div>
+        </div>
+    </div>
+</div>
+

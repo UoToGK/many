@@ -1,0 +1,241 @@
+gpedit.msc hide:recovery  组策略隐藏恢复页面
+
+隐藏多个  hide:recovery;backup;batterysaver;crossdevice;devices-touchpad
+
+设置分类和项目中英文对照表:
+
+　　1、系统
+
+　　显示: display
+
+　　通知和操作: notifications
+
+　　电源和睡眠: powersleep
+
+　　电池: batterysaver
+
+　　应用电池使用量: batterysaver-usagedetails
+
+　　存储: storagesense
+
+　　平板模式: tabletmode
+
+　　多任务: multitasking
+
+　　投射到这台电脑: project
+
+　　共享体验: crossdevice
+
+　　关于: about
+
+　　2、设备
+
+　　蓝牙和其他设备: bluetooth
+
+　　打印机和扫描仪: printers
+
+　　鼠标: mousetouchpad
+
+　　触摸板: devices-touchpad
+
+　　输入: typing
+
+　　笔和 Windows Ink: pen
+
+　　自动播放: autoplay
+
+　　USB: usb
+
+　　3、网络和 Internet
+
+　　状态: network-status
+
+　　蜂窝和SIM卡: network-cellular
+
+　　Wi-Fi: network-wifi
+
+　　管理已知网络: network-wifisettings
+
+　　以太网: network-ethernet
+
+　　拨号: network-dialup
+
+　　VPN: network-vpn
+
+　　飞行模式: network-airplanemode
+
+　　手机热点: network-mobilehotspot
+
+　　数据使用: datausage
+
+　　代理: network-proxy
+
+　　4、个性化
+
+　　背景: personalization-background
+
+　　颜色: colors
+
+　　锁屏界面: lockscreen
+
+　　主题: themes
+
+　　开始: personalization-start
+
+　　任务栏: taskbar
+
+　　5、应用
+
+　　应用和功能: appsfeatures
+
+　　管理可选功能: optionalfeatures
+
+　　默认应用: defaultapps
+
+　　离线地图: maps
+
+　　用于打开网站的应用: appsforwebsites
+
+　　6、账户
+
+　　你的信息: yourinfo
+
+　　电子邮件和应用账户: emailandaccounts
+
+　　登录选项: signinoptions
+
+　　从工作单位或学校访问: workplace
+
+　　家庭和其他人员: otherusers
+
+　　同步你的设置: sync
+
+　　7、时间和语言
+
+　　日期和时间: dateandtime
+
+　　区域和语言: regionlanguage
+
+　　语音: speech
+
+　　8、游戏
+
+　　游戏栏: gaming-gamebar
+
+　　游戏 DVR: gaming-gamedvr
+
+　　广播: gaming-broadcasting
+
+　　游戏模式: gaming-gamemode
+
+　　9、轻松使用
+
+　　讲述人: easeofaccess-narrator
+
+　　放大镜: easeofaccess-magnifier
+
+　　高对比度: easeofaccess-highcontrast
+
+　　隐藏式字幕: easeofaccess-closedcaptioning
+
+　　键盘: easeofaccess-keyboard
+
+　　鼠标: easeofaccess-mouse
+
+　　其他选项: easeofaccess-otheroptions
+
+　　10、隐私
+
+　　常规: privacy
+
+　　位置: privacy-location
+
+　　相机: privacy-webcam
+
+　　麦克风: privacy-microphone
+
+　　通知: privacy-notifications
+
+　　语音、墨迹书写和键入: privacy-speechtyping
+
+　　账户信息: privacy-accountinfo
+
+　　联系人: privacy-contacts
+
+　　日历: privacy-calendar
+
+　　通话记录: privacy-callhistory
+
+　　电子邮件: privacy-email
+
+　　任务: privacy-tasks
+
+　　消息: privacy-messaging
+
+　　无线电收发器: privacy-radios
+
+　　其它设备: privacy-customdevices
+
+　　反馈和诊断: privacy-feedback
+
+　　后台应用: privacy-backgroundapps
+
+　　应用诊断: privacy-appdiagnostics
+
+　　11、更新和安全
+
+　　Windows 更新: windowsupdate
+
+　　检查更新: windowsupdate-action
+
+　　更新历史: windowsupdate-history
+
+　　重启选项: windowsupdate-restartoptions
+
+　　高级选项: windowsupdate-options
+
+　　Windows Defender: windowsdefender
+
+　　备份: backup
+
+　　疑难解答: troubleshoot
+
+　　恢复: recovery
+
+　　激活: activation
+
+　　搜索我的设备: findmydevice
+
+　　针对开发人员: developers
+
+　　Windows 预览体验计划: windowsinsider
+
+　　12、混合现实
+
+　　混合现实: holographic
+
+　　音频和语音: holographic-audio
+
+
+hide:recovery;backup;batterysaver;crossdevice;devices-touchpad;autoplay;network-status;network-cellular;maps;appsforwebsites;workplace;otherusers;speech;gaming-gamebar;gaming-gamedvr;gaming-broadcasting;gaming-gamemode;easeofaccess-narrator;easeofaccess-magnifier;easeofaccess-highcontrast;easeofaccess-closedcaptioning;privacy;windowsupdate;findmydevice;developers;windowsinsider;holographic;holographic-audio
+
+
+"showonly:"
+
+显示某个页面
+showonly:display;themes
+
+
+1、在Cortana搜索栏输入regedit，按回车键进入注册表编辑器；
+
+　　2、定位到：
+
+　　HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer；
+
+
+　　3、新建字符串值，命名为SettingsPageVisibility；
+   4.照方法一中的官方描述命令格式为数值数据赋值，即可达到隐藏或指定显示设置项的目的。
+
+   showonly:network-proxy;network-vpn
+
+   添加用户： lusrmgr.msc

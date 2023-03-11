@@ -1,0 +1,121 @@
+<style scope>
+    .yellow {
+        color: #f65c5c;
+    }
+    md-datepicker button, input, select, textarea{
+        vertical-align:middle !important;
+    }
+
+    .md-datepicker-calendar-pane{
+        z-index: 9999 !important;
+    }
+    .modal-body label{
+        width:111px;
+    }
+    .chart{
+        width: 750px;height: 300px;
+    }
+    .btn-lg{
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+    *:not(i):not([class*="hermit"]):not([class*="ico"]):not([class*="button"]):not(i){
+  font-family: "MicroSoft YaHei" !important;
+  font-size: inherit !important;
+}
+</style>
+<div class="padding title-ground">
+    <div class="navbar-title" layout="row" layout-align="left center">
+        <div class="imgTask margin-right"></div>
+        <b class="titleText">计划监控</b>
+    </div>
+</div>
+<div class="title-ground padding margin">
+    <div class="blueColor padding-top padding-bottom margin-bottom-md padding-right">
+        <div  layout="row">
+            <div style="width:300px;" layout="row">
+                <label class="margin-top-sm labelWidth text-right">计划名称:</label>
+                <input type="text" ng-model="T.paging.params.planName"/>
+            </div>
+
+            <div style="margin-left:20px;">
+                <button class="btn btn-info btn-search btn-sm margin-right"
+                        ng-click="T.query()">搜索
+                </button>
+                <button class="btn btn-info btn-search btn-sm margin-right"
+                        ng-click="T.clear()">清空
+                </button>
+
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <!--table 表格-->
+    <table class="table margin-top-md">
+        <tr class="tableColor">
+            <th>序号</th>
+            <th>计划名称</th>
+            <th>下次执行时间</th>
+            <th>执行次数</th>
+            <th>操作</th>
+        </tr>
+        <tr ng-repeat="plan in T.paging.resultList">
+            <td>{{($index+1)+(T.paging.currentPage*(T.paging.limit))}}</td>
+            <td><a ng-href="#/planBatch/planBatchMonitor?planId={{plan.id}}">{{plan.name}}</a></td>
+            <td>{{plan.nextDateTime|date:'yyyy-MM-dd HH:mm:ss' }}</td>
+            <td>{{plan.collectionCount?plan.collectionCount:0}}</td>
+            <td>
+                <a data-toggle="modal" data-target="#myModal" ng-click="T.initBatchChart(plan.id)">
+                    <span class="glyphicon glyphicon-stats btn-default" data-toggle="tooltip" data-placement="bottom" title="查看图表" style="cursor:pointer;"></span>
+                </a>
+            </td>
+        </tr>
+    </table>
+
+
+    <!--page 分页-->
+    <remote-paging option="T.paging"></remote-paging>
+</div>
+
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content" style="width: 800px">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">查看图表</h4>
+            </div>
+            <div class="btn-group" data-toggle="buttons" style="margin: 10px 0 0 630px;">
+                <button type="button" class="btn btn-primary btn-lg" ng-click="T.initBatchChart()">
+                    批次
+                </button>
+                <button type="button" class="btn btn-primary btn-lg" ng-click="T.initYearChart()">
+                    每天
+                </button>
+                <button type="button" class="btn btn-primary btn-lg" ng-click="T.initMonthChart()">
+                    月份
+                </button>
+            </div>
+            <!--<div class="btn-group" data-toggle="buttons" >-->
+                <!--<label class="btn btn-primary active">-->
+                    <!--<input type="button" ng-click="T.initBatchChart()"> 批次-->
+                <!--</label>-->
+                <!--<label class="btn btn-primary">-->
+                    <!--<input type="button" ng-click="T.initYearChart()">每天-->
+                <!--</label>-->
+                <!--<label class="btn btn-primary">-->
+                    <!--<input type="button" ng-click="T.initMonthChart()"> 月份-->
+                <!--</label>-->
+            <!--</div>-->
+            <div class="modal-body">
+                <div e-charts e-option="option" class="chart"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>

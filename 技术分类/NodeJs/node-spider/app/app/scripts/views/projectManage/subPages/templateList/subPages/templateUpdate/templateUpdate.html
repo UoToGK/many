@@ -1,0 +1,15 @@
+<div>
+    <div layout="row">
+        <b>原模板名称：{{T.templateName}}</b>
+        <div flex></div>
+        <button class="md-button md-ink-ripple" type="button"
+                ng-click="T.back()">
+            <span class="ng-scope">返回</span>
+        </button>
+    </div>
+
+    <div layout="row" class="margin-bottom">
+        <input type="text" ng-model="T.currentName" placeholder="请输入模板新名称" class="margin-right">
+        <button type="button" class="btn btn-primary btn-search" ng-click="T.save()">保存</button>
+    </div>
+</div>

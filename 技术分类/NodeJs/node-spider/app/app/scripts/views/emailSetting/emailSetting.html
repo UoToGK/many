@@ -1,0 +1,97 @@
+<div class="padding title-ground" layout="row" layout-align="left center">
+    <div class="navbar-title" layout="row" layout-align="left center">
+        <div class="imgUser margin-right"></div>
+        <b class="titleText">通知设置</b>
+    </div>
+    <span flex></span>
+</div>
+<md-content class="md-padding">
+    <md-tabs md-selected="selectedIndex" md-border-bottom md-autoselect md-swipe-content style="min-height: 580px">
+        <md-tab ng-repeat="tab in T.tabs"
+                ng-disabled="tab.disabled"
+                label="{{tab.title}}">
+            <div class="demo-tab tab{{$index%4}}" style="padding-left: 25px;
+    line-height: 39px;">
+                <div ng-if="tab.type=='4'">
+                    <table class="table margin-top">
+                        <tr class="tableColor">
+                            <th>序号</th>
+                            <th>项目名称</th>
+                            <th>类型</th>
+                            <th>收件人</th>
+                            <th>操作</th>
+                        </tr>
+                        <tr ng-repeat="data in T.paging.resultList">
+                            <td>{{($index+1)+(T.paging.currentPage*(T.paging.limit))}}</td>
+                            <td style="padding-top:30px;">{{data.name}}</td>
+                            <td>
+                                <table>
+                                    <tr>
+                                        <td>项目监控</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            计划批次监控
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            每日预警
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                            <td>
+                                <table>
+                                    <tr ng-repeat="(key,list) in data.maps">
+                                        <td>
+                             <span ng-repeat="_user in list" layout-align="left center">
+                                <input type="checkbox" ng-model="_user.selected" ng-checked="_user.selected">
+                                {{_user.name}}
+                            </span>
+                                        </td>
+
+                                    </tr>
+                                </table>
+                            </td>
+                            <td style="padding-top:30px;">
+                                <button class="btn btn-info btn-search btn-sm margin-right"
+                                        ng-click="T.saveProjectSetting(data)">保存
+                                </button>
+                            </td>
+                        </tr>
+                    </table>
+                    <remote-paging option="T.paging"></remote-paging>
+                </div>
+                <div ng-if="tab.type=='5'" class="margin-top">
+                    <table class="table margin-top">
+                        <tr class="tableColor">
+                            <th>序号</th>
+                            <th>项目名称</th>
+                            <th>收件人</th>
+                            <th>操作</th>
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>采集端掉线</td>
+                            <td>
+                                <span ng-repeat="user in T.userList" layout-align="left center">
+                                    <input type="checkbox" ng-model="user.selected" ng-checked="user.selected">
+                                    {{user.name}}
+                                </span>
+                            </td>
+                            <td>
+                                <button class="btn btn-info btn-search btn-sm margin-right"
+                                        ng-click="T.saveSysSetting()">保存
+                                </button>
+                            </td>
+
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </md-tab>
+
+    </md-tabs>
+</md-content>

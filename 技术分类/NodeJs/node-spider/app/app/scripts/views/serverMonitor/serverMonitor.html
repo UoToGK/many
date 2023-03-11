@@ -1,0 +1,103 @@
+<div class="padding title-ground" layout="row">
+    <div class="navbar-title"  layout="row" layout-align="left center">
+        <div class="imgServer margin-right"></div>
+        <b class="titleText">服务器监控</b>
+    </div>
+    <span flex></span>
+    <div>
+        <label style="color:#6b6b6b">状态更新时间:</label>
+        <span>{{T.currentTime}}</span>
+    </div>
+</div>
+
+<div class="title-ground padding margin" >
+    <div layout="row">
+        <div class="form-group" layout="row">
+            <label class="margin-top-sm">更新频率：</label>
+            <select class="form-control"  ng-model="selectedRate" ng-change="T.show();" style="width:200px;height:30px;">
+                <option ng-repeat="item in ratelist" value="{{item.minute}}">{{item.value}}</option>
+            </select>
+        </div>
+        <span flex></span>
+        <div layout="row">
+            <label layout="row" class="margin-right">
+                <span class="colorLump margin-right pinkColor"></span>
+                <span style="color:#7b7b7b">内存</span>
+            </label>
+            <label layout="row" >
+                <span class="colorLump margin-right blueColor"></span>
+                <span style="color:#7b7b7b">硬盘</span>
+            </label>
+        </div>
+    </div>
+<!--table 表格-->
+<table class="table" >
+    <tr class="tableColor">
+        <th>序号</th>
+        <th>服务器IP</th>
+        <th>服务器名</th>
+        <th class="pinkColor">内存容量（G）</th>
+        <th class="pinkColor">内存已使用容量（G）</th>
+        <th class="pinkColor">内存使用率（%）</th>
+        <th>硬盘容量（G）</th>
+        <th>硬盘已使用容量（G）</th>
+        <th>硬盘使用率（%）</th>
+        <th>CPU使用率（%）</th>
+        <th>通信状况</th>
+    </tr>
+    <tr ng-repeat="server in T.serverList">
+        <td>{{$index+1}}</td>
+        <td><a ng-href="#/serverMonitor/changeChart?sip={{server.ip}}">{{server.ip}}</a></td>
+        <td>{{server.name}}</td>
+        <td>{{server.totalMemoryVolume/1024/1024/1000 | number:0}}</td>
+        <td>{{server.usedMemoryVolume/1024/1024/1000| number:0}}</td>
+        <td ng-class="{'red':server.usedMemoryVolume/server.totalMemoryVolume*100>=80}">{{server.usedMemoryVolume/server.totalMemoryVolume*100|number:0}}</td>
+        <td><a style="cursor: pointer" ng-click="T.showModal(server.totalDiskVolume);">{{ T.getTotal(server.totalDiskVolume)|number:0}}</a></td>
+        <td>{{server.usedDiskVolume/1000/1000|number:0}}</td>
+        <td ng-class="{'red':((server.usedDiskVolume/1000/1000)/T.getTotal(server.totalDiskVolume))*100 >= 80}">{{ ((server.usedDiskVolume/1000/1000)/T.getTotal(server.totalDiskVolume))*100|number:0}}</td>
+        <td ng-class="{'red':server.usageOfCpu>=80}">{{server.usageOfCpu}}</td>
+        <td>正常</td>
+       <!-- <td ng-if=" server.states==1">正常</td>
+        <td ng-if=" server.states==2" ng-class={'red':server.states==2}>异常</td>-->
+    </tr>
+</table>
+
+
+<!--page 分页-->
+    <page class="text-right"></page>
+
+</div>
+
+<!--模态框-->
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" style="margin-top:25px;"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">硬盘总量</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <tr class="tableColor">
+                        <th>硬盘名称</th>
+                        <th>容量（G）</th>
+                        <th>已使用容量（G）</th>
+                        <th>使用率（%）</th>
+                    </tr>
+                    <tr ng-repeat="item in T.modalData">
+                        <td>{{ item.devName }}</td>
+                        <td>{{ item.total/1000/1000|currency: " " }}</td>
+                        <td>{{ item.used/1000/1000|currency: " " }}</td>
+                        <td>{{ (item.used/item.total)*100|currency: " " }}</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>

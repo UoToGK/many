@@ -1,0 +1,15 @@
+<div>
+    <div layout="row" class="margin-bottom-lg">
+        <button type="button" class="btn btn-primary btn-search" style="height: 32px;">保存模板</button>
+        <div flex></div>
+        <button class="md-button md-ink-ripple" type="button"
+                ng-click="T.back()">
+            <span class="ng-scope">返回</span>
+        </button>
+    </div>
+    <div layout="row" class="margin-bottom" style="hieght:20px;">
+        <input type="text" ng-model="T.templateName" placeholder="模板名称">
+        <button type="button" ng-click="T.save()" class="btn btn-primary btn-search" style="padding:2px 4px;margin-left:10px;">
+            增加 </button>
+    </div>
+</div>

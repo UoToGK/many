@@ -1,0 +1,14 @@
+ip: localhost
+token: 0.0.1221.1212
+capacity: 3
+name: iRIS3.0-client
+cluster: electron.dynamic
+collectorType:
+  - java
+  - electron
+collectorTaskTypes:
+  - java.static
+  # - electron.new.dynamic
+  # - electron.dynamic
+  # - electron.wechat
+  - electron.test.dynamic

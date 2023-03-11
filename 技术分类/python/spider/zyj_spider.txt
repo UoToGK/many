@@ -1,0 +1,392 @@
+#!/usr/bin/env python
+# coding=utf-8
+'''
+Author: UoToGK 
+LastEditors: UoToGK
+Date: 2022-06-01 10:42:01
+LastEditTime: 2022-08-11 20:36:27
+FilePath: zyj_spider.py
+Description: 
+Copyright (c) 2022 by DyTheme, All Rights Reserved. 
+'''
+
+# Standard Library
+import os
+import re
+import threading
+import time
+import traceback
+from datetime import datetime
+from multiprocessing import Lock, Pool
+from urllib.parse import quote
+
+# Third Library
+import requests
+import urllib3
+from bs4 import BeautifulSoup
+from fake_headers import Headers
+from loguru import logger
+from pymysql.converters import escape_string
+from requests.exceptions import ConnectionError as RequestsConnectionError
+
+urllib3.disable_warnings()
+lock = Lock()
+# get_name _db
+host = "rm-wz906u7sn011o87yi.mysql.rds.aliyuncs.com"
+port = 3306
+user = "hadoop_rw_dev"
+pwd = "bNXvLjX3slAYhWvkbcJv"
+db = "hadoop_db_dev"
+table = "wzalgo_hot_company_top100w"
+
+#  put_info_db
+host2 = "rm-wz9310p5oin8m6y6n.mysql.rds.aliyuncs.com"
+# host2="rm-wz906u7sn011o87yi.mysql.rds.aliyuncs.com"
+port2 = 3306
+db2 = "data_crawler_db"
+user2 = "data_crawler_rw"
+pwd2 = "8Sz5aqvy8Jt7VhO4K0fa"
+'''
+      # maxconnections=20, # 最大连接数
+       # maxusage=None,  # 一个链接最多被重复使用的次数，None表示无限制
+       # blocking=True, # 本线程独享值得对象，用于保存链接对象，如果链接对象被重置
+'''
+get_helper = MySQLHelper(host=host, port=port, user=user, password=pwd, database=db)
+put_helper = MySQLHelper(host=host2, port=port2, user=user2, password=pwd2, database=db2, max_connections=100, max_usage=0, blocking=True)
+
+t = time.strftime("%Y-%m-%d")
+debug_file = f'{os.getcwd()}/logs/debug-runtime100w_{t}.log'
+info_file = f'{os.getcwd()}/logs/info-runtime100w_{t}.log'
+error_file = f'{os.getcwd()}/logs/error-runtime100w_{t}.log'
+logger.add(f'{debug_file}', format="{time:YYYY-MM-DD HH:mm:ss}|{level}| {name}:{function}:{line}| {message}", level="DEBUG", retention="10 days", encoding="utf-8", mode="a", enqueue=True)
+logger.add(f'{info_file}', format="{time:YYYY-MM-DD HH:mm:ss}|{level}| {name}:{function}:{line}| {message}", level="INFO", retention="10 days", encoding="utf-8", mode="a", enqueue=True)
+logger.add(f'{error_file}', format="{time:YYYY-MM-DD HH:mm:ss}|{level}| {name}:{function}:{line}| {message}", level="ERROR", retention="10 days", encoding="utf-8", mode="a", enqueue=True)
+
+thread_num = 15
+thread_q = []
+# f=open('./no_100w_name.txt',mode='r',encoding='utf-8')
+# data=f.readlines()
+
+f2 = open('./name.txt', mode='r', encoding='utf-8')
+data2 = f2.readlines()
+
+first_data_css = 'div.companyList > div:nth-child(1) > div.company-content-box > div.company-content > div:nth-child(1) > a>h3'
+first_id_css = 'div.companyList > div:nth-child(1) > div.company-content-box > div.company-content > div:nth-child(1) > span'
+
+PROXY_API = "http://192.168.9.3:55555/random"
+
+
+def get_proxies():
+    try:
+        # comment:
+        proxy = requests.get(PROXY_API).text.strip()
+        return {'http': 'http://' + proxy, 'https': 'http://' + proxy}
+    except Exception as e:
+        logger.debug(f'获取代理IP出错{traceback.format_exc(1)}，将使用本地代理')
+        proxy = "127.0.0.1:80"
+        return {'http': 'http://' + proxy, 'http': 'http://' + proxy}
+
+
+def base_requests(url, headers, method="get", data=None, params=None, json=None, retry: int = 3, session=None, proxies=None, verify=True, **kwargs):
+    """
+        requests get 或者 post 请求。重试3次，错误加代理
+        """
+    for _ in range(retry):
+        try:
+            response = (session or requests.Session()).request(method=method.lower(),
+                                                               url=url,
+                                                               headers=headers,
+                                                               data=data,
+                                                               params=params,
+                                                               json=json,
+                                                               verify=verify,
+                                                               proxies=proxies,
+                                                               timeout=10,
+                                                               **kwargs)
+            if 200 <= response.status_code < 300:
+                return response
+            else:
+                continue
+        except RequestsConnectionError as e:
+            proxies = get_proxies()  # 加IP代理
+            logger.error(f'base_requests RequestsConnectionError 请求链接异常 --->{proxies}  {url}')
+            continue
+        except Exception as e:
+            proxies = get_proxies()
+            logger.error(f'base_requests Exception 请求链接异常 --->{proxies}  {url}')
+            continue
+    else:
+        return None
+
+
+# qy_name
+def get_name(between: list):
+    get_sql = f'select id,company_name from {table} where id <={between[1]} and id>{between[0]}'
+    cursor, conn = get_helper.get_conn()
+    try:
+        # comment:
+        cursor.execute(get_sql)
+        result = cursor.fetchall()
+        if result:
+            conn.commit()
+            return result
+        else:
+            logger.debug(f'数据获取数据无结果')
+        get_helper.close(cursor, conn)
+        return None
+    except Exception as e:
+        get_helper.close(cursor, conn)
+        logger.error(f'get_name 数据获取数据异常：{traceback.format_exception_only(type(e), e)}')
+        return None
+    # end try
+
+
+# 查重
+def is_exist_detail_url(detail_url):
+    search_sql = f"select detail_url from qy_info_from_zyj where detail_url='{detail_url}'"
+    try:
+        # comment:
+        cursor, conn = put_helper.get_conn()
+        res = cursor.execute(search_sql)
+        if res:
+            logger.debug(f'detail_url 数据已经存在{detail_url}')
+            return True
+        else:
+            return False
+    except Exception as e:
+        get_helper.close()
+        logger.error(f'is_exist_detail_url 数据查询数据异常：{traceback.format_exception_only(type(e), e)}')
+        return False
+
+
+    # end try
+def is_exist_name(name):
+    search_sql = f"select * from qy_info_from_zyj where company_name='{name}'"
+    try:
+        # comment:
+        cursor, conn = put_helper.get_conn()
+        res = cursor.execute(search_sql)
+        if res:
+            logger.debug(f'{name} -->数据已经存在')
+            return True
+        else:
+            return False
+    except Exception as e:
+        get_helper.close()
+        logger.error(f'is_exist_detail_url 数据查询数据异常：{traceback.format_exception_only(type(e), e)}')
+        return False
+
+
+def parse_detail(company_name, url, headers):
+    # if is_exist_detail_url(url):
+    #     return
+    logger.debug(f'当前进程id：{os.getpid()},父id--->{os.getppid()},查找{company_name}的信息：链接：{url}')
+    key_arr = ['人气', '粉丝', '喜欢', '反馈']
+    proxy = get_proxies()
+    logger.debug(f'parse_detail {company_name} 获取到的代理信息{proxy}')
+    res = base_requests(url, headers=headers, proxies=proxy)
+    if not res:
+        lock.acquire()
+        with open('./no_100w_name.txt', mode='a+', encoding='utf-8') as f:
+            logger.debug(f'{company_name}页面已经删除')
+            f.write(company_name)
+            f.write('\n')
+        lock.release()
+        return
+    if res.status_code == 301:
+        new_url = res.headers['Location']
+        res = base_requests(new_url, headers=headers, proxies=proxy)
+    elif res.status_code == 200:
+        detail_url = url
+        crawl_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        bs = BeautifulSoup(res.text, 'html.parser')
+        try:
+            people_num = ''
+            fans = ''
+            liker = ''
+            feedback = ''
+            if bs.select_one('span.company-banner-desc'):
+                short_name = bs.select_one('a.company-banner-name').text.strip()
+                all_data = bs.select_one('span.company-banner-desc').text.strip().split('|')
+                for i in all_data:
+                    for key in key_arr:
+                        if key == '人气' and key in i:
+                            people_num = i.replace(key, '').replace('\xa0', '').replace('\n', '').replace('\r', '').strip()
+                        elif key == '粉丝' and key in i:
+                            fans = i.replace(key, '').replace('\xa0', '').replace('\n', '').replace('\r', '').strip()
+                        elif key == '喜欢' and key in i:
+                            liker = i.replace(key, '').replace('\xa0', '').replace('\n', '').replace('\r', '').strip()
+                        elif key == '反馈' and key in i:
+                            feedback = i.replace(key, '').replace('\xa0', '').replace('\ue613', '').replace('\n', '').replace('\r', '').strip()
+
+            else:
+                people_num = ''
+                fans = ''
+                liker = ''
+                feedback = ''
+                short_name = ''
+            tag_head = ''
+            if not bs.select('span.rank-entrance-cont-right'):
+                tag_head = ''
+            else:
+                tag_head = bs.select_one('span.rank-entrance-cont-right').text.strip().replace('\ue631', '')
+                tag_head = re.sub("No\.\d+", "", tag_head)
+            if not bs.select('div.company-bannner-industry-tag>a.company-bannner-industry-tag-item'):
+                tail = ''
+            else:
+                item_tag = bs.select('div.company-bannner-industry-tag>a.company-bannner-industry-tag-item')
+                tail = []
+                for item in item_tag:
+                    tag = item.select_one('span').text.strip().replace('No.1', '').replace('\ue631', '')
+
+                    tag = re.sub("No\.", "", tag)
+                    tag = re.sub("\d+", "", tag)
+                    if tag:
+                        tail.append(tag)
+
+            if not tag_head:
+                tag_list = '、'.join(tail)
+            elif not tail:
+                tag_list = tag_head
+            else:
+                tag_list = tag_head + '、' + '、'.join(tail)
+
+            industry = ''
+            decription = ''
+            if bs.select('span.comInd>a'):
+                industry = bs.select_one('span.comInd>a').text.strip()
+            if bs.select('#textShowMore'):
+                decription = bs.select_one('#textShowMore').text.strip()
+            decription = escape_string(decription)
+            tag_list = escape_string(tag_list)
+            industry = escape_string(industry)
+            values = (company_name, short_name, crawl_time, people_num, fans, liker, feedback, tag_list, detail_url, industry, decription)
+            # logger.debug(f'完整数据：{values}')
+            #       insert_sql=f''' insert into qy_info_from_zyj (company_name,short_name,crawl_time,people_num,fans,liker,feedback,tag_list,detail_url,industry,decription)
+            #       VALUES({company_name},{short_name},{crawl_time},{people_num},{fans},{liker}
+            #       {feedback},{tag_list},{detail_url},{industry},{decription})
+            #        '''
+
+            insert_sql = f''' insert into qy_info_from_zyj (company_name,short_name,crawl_time,people_num,fans,liker,feedback,tag_list,detail_url,industry,decription) VALUES('{company_name}','{short_name}','{crawl_time}','{people_num}','{fans}','{liker}','{feedback}','{tag_list}','{detail_url}','{industry}','{decription}')  '''
+            # detail_url=detail_url.strip().replace('\n','')
+            #  company_name='{company_name}',short_name='{short_name}',crawl_time='{crawl_time}',
+            # people_num='{people_num}',fans='{fans}',liker='{liker}',feedback='{feedback}'
+            update_sql = f''' update qy_info_from_zyj  set tag_list ='{tag_list}',industry='{industry}',decription='{decription}'
+            ,crawl_time='{crawl_time}', company_name='{company_name}',short_name='{short_name}',crawl_time='{crawl_time}',
+            people_num='{people_num}',fans='{fans}',liker='{liker}',feedback='{feedback}'
+            where company_name='{company_name}' '''
+            try:
+                # comment:
+                # logger.debug(f'{insert_sql} ')
+                put_helper.insert(insert_sql)
+                logger.info(f'插入一条新数据：{values} ')
+            except Exception as e:
+                logger.error(f'数据插入报错 {traceback.format_exception_only(type(e), e)}')
+                logger.exception(f'{company_name} 数据插入报错')
+            # end try
+
+            # if is_exist_detail_url(url):
+            #     put_helper.update(sql=update_sql)
+            #     logger.debug(f'数据重复：{values} 更新数据')
+            # else:
+            #     logger.debug(f'插入一条新数据：{values} ')
+            #     put_helper.insert(insert_sql,param=values)
+        except Exception as e:
+            logger.error(f"parse_detail {company_name} 打印异常信息{traceback.format_exception_only(type(e), e)}")
+    else:
+        logger.debug('请求状态码异常，请测试')
+
+
+def recive_name(data):
+    thread_q = []
+    for name in data:
+        id = name[0]
+        name = name[1]
+        # if is_exist_name(name):
+        #     continue
+        if name in "".join(data2):
+            logger.info(f'没有信息或者已经爬过的公司 {name}')
+            continue
+        else:
+            t = threading.Thread(target=parse_home, args=[name, id])
+            t.setDaemon = True
+            thread_q.append(t)
+    if len(thread_q) > 0:
+        [i.start() for i in thread_q]
+        [i.join() for i in thread_q]
+
+
+def parse_home(name, id):
+
+    headers = Headers(True).generate()
+    proxy = get_proxies()
+    quote_str = quote(name.replace('\n', ''))
+    search_url = f'https://www.jobui.com/cmp?keyword={quote_str}&area=%E5%85%A8%E5%9B%BD&n=1'
+    logger.debug(f'即将获取---> {name},数据库id：{id} ')
+    res = base_requests(search_url, headers=headers, proxies=proxy)
+    if not res:
+        lock.acquire()
+        with open('./no_100w_name.txt', mode='a+', encoding='utf-8') as f:
+            logger.debug(f"not res 打印信息:{name}")
+            f.write(name)
+            f.write('\n')
+        lock.release()
+        return None
+    if res.status_code == 200:
+        bs = BeautifulSoup(res.text, 'html5lib')
+        if not bs.select_one(first_data_css):
+            lock.acquire()
+            with open('./no_100w_name.txt', mode='a+', encoding='utf-8') as f:
+                logger.debug(f"no_100w_name 打印信息:{name}")
+                f.write(name)
+                f.write('\n')
+            lock.release()
+            return None
+        try:
+            # comment:
+            company_name = bs.select_one(first_data_css).text.strip()
+            company_id = bs.select_one(first_id_css).text.strip()
+            detail_url = f'https://www.jobui.com/company/{company_id}'
+            logger.debug(f'获取到的企业名称：{company_name},URL: {detail_url}')
+            if is_exist_detail_url(detail_url):
+                return
+            else:
+                parse_detail(company_name, detail_url, headers)
+        except Exception as e:
+            logger.error(f"parse_home 打印异常信息{traceback.format_exception_only(type(e), e)}")
+        return None
+
+
+if __name__ == '__main__':
+    step = 100
+    total = 106 * 10000
+    # 393057
+    start = 90 * 10000
+    end = start + step
+    between = [start, end]
+    # q=[]
+    pool = Pool(3)
+    logger.info(f'__main__进程id：{os.getpid()}')
+    t1 = time.time()
+    while end < total:
+        name = get_name(between)
+        for _ in range(3):
+            if not name:
+                name = get_name(between)
+            else:
+                break
+        pool.apply_async(recive_name, args=(name, ))
+        start = end
+        end = end + step
+        between = [start, end]
+        if end % 10000 == 0:
+            logger.debug(f'{end} 休息一下吧')
+            time.sleep(60 * 22)
+        logger.debug(f'现在区间：{between}')
+    pool.close()
+    logger.debug(f'主进程执行完毕')
+    pool.join()
+    t2 = time.time()
+    logger.debug(f'{total}----->数据获取完成')
+    logger.debug(f'总共耗时：{t2-t1}')
+    # parse_detail('美题隆精密光学（上海）有限公司','https://www.jobui.com/company/11728148/',headers=Headers(True).generate())

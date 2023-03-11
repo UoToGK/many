@@ -1,0 +1,17 @@
+node_modules
+test.js
+tempCodeRunnerFile.js
+*.xlxs
+.vscode
+*.test.js
+package-lock.json
+dist
+out
+__pycache__
+.pyc
+.angulardoc.json
+test.*
+e2e
+**/test/**
+test
+**/test

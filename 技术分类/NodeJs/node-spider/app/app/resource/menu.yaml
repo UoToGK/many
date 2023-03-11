@@ -1,0 +1,114 @@
+menus: # 主菜单
+  - route: /test
+    name: test
+    img: dashboard
+  - route: /dashboard
+    name: 仪表盘
+    img: dashboard
+
+  #  - route : /collectionApply
+  #    name : 采集申请
+  #    icon : comment
+
+  - route: /projectManage
+    name: 项目管理
+    img: projectManage
+
+  - route: /timer
+    name: 计划管理
+    img: timer
+
+  - route: /taskMonitor
+    name: 任务监控
+    img: taskMonitor
+
+  - route: /planBatch
+    name: 计划监控
+    img: serverMonitor
+
+  - route: /collectMonitor
+    name: 采集端监控
+    img: collectMonitor
+
+  #  - route : /serverMonitor
+  #    name : 服务器监控
+  #    img : serverMonitor
+
+  - route: /userManage
+    name: 用户管理
+    img: userManage
+
+  - route: /roleManage
+    name: 角色管理
+    img: roleManage
+
+  #  - route : /taskChart
+  #    name : 任务图表
+  #    img : taskChart
+
+  - route: /proxyManage
+    name: 代理管理
+    img: agencyAmanagement
+
+  - route: /emailSetting
+    name: 通知设置
+    img: emailSetting
+
+#  - route : /settings
+#    name : 全局设置
+#    img : settings
+
+#  - route : /publicOpinion
+#    name : 舆情管理
+#    img : publicOpinion
+
+#  - route : /memberManage
+#    name : 成员管理
+#    img : memberManage
+
+others: # 其它路由,需在这里加载
+  - route: /task
+    name: 编辑任务
+
+  - route: /face
+    name: 任务运行监控
+
+  - route: /viewBatchData
+    name: 显示批次数据
+
+  - route: /taskMonitor/taskBatch/
+    name: 任务批次
+
+  - route: /taskMonitor/taskBatch/batchInfo
+    name: 任务批次详情
+
+  - route: /serverMonitor/changeChart
+    name: 历史变化图
+
+  - route: /serverMonitor/totalDisk
+    name: 硬盘总数
+
+  - route: /projectManage/templateList
+    name: 模板列表
+
+  - route: /projectManage/templateListEdit
+    name: 项目管理修改
+
+  - route: /projectManage/templateListAdd
+    name: 项目管理新增
+
+  - route: /projectManage/templateList/templateEdit
+    name: 模板修改
+
+  - route: /projectManage/templateList/templateAdd
+    name: 模板新增
+
+  - route: /assignment
+    name: 任务管理
+    icon: assignment
+
+  - route: /assignment/lookList
+    name: 查看
+
+  - route: /planBatch/planBatchMonitor
+    name: 计划批次监控

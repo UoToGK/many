@@ -1,0 +1,24 @@
+<div ng-controller="StepCustomCycleCtrl as T" layout-padding>
+  <div>
+    <div class="row">
+      <div class="col-xs-12 col-sm-6 col-md-10">
+        <p class="md-title">请输入关键词或链接</p>
+      </div>
+      <div class="col-xs-6 col-md-2" style="text-align: right">
+        <input type="button" value="清空网址" class="btn btn-info btn-sm" ng-click="T.clearBatchLink()" />
+
+        <input type="button" value="批量网址" class="btn btn-info btn-sm" ng-click="T.batchLink()" />
+        <!-- <input
+          type="file"
+          value="导入批量网址"
+          class="btn btn-info btn-sm"
+          ng-click="T.readPath(path)"
+        /> -->
+        <!-- <input type="text" ng-bind="path" /> -->
+      </div>
+    </div>
+    <md-chips ng-model="T.step.data" md-on-add="T.add($chip);T.change()" md-enable-chip-edit="true">
+      <input type="text" ng-paste="T.paste($event); true" placeholder="关键词或链接，多项间用分号（;）分隔" />
+    </md-chips>
+  </div>
+</div>

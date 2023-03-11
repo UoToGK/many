@@ -1,0 +1,107 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+/* 方法一：同宽高+padding  start*/
+/*将padding设置，来挤出来居中的样子；但是要注意的是，此时的width和height要和子元素的大小一样，否则还是不居中*/
+/* .parent1 {
+  width: 100px;
+  height: 100px;
+  padding: 100px;
+  border: 1px solid;
+  margin: 100px auto;
+}
+.child1 {
+  width: 100px;
+  height: 100px;
+  background: pink;
+  line-height: 100px;
+  text-align: center;
+} */
+/* 方法一：同宽高+padding end */
+
+/*  方法二：absolute + margin:auto START*/
+/* 原理:父元素相对定位，子元素绝对定位；
+绝对定位盒子模型有个特点：left+right+width+padding+margin=包含块的宽度；所以此时可以将left、right（默认值为auto，所以需要重设置）设置为0，
+而padding已经确定（未设置时默认值为0px），所以剩下的都是margin，但是margin的默认值是0px。所以就将magin设为auto，使得元素自动居中了；
+即：left、right、top、bottom为0；margin为auto*/
+.parent1 {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border: 1px solid;
+  margin: 100px auto;
+}
+.child1 {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  width: 100px;
+  height: 100px;
+  background: pink;
+  line-height: 100px;
+  text-align: center;
+}
+/*  方法二：absolute + margin:auto   END*/
+
+/* 方法三：absolute + 负margin（或transform） */
+/* TODO:
+父相对子绝对，上下为50%，margin设为负
+强大的absolute对于这种小问题当然也是很简单的；
+绝对定位脱离文档流，不会对后续元素的布局造成影响。但如果绝对定位元素是唯一的元素则父元素也会失去高度。
+父元素相对定位，子元素绝对定位；
+将子元素left和right直接设为50%，相对的是父元素；
+然后再使用margin-left和margin-top设为子元素的一半的负数。就是将偏离父元素中心的那段拽回来
+
+如果不知道子元素的宽和高，则使用transfrom:translate3d(-50% -50% )；
+
+transform 为 CSS3 属性，有兼容性问题；
+
+
+
+transfrom:translate3d(-50% -50% );
+ width: 100px;
+height: 100px; 
+
+*/
+/* .parent {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  border: 1px solid;
+}
+.child {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -50px;
+  margin-top: -50px;
+  width: 100px;
+  height: 100px;
+  background: pink;
+  line-height: 100px;
+  text-align: center;
+} */
+
+/* 方法三：absolute + 负margin（或transform） */
+
+/* .parent1{
+  width: 300px;
+  height: 200px;
+  border: 3px solid #546461;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  margin-left: 100px;
+}
+.child1{
+
+  border: 3px solid #458761;
+  padding: 20px;
+} */

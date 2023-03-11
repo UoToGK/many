@@ -1,0 +1,382 @@
+<div style="position: fixed;top: 64px;left: 53px;padding:0 0 0 13px;
+            background-color: rgb(250,250,250);
+            width: calc(100% - 69px - 20px);z-index: 3;">
+    <style type="text/css" scoped>
+        md-checkbox {
+            margin-bottom: 0 !important;
+            font-size: 14px !important;
+        }
+
+        md-input-container {
+            padding: 0 !important;
+        }
+
+        .fix-button .md-button {
+            margin-left: 0;
+            min-width: 60px !important;
+            font-size: 12px !important;
+            min-height: 25px !important;
+            line-height: 25px !important;
+        }
+
+        .ztree li span.button.iconTask_ico_docu {
+            background-position: -112px -49px;
+            background-repeat: no-repeat;
+        }
+
+        .ztree li span.button.iconGroup_ico_close,
+        .ztree li span.button.iconGroup_ico_docu {
+            background-position: -112px 0px;
+            background-repeat: no-repeat;
+        }
+
+        .ztree li span.button.iconGroup_ico_open {
+            background-position: -112px -16px;
+            background-repeat: no-repeat;
+        }
+
+        /*.ztree *{*/
+        /*font-size: 14px !important;*/
+        /*}*/
+        /*.ztree li{*/
+        /*line-height: 28px;*/
+        /*}*/
+        /*.ztree li span.button{*/
+        /*margin-top:6px;*/
+        /*vertical-align:inherit !important;*/
+        /*}*/
+        /*.ztree li span{*/
+        /*margin-right:5px !important;*/
+        /*}*/
+        /*.ztree li a span:nth-child(2){*/
+        /*line-height:25px;*/
+        /*margin-top:3px;*/
+        /*height:25px;*/
+        /*display:inline-block;*/
+        /*padding:0 3px 0 3px;*/
+        /*margin-right:15px !important;*/
+        /*}*/
+        /*.ztree li span.button.ico_docu{*/
+        /*background-position:-110px -16px;*/
+        /*}*/
+        #taskList,
+        #taskList li {
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+
+        #taskList li {
+            padding: 8px;
+        }
+
+        #taskList li:nth-child(even) {
+            background-color: #f1f1f1;
+        }
+
+        *:not(i):not([class*="hermit"]):not([class*="ico"]):not([class*="button"]):not(i) {
+            font-family: "MicroSoft YaHei" !important;
+            font-size: inherit !important;
+        }
+    </style>
+</div>
+
+<div layout="row">
+    <div id="treeDemoContainer" class="title-ground padding-left"
+        style="width:300px;height:auto;min-height:660px;border-right:3px solid #eee;">
+        <label style="padding-top:10px;">任务管理</label>
+        <input type="text" ng-change="T.initTree()" ng-model="T.filterKey" placeholder="输入关键词过滤" />
+        <tree id="treeDemo"></tree>
+    </div>
+    <div flex>
+        <div>
+            <div class="title-ground" layout="row" style="padding:0 15px;">
+                <md-menu id="newBtn">
+                    <md-button ng-click="T.checkTemplates($mdOpenMenu)">
+                        <md-icon>playlist_add</md-icon>
+                        创建模板任务
+                    </md-button>
+                    <md-menu-content width="3">
+                        <md-menu-item ng-repeat="item in T.templates">
+                            <md-button ng-click="T.editTask($event,item.id,0)">
+                                <md-icon>credit_card</md-icon>
+                                {{item.name}}
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
+                <md-button ng-click="T.editWeixin($event ,true)">创建微信公众号任务</md-button>
+                <span flex></span>
+                <div class="margin-top">
+                    <span ng-show="T.downFlag" style="color: red; margin-right: 30px;">正在导出...</span>
+                    <span ng-show="T.uploadFlag" style="color: red; margin-right: 40px;">正在导入...</span>
+                    <button type="button" id="import" style="display: none">
+                        确认对话框
+                    </button>
+                    <button class="btn btn-info btn-sm" style="margin-right: 20px;" type="button"
+                        ng-click="T.rediretTask($event)">
+                        任务直达
+                    </button>
+                    <button class="btn btn-info btn-sm" style="margin-right: 20px;" type="button"
+                        ng-click="T.showTaskTree()" data-toggle="modal" data-target="#taskTreeModal">
+                        导出任务
+                    </button>
+                    <button class="btn btn-info btn-sm" style="margin-right: 20px;" type="button" data-toggle="modal"
+                        data-target="#taskImportModal">
+                        导入任务
+                    </button>
+                    <button class="btn btn-info btn-sm" type="button" ng-click="T.back()">
+                        返回
+                    </button>
+                </div>
+            </div>
+            <!-- <div class="title-ground margin padding">
+                 <input type="text" placeholder="筛选" class="form-control" ng-model="searchName">
+             </div>-->
+            <div class="title-ground padding" style="margin:15px 15px 15px 12px;">
+                <div layout="row" class="padding-bottom">
+                    <div layout="row">
+                        <label class="margin-top-sm">过滤器：</label>
+                        <input type="text" class="form-control margin-right" ng-model="searchKeyWord"
+                            ng-keyup="T.queryList(searchKeyWord,$event)" style="width:300px;height:30px;">
+                    </div>
+                    <button class="btn btn-info" type="button" style="height:30px;padding-top:4px;" id="searchBtn"
+                        ng-click="T.queryList(searchKeyWord)">搜索</button>
+                </div>
+                <ul id="taskList">
+                    <li layout="row" layout-align="center center"
+                        ng-repeat="group in T.$scope.groupList | filter:{name : searchName}">
+                        <!--<div style="width: 50px;"><span class="TIcon">{{$index+1}}</span></div>-->
+                        <div style="width: 50px;">{{($index+1)+(T.$scope.size*(T.$scope.cp-1))}}</div>
+                        <div flex style="padding-top:3px;">{{group.name}}</div>
+                        <div flex style="padding-top:3px;">{{group.templateId | templateFilter:T.templates}}</div>
+                        <div flex style="padding-top:3px;">{{group.taskType}}</div>
+                        <div flex style="padding-top:3px;">{{group.createTime|date:"yyyy-MM-dd HH:mm:ss"}}</div>
+                        <div style="vertical-align: top">
+                            <a href="javascript:" style="text-decoration: none;" class="margin-right"
+                                ng-click="T.editTask($event,0,group)" onfocus="this.blur();">
+                                <md-icon>edit</md-icon>
+                                <md-tooltip>修改</md-tooltip>
+                            </a>
+                            <a href="javascript:" style="text-decoration: none;" class="margin-right"
+                                data-toggle="modal" data-target="#copyTaskDialog" onfocus="this.blur();"
+                                ng-click="T.setCurrentTask(group)">
+                                <md-icon>content_copy</md-icon>
+                                <md-tooltip>复制</md-tooltip>
+                            </a>
+
+                            <a href="javascript:" style="text-decoration: none;" class="margin-right"
+                                ng-click="T.removeTask($event,group.id)" onfocus="this.blur();">
+                                <md-icon>delete</md-icon>
+                                <md-tooltip>删除</md-tooltip>
+                            </a>
+
+                            <a href="javascript:" style="text-decoration: none;" class="margin-right"
+                                ng-click="T.exeTask(group)" onfocus="this.blur();">
+                                <md-icon>play_circle_outline</md-icon>
+                                <md-tooltip>执行</md-tooltip>
+                            </a>
+
+                            <a href="javascript:" style="text-decoration: none;" class="margin-right"
+                                ng-click="T.showModGroup(group)" data-toggle="modal" data-target="#modGroupModal">
+                                <md-icon>group</md-icon>
+                                <md-tooltip>修改分组</md-tooltip>
+                            </a>
+                            <!--<a ng-href="#/taskMonitor/taskBatch?pid={{item.id}}&taskName={{group.name}}&taskId={{group.id}}"  onfocus="this.blur();"-->
+                            <!--style="text-decoration: none;"  class="margin-right" >-->
+                            <!--<md-icon>visibility</md-icon>-->
+                            <!--<md-tooltip>查看</md-tooltip>-->
+
+                            <!--</a>-->
+                        </div>
+                    </li>
+                </ul>
+
+                <!--page 分页-->
+                <page class="text-right"></page>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="copyTaskDialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">任务复制</h4>
+            </div>
+            <div class="modal-body">
+
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">原任务名</label>
+                        <div class="col-sm-8">
+                            <label>{{T.currentTask.name}}</label>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastname" class="col-sm-3 control-label">新任务名</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control" id="lastname" placeholder="请输入任务名"
+                                ng-model="T.newTaskName">
+                        </div>
+                    </div>
+
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" ng-click="T.copyTask()">复制</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<!-- Modal 查看 -->
+<div class="modal fade" id="lookList" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">查看</h4>
+            </div>
+            <div class="modal-body">
+                <ul class="listUl">
+                    <li layout="row" ng-repeat="group in T.groupList">
+                        <p style="width:50px;"><span class="TIcon">P</span></p>
+                        <p
+                            style="padding-top:3px; width:300px; max-width:300px; overflow:hidden; text-overflow:ellipsis; white-space: nowrap;">
+                            {{group.name}}</p>
+                        <p style="padding:3px 0 0 20px;">{{group.createTime|date:"yyyy-MM-dd hh:mm:ss"}}</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="taskTreeModal" tabindex="-1" role="dialog" style="margin-top:25px;"
+    aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width:700px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" ng-click="T.cancelExport()">&times;</span></button>
+                <h4 class="modal-title">任务导出</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <!--<ul id="taskTree" class="ztree"></ul>-->
+                    <newztree></newztree>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info btn-sm" ng-click="T.exportTask()" data-dismiss="modal">导出
+                </button>
+                <button type="button" class="btn btn-default btn-sm" ng-click="T.cancelExport()" data-dismiss="modal">取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modGroupModal" tabindex="-1" role="dialog" style="margin-top:25px;"
+    aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width:700px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" ng-click="T.cancelExport()">&times;</span></button>
+                <h4 class="modal-title">修改分组</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <!--<ul id="taskTree" class="ztree"></ul>-->
+                    <ul class="ztree" id="modGropTree"></ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info btn-sm" ng-click="T.confirmModTask()" data-dismiss="modal">确认
+                </button>
+                <button type="button" class="btn btn-default btn-sm" ng-click="T.cancelModTask()"
+                    data-dismiss="modal">取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="taskImportModal" tabindex="-1" role="dialog" style="margin-top:25px;"
+    aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width:700px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" ng-click="T.cancelImport()">&times;</span></button>
+                <h4 class="modal-title">任务导入</h4>
+            </div>
+            <div class="modal-body" style="line-height: 40px">
+                <div class="row">
+
+                    <div class="col-md-2" style="margin-right: -36px;">任务文件：</div>
+                    <div class="col-md-10" style="margin-top:12px;">
+                        <input type="file" id="taskFile">
+                    </div>
+                </div>
+                <div>
+                    是否覆盖：
+                    <input type="radio" value="1" name="fg" checked>是
+                    <input type="radio" value="0" name="fg">否
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info btn-sm" ng-click="T.importTask(false)" data-dismiss="modal">导入
+                </button>
+                <button type="button" class="btn btn-default btn-sm" ng-click="T.cancelImport()" data-dismiss="modal">取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" style="margin-top:25px;"
+    aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width:700px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" ng-click="T.cancelImport()">&times;</span></button>
+                <h4 class="modal-title">任务导入</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <p>导入的任务数据已存在, 是否覆盖重复的数据?</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info btn-sm" ng-click="T.reImportTask(true)"
+                    data-dismiss="modal">确定
+                </button>
+                <button type="button" class="btn btn-default btn-sm" ng-click="T.cancelImport()" data-dismiss="modal">取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("treeDemoContainer").style.height = document.documentElement.offsetHeight - 189 + "px";
+    // zTree 的参数配置，深入使用请参考 API 文档（setting 配置详解）
+    // zTree 的数据属性，深入使用请参考 API 文档（zTreeNode 节点数据详解）
+</script>

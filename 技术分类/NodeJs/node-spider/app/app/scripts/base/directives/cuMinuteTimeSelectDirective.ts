@@ -1,0 +1,13 @@
+// Created by uoto on 16/4/5.
+
+import app from "../app";
+//选择分钟
+app.directive('cuMinuteTimeSelect', function () {
+    return {
+        restrict: 'E',
+        replace: true,
+        template: (`<md-select style="z-index: 9999">
+                        <md-option value="0">第0分钟</md-option><md-option value="1">第1分钟</md-option><md-option value="2">第2分钟</md-option><md-option value="3">第3分钟</md-option><md-option value="4">第4分钟</md-option><md-option value="5">第5分钟</md-option><md-option value="6">第6分钟</md-option><md-option value="7">第7分钟</md-option><md-option value="8">第8分钟</md-option><md-option value="9">第9分钟</md-option><md-option value="10">第10分钟</md-option><md-option value="11">第11分钟</md-option><md-option value="12">第12分钟</md-option><md-option value="13">第13分钟</md-option><md-option value="14">第14分钟</md-option><md-option value="15">第15分钟</md-option><md-option value="16">第16分钟</md-option><md-option value="17">第17分钟</md-option><md-option value="18">第18分钟</md-option><md-option value="19">第19分钟</md-option><md-option value="20">第20分钟</md-option><md-option value="21">第21分钟</md-option><md-option value="22">第22分钟</md-option><md-option value="23">第23分钟</md-option><md-option value="24">第24分钟</md-option><md-option value="25">第25分钟</md-option><md-option value="26">第26分钟</md-option><md-option value="27">第27分钟</md-option><md-option value="28">第28分钟</md-option><md-option value="29">第29分钟</md-option><md-option value="30">第30分钟</md-option><md-option value="31">第31分钟</md-option><md-option value="32">第32分钟</md-option><md-option value="33">第33分钟</md-option><md-option value="34">第34分钟</md-option><md-option value="35">第35分钟</md-option><md-option value="36">第36分钟</md-option><md-option value="37">第37分钟</md-option><md-option value="38">第38分钟</md-option><md-option value="39">第39分钟</md-option><md-option value="40">第40分钟</md-option><md-option value="41">第41分钟</md-option><md-option value="42">第42分钟</md-option><md-option value="43">第43分钟</md-option><md-option value="44">第44分钟</md-option><md-option value="45">第45分钟</md-option><md-option value="46">第46分钟</md-option><md-option value="47">第47分钟</md-option><md-option value="48">第48分钟</md-option><md-option value="49">第49分钟</md-option><md-option value="50">第50分钟</md-option><md-option value="51">第51分钟</md-option><md-option value="52">第52分钟</md-option><md-option value="53">第53分钟</md-option><md-option value="54">第54分钟</md-option><md-option value="55">第55分钟</md-option><md-option value="56">第56分钟</md-option><md-option value="57">第57分钟</md-option><md-option value="58">第58分钟</md-option><md-option value="59">第59分钟</md-option>
+                   </md-select>`)
+    }
+});

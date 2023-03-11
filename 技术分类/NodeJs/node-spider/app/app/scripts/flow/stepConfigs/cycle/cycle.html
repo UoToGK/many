@@ -1,0 +1,53 @@
+<div ng-controller="StepCycleCtrl as T" layout-padding>
+    <div class="min-list">
+        <p layout="row" layout-align="start center">
+            <span flex>符合条件的节点:{{T.size}} 个</span>
+            <!--调用扩大范围函数-->
+            <md-button ng-click="T.expand()">扩大选择范围</md-button>
+            <md-button ng-click="T.reset()">还原选择</md-button>
+        </p>
+
+        <p>过滤:</p>
+        <div layout="row">
+            <md-input-container class="md-block" flex md-no-float>
+                <label style="opacity: 1;top: auto;">选择忽略节点</label>
+                <md-select ng-model="T.step.filters.ignoreNodes"
+                           multiple placeholder="" ng-change="T.select()">
+                    <md-option value="first">第一个</md-option>
+                    <md-option value="empty">所有空节点</md-option>
+                    <md-option value="last">最后一个</md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container class="md-block" flex md-no-float>
+                <label>根据关键字忽略节点</label>
+                <input ng-model="T.step.filters.ignoreText" ng-change="T.select()">
+                <div class="hint">多个关键字用逗号`,`或者空格` `隔开</div>
+            </md-input-container>
+            <md-input-container class="md-block" flex md-no-float>
+                <label>根据关键字选择节点</label>
+                <input ng-model="T.step.filters.includeText" ng-change="T.select()">
+                <div class="hint">多个关键字用逗号`,`或者空格` `隔开</div>
+            </md-input-container>
+        </div>
+        <div layout="row">
+            <md-input-container class="md-block">
+                <label>执行等待(秒)</label>
+                <input type="number" ng-model="T.step.delay">
+            </md-input-container>
+        </div>
+
+        <p layout="row">
+            <span flex>高级设置</span>
+            <md-switch ng-model="T.step.expert" aria-label="Switch Expert"
+                       style="margin: 0;" ng-change="T.expert()"></md-switch>
+        </p>
+        <div ng-if="T.step.expert">
+            <md-input-container class="md-block">
+                <label>自定义选择器</label>
+                <textarea ng-model="T.step.custom_selector" ng-change="T.select()"></textarea>
+            </md-input-container>
+        </div>
+
+
+    </div>
+</div>

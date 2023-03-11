@@ -1,0 +1,19 @@
+# 后台接口地址
+#web_api_host : http://192.168.0.181:8080/
+web_api_host: http://30.4.70.39:8080/iris
+# 客户端模垿2 采集端, 1 普通客户端
+clientMode: 2
+# socket 服务噿
+socketServer: ws://30.4.70.39:8080/collector
+#用于获取代理，采集端的监控数据查诿
+ctrl_server: http://30.4.70.39:8080/collector
+#rest_server : http://ideadata.f3322.net:8088/ws/
+#socketServer : ws://192.168.0.181:8088/websocket
+# 默认允许同时运行数量
+defaultRunSize: 1
+#重新数据的数釿repeat_size : 5
+#打码平台的服务地址
+uuwise_api: http://localhost:8080/captcha-recognizing-service/getCode
+#iris3.0web_api
+api_address: http://30.4.70.39:8080/iris
+proxy_api: http://localhost:8080/proxy

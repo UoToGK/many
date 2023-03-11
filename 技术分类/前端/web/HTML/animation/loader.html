@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>loader DEmo</title>
+</head>
+<style>
+    @keyframes mymove {
+        50% {
+            transform: translateX(calc(100% * var(--direction)));
+        }
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    .contanier {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #fbf4ff;
+    }
+
+    .loader {
+        width: 30em;
+        height: 3em;
+        text-align: center;
+        font-size: 12px;
+        position: relative;
+        background-color: aqua;
+    }
+
+    .loader::before,
+    .loader::after {
+        content: 'loader';
+        position: absolute;
+        width: 50%;
+        border-radius: 1em;
+        mix-blend-mode: multiply;
+        animation: 5s mymove ease-in-out infinite normal;
+    }
+
+    .loader::before {
+        left: 0;
+        background-color: yellowgreen;
+        --direction: 1;
+    }
+
+    .loader::after {
+        right: 0;
+        background-color: pink;
+        --direction: -1;
+    }
+</style>
+
+<body>
+    <div class="contanier">
+        <div class="loader"></div>
+    </div>
+</body>
+
+</html>

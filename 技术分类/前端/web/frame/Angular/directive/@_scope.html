@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh" ng-app="myApp">
+
+<head>
+  <meta charset="UTF-8">
+  <title>scope{@}讲解</title>
+  <script src="https://cdn.bootcss.com/angular.js/1.7.8/angular.min.js"></script>
+</head>
+<h3>
+  @ 方式局部属性用来访问 directive 外部环境定义的字符串值，主要是通过 directive 所在的标签属性绑定外部字符串值。这种绑定是单向的，即父 scope 的绑定变化，directive 中的 scope
+  的属性会同步变化，而隔离 scope 中的绑定变化，父 scope 是不知道的。
+
+  如下示例：directive 声明未隔离 scope 类型，并且使用@绑定 name 属性，在 directive 中使用 name 属性绑定父 scope 中的属性。当改变父 scope 中属性的值的时候，directive
+  会同步更新值，当改变 directive 的 scope 的属性值时，父 scope 无法同步更新值。
+
+
+</h3>
+
+<body>
+  <div ng-controller="myController">
+    <div class="result">
+      <div>父scope：
+        <div>Say：{{name}}<br>改变父scope的name：<input type="text" value="" ng-model="name" /></div>
+      </div>
+      <div>隔离scope：
+        <div isolated-directive name="{{name}}"></div>
+        <!-- 这种方式和scope===true
+                父作用域改变还会影响子作用域”name="{{name}}"“,指令是通过指令所在
+                的宿主元素的属性获取值，此时数据是单向的，子作用域的改变不会影响父的
+                -->
+      </div>
+      <div>隔离scope（不使用父scope {{name}}）：
+        <div isolated-directive name="name"></div>
+        <!-- 这种就是互不影响 -->
+      </div>
+    </div>
+  </div>
+  <div ng-controller="testController">
+    <div class="result">
+      <h1>testController</h1>
+      <div>testController scope：
+        <div>Say：{{name}}<br>改变父scope的name：<input type="text" value="" ng-model="name" /></div>
+      </div>
+      <div>隔离scope：
+        <div isolated-directive name="{{name}}"></div>
+        <!-- 这种方式和scope===true
+                    父作用域改变还会影响子作用域”name="{{name}}"“,指令是通过指令所在
+                    的宿主元素的属性获取值，此时数据是单向的，子作用域的改变不会影响父的
+
+                    -->
+      </div>
+      <div>隔离scope（不使用父scope {{name}}）：
+        <div isolated-directive name="name"></div>
+        <!-- 这种就是互不影响 -->
+      </div>
+    </div>
+  </div>
+</body>
+<script type="text/javascript">
+  var app = angular.module('myApp', []);
+  app.controller("myController", function ($scope) {
+    $scope.name = "hello world";
+  }).directive("isolatedDirective", function () {
+    return {
+      scope: {
+        name: "@"
+      },
+      template: `
+            Say：{{name}} <br>
+            改变隔离scope的name：
+            <input type="button" value="" ng-model="name" class="ng-pristine ng-valid">`
+    };
+  });
+  app.controller("testController", function ($scope) {
+    $scope.name = "testController";
+  })
+</script>
+
+</html>

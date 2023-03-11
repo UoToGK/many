@@ -1,0 +1,1 @@
+createobject ("wscript.shell").run "pycharm_activate.cmd",0

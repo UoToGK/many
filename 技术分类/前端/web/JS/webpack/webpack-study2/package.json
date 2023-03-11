@@ -1,0 +1,39 @@
+{
+  "name": "iris-electron-client",
+  "version": "0.2.816",
+  "description": "数据采集,网页抓取",
+  "main": "index.js",
+  "scripts": {
+    "main": "webpack --mode development --config ./webpack.config.main.js",
+    "renderer": "webpack --mode development --config ./webpack.config.renderer.js",
+    "webpack": "webpack",
+    "dev": "webpack-dev-server --devtool eval-source-map --progress --colors --hot --inline --content-base ./dist --open"
+  },
+  "keywords": [
+    "electron",
+    "capture"
+  ],
+  "license": "ISC",
+  "devDependencies": {
+    "awesome-typescript-loader": "^5.2.1",
+    "babel-loader": "^8.0.5",
+    "clean-webpack-plugin": "^2.0.1",
+    "css-loader": "^2.1.1",
+    "ejs-loader": "^0.3.3",
+    "file-loader": "^3.0.1",
+    "html-webpack-plugin": "^3.2.0",
+    "raw-loader": "^2.0.0",
+    "style-loader": "^0.23.1",
+    "ts-loader": "^5.4.5",
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.2",
+    "webpack-dev-server": "^3.3.1"
+  },
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "jquery": "*",
+    "lodash": "*",
+    "moment": "*",
+    "typescript": "*"
+  }
+}

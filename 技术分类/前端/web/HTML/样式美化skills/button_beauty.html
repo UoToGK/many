@@ -1,0 +1,143 @@
+<!--  思路： inputfile上传按钮的美化思路是，先把之前的按钮透明度opacity设置为0,然后，外层用div包裹，就实现了美化功能。 
+    代码如下： DOM结构：  点击这里上传文件 选择文件  
+     CSS样式1： /*aupload*/ .a-upload{ padding:4px10px; height:20px; line-height:20px; position 
+    [原文](http://www.it610.com/article/5908072.htm)
+    -->
+
+<style>
+  .a-upload {
+    padding: 4px 10px;
+    height: 20px;
+    line-height: 20px;
+    position: relative;
+    cursor: pointer;
+    color: #888;
+    background: #fafafa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    z-index: 1;
+  }
+
+  .a-upload input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    cursor: pointer;
+  }
+
+  .a-upload:hover {
+    color: #444;
+    background: #eee;
+    border-color: #ccc;
+    text-decoration: none;
+  }
+  .file {
+    position: relative;
+    display: inline-block;
+    background: #d0eeff;
+    border: 1px solid #99d3f5;
+    border-radius: 4px;
+    padding: 4px 12px;
+    overflow: hidden;
+    color: #1e88c7;
+    text-decoration: none;
+    text-indent: 0;
+    line-height: 20px;
+    z-index: 1;
+  }
+  .file input {
+    position: absolute;
+    font-size: 100px;
+    right: 0;
+    top: 0;
+    opacity: 0;
+  }
+  .file:hover {
+    background: #aadffd;
+    border-color: #78c3f3;
+    color: #004974;
+    text-decoration: none;
+  }
+
+  @-webkit-keyframes rotate {
+    100% {
+      -webkit-transform: rotate(-360deg);
+    }
+  }
+
+  @keyframes rotate {
+    100% {
+      transform: rotate(-360deg);
+    }
+  }
+
+  .border {
+    position: absolute;
+
+    top: 10px;
+
+    left: 10px;
+
+    width: 300px;
+
+    height: 300px;
+
+    border: 1px solid #ccc;
+  }
+
+  .border div {
+    position: absolute;
+
+    top: 50%;
+
+    left: 50%;
+
+    width: 10px;
+
+    height: 10px;
+
+    border-radius: 50%;
+
+    box-shadow: 0px 30px #ff0000;
+
+    -webkit-animation: rotate 8s infinite linear;
+
+    animation: rotate 8s infinite linear;
+  }
+</style>
+
+<a href="javascript:;" class="a-upload"> <input type="file" name="" id="" />点击这里上传文件 </a>
+
+<a href="javascript:;" class="file"
+  >选择文件
+  <input type="file" name="" id="" />
+</a>
+
+<div class="border">
+  <div>
+    <div>
+      <div>
+        <div>
+          <div>
+            <div>
+              <div>
+                <div>
+                  <div>
+                    <div></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

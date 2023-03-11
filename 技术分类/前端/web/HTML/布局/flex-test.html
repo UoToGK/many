@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flex Test</title>
+</head>
+<style>
+  .home-container {
+    margin: 15px;
+    padding: 15px;
+  }
+
+  .header-box,
+  .body-box {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+
+  .header-item,
+  .body-item {
+    flex: 1 1 auto;
+  }
+
+  div {
+    border: 1px solid green;
+    margin: 5px;
+    height: 100px;
+  }
+
+  .body-item {
+    border: 1px solid red;
+
+  }
+
+  .hei {
+    height: 50px;
+  }
+</style>
+
+<body>
+  <div class="home-container">
+    <div class="home-header">
+      <div class="header-box">
+        <div class="header-item">
+          <input type="text" placeholder="hello~">
+          <div class="hei">11111111</div>
+        </div>
+        <div class="header-item">
+          <img src="" alt="huiyoude">
+        </div>
+      </div>
+    </div>
+    <div class="home-body">
+      <div class="body-box">
+        <div class="body-item"></div>
+        <div class="body-item"></div>
+        <div class="body-item"></div>
+      </div>
+    </div>
+    <div class="home-footer"></div>
+  </div>
+</body>
+
+</html>

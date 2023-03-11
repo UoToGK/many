@@ -1,0 +1,34 @@
+<div ng-controller="StepOpenLinkCtrl as T" layout-padding>
+    <div layout="row">
+        <md-input-container class="md-block" flex>
+            <input type="text" ng-model="T.step.url" placeholder="访问地址" ng-change="T.setUrl()">
+            <div class="hint">设置访问地址</div>
+        </md-input-container>
+        <md-input-container class="md-block" style="width: 200px;">
+            <md-select placeholder="延时时间" ng-model="T.step.deplyTime" ng-change="T.setDeplyTime()">
+                <md-option ng-repeat="deplyTime in T.deplyList " value={{deplyTime}}>
+                    {{deplyTime== 0 ? "请选择" : deplyTime+"秒"}}</md-option>
+            </md-select>
+            <div class="hint">无需求时,请不要设置此属性</div>
+        </md-input-container>
+        <md-input-container class="md-block" style="width: 200px;">
+            <md-select placeholder="设置编码" ng-model="T.step.charset" ng-change="T.setUrl()">
+                <md-option ng-repeat="charselist in T.charsetList" value={{charselist.charset}}>{{charselist.value}}
+                </md-option>
+            </md-select>
+            <div class="hint">无需求时,请不要设置此属性</div>
+        </md-input-container>
+        <!-- <md-input-container class="md-block" style="width: 200px;">
+            <md-button class="md-raised md-primary" ng-click="T.setUserAgent()">设置useragent</md-button>
+            <input type="text" ng-model="T.userAgent">
+        </md-input-container> -->
+        <!-- <md-input-container class="md-block">
+            <label>是否携带 Cookie</label>
+            <input type="text" ng-model="T.step.cookie" placeholder="带Cookie">
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>是否携带 Referrer</label>
+            <input type="text" ng-model="T.step.referrer" placeholder="带Referrer">
+        </md-input-container> -->
+    </div>
+</div>

@@ -1,0 +1,62 @@
+{
+  "name": "iris-electron-client",
+  "version": "0.2.816",
+  "description": "数据采集,网页抓取",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron index.js",
+    "build": "node build.js"
+  },
+  "keywords": [
+    "electron",
+    "capture"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/baihuibo/idsp-web-seed2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/baihuibo/idsp-web-seed2/issues"
+  },
+  "homepage": "https://github.com/baihuibo/idsp-web-seed2#readme",
+  "author": "baihuibo",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/electron": "1.3.15",
+    "electron-packager": "^7.0.1"
+  },
+  "dependencies": {
+    "angular": "1.5.0",
+    "angular-animate": "1.5.0",
+    "angular-aria": "1.5.0",
+    "angular-electron": "0.2.1",
+    "angular-material": "1.1.0-rc.5",
+    "angular-messages": "1.5.0",
+    "angular-resource": "1.5.0",
+    "angular-route": "1.5.0",
+    "bootstrap": "3.3.6",
+    "easymongo": "5.0.0",
+    "electron-prebuilt": "1.3.0",
+    "echarts": "3.7.0",
+    "highcharts": "4.2.3",
+    "highcharts-ng": "0.0.11",
+    "jquery": "2.2.3",
+    "jquery.splitter": "0.20.1",
+    "js-yaml": "3.5.5",
+    "lodash": "4.10.0",
+    "material-design-icons-iconfont": "2.0.4",
+    "mime": "1.3.4",
+    "moment": "2.12.0",
+    "node-uuid": "1.4.8",
+    "querystring": "0.2.0",
+    "request": "2.81.0",
+    "request-promise": "4.2.1",
+    "requireall": "0.0.4",
+    "simplebig": "0.0.3",
+    "typescript": "2.4.0",
+    "ztree": "3.5.18",
+    "idsp-web-seed2-paging": "1.0.3",
+    "idsp-web-seed2-uploader": "1.0.5"
+  }
+}

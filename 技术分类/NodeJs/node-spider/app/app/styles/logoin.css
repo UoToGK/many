@@ -1,0 +1,81 @@
+html,body{
+    width:100%;height:100%;
+    padding:0;margin:0;
+    font-family: "Arial";
+}
+
+.drag {
+    -webkit-app-region: drag;
+}
+.no-drag {
+    -webkit-app-region: no-drag;
+}
+
+.logoin-bg{
+    width:100%;
+    height:100%;
+    overflow: hidden;
+    background-color:#3e53b2 ;
+}
+.logoin-bg .header{
+    padding:20px;
+    background-color: #378be2;
+    color:#ececec;
+}
+.logoin-bg .header .glyphicon{
+    font-size: 18px;
+}
+
+.margin-top-lg{
+    margin-top:50px;
+}
+.margin-top{
+    margin-top:20px;
+}
+.margin-left{
+    margin-left: 10px;
+}
+.margin-right{
+    margin-right: 30px;
+}
+.dataText{
+    font-size: 1.4em;
+    color:#fff;
+    text-align: right;
+    padding-right:80px;
+}
+.dataText span{
+    color:#47d1ef;
+}
+.imgLeft img{
+    width:75%;
+}
+.grad{
+    width:100px;
+    height: 26px;
+    color:#333;
+    margin:10px auto;
+    line-height: 26px;
+    margin-right:50px;
+    font-size: 16px;
+    border-radius: 30px;
+    background: -webkit-linear-gradient(left, #45c7e5, #337cb9); /* Safari 5.1 - 6.0 */
+    background: -o-linear-gradient(right, #45c7e5, #337cb9); /* Opera 11.1 - 12.0 */
+    background: -moz-linear-gradient(right, #45c7e5, #337cb9); /* Firefox 3.6 - 15 */
+    background: linear-gradient(to right, #45c7e5, #337cb9); /* 标准的语法（必须放在最后） */
+}
+.logoin-content{
+    width:95%;
+    margin:5% auto;
+    color:#fff;
+}
+.logoin-content p{
+    padding:20px 0;
+}
+.logoin-panel{
+    border-radius: 5px;
+    width:80%;
+    margin:0 auto;
+    background: #fff;
+    padding:8% 5%;
+}

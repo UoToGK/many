@@ -1,0 +1,11 @@
+<div ng-controller="StepSelectCtrl as T" layout-padding>
+    <div>
+        <md-input-container class="md-block">
+            <md-select placeholder="请选择" ng-model="T.step.value"
+                       ng-change="T.setValue()"
+                       style="min-width: 200px;">
+                <md-option ng-value="option.value" ng-repeat="option in T.list">{{option.text}}</md-option>
+            </md-select>
+        </md-input-container>
+    </div>
+</div>

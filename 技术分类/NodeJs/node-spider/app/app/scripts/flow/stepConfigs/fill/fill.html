@@ -1,0 +1,25 @@
+<style>
+    #putClass {
+        margin-bottom: -18px;
+    }
+
+    .mbuttonwidth {
+        width: 85%;
+    }
+</style>
+<div ng-controller="StepFillCtrl as T" layout-padding>
+    <div layout="row">
+        <md-input-container class="md-block mbuttonwidth" id="putClass">
+
+            <input type="text" ng-model="T.step.value" ng-change="T.change()"
+                   placeholder="填充">
+
+        </md-input-container>
+        <md-button class="md-raised" ng-click="T.step.value='$0';T.change()">自定义循环</md-button>
+        <md-button class="md-raised" ng-click="T.step.value='$2';T.change()">验证码</md-button>
+    </div>
+
+    <div layout="row">
+        <div class="hint">自定义循环:输入(`$0`)使用自定义循环的值,验证码:输入(`$2`)获取验证码</div>
+    </div>
+</div>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>IRIS 客户端 v0.3.0622</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/styles.css" id="basestyle">
+    <style scope>
+        .cu-navbar .md-icon-button:hover {
+            background: #42475b !important;
+        }
+
+        .currentColor {
+            background: #42475b;
+        }
+
+        #loading {
+            display: none;
+            width: 200px;
+            height: 50px;
+            margin: 0 auto;
+            margin-top: 30%;
+        }
+
+        #wrap {
+            display: none;
+        }
+    </style>
+</head>
+<!-- 3. Display the application -->
+<body style="overflow:hidden;background-color: #eee">
+<div id="loading">
+    <img src="./styles/img/lD.gif" alt="">
+    <!-- <img src="./styles//img/lo.gif" alt=""> -->
+</div>
+<script type="text/javascript">
+    var loading = document.getElementById("loading");
+    document.body.style.background = "#3e50b5";
+    loading.style.display = "block";
+</script>
+<div layout-fill style="overflow: hidden" id="wrap">
+    <div layout="column" layout-fill>
+        <md-toolbar style="background-color: #378be3">
+            <div class="md-toolbar-tools top-toolbar drag">
+                <img src="./styles/images/logo.png" alt="">
+                <div flex class="text-center padding-left">
+                    <span>{{pageTitle}}</span>
+                </div>
+                <md-button class="md-icon-button no-drag" title="开发者工具" aria-label="开发者工具" ng-click="devTools()">
+                    <img src="./styles/images/developer.png" alt="">
+                </md-button>
+                <md-button class="md-icon-button no-drag" title="最小化"aria-label="最小化 " ng-click="minimize()">
+                    <img src="./styles/images/narrow.png" alt="">
+                </md-button>
+                <md-button class="md-icon-button no-drag" title="全屏" aria-label=" 全屏"ng-click="maximize()">
+                    <img src="./styles/images/enlarge1.png" alt="">
+                </md-button>
+                <md-button class="md-icon-button no-drag" title="关闭"aria-label="关闭" ng-click="closeWindow()">
+                    <img src="./styles/images/close.png" alt="">
+                </md-button>
+            </div>
+        </md-toolbar>
+
+        <div flex layout="row">
+            <div layout="column" class="cu-navbar" style="background-color:#333743;">
+                <div>
+                    <md-button class="md-icon-button" ng-repeat="btn in menus" layout="row"
+                               style="width:50px;margin-left:0;"
+                               ng-class="{'currentColor' : isActive(btn.route)}" href="#{{btn.route}}">
+                        <img ng-if="btn.img" style="margin:0 10px 0; text-align: center"  ng-src="./styles/images/{{btn.img}}.png" alt="">
+                        <!--<md-icon style="margin:0 5px 0 0;width:36px;color:#aeb9c3;">{{btn.icon}}</md-icon>-->
+                        <!--<span style="color:#aeb9c3">{{btn.name}}</span>-->
+                        <md-tooltip md-direction="right">{{btn.name}}</md-tooltip>
+                    </md-button>
+                </div>
+                <span flex></span>
+                <md-button class="md-icon-button" layout="row" style="width:50px;margin-left:0;"
+                           ng-class="{'md-primary' : isActive('/face')}" href="#/face">
+                    <img style="margin:0 10px 0; text-align: center"
+                         src="./styles/images/taskRun.png" alt="">
+                    <md-tooltip md-direction="right">任务运行监控</md-tooltip>
+                </md-button>
+                <md-button class="md-icon-button" layout="row" style="width:50px;margin-left:0;" ng-click="logout()">
+                    <img style="margin:0 10px 0; text-align: center"
+                         src="./styles/images/exit.png" alt="">
+                    <md-tooltip md-direction="right">退出</md-tooltip>
+                </md-button>
+            </div>
+            <md-divider></md-divider>
+            <div flex layout="column" id="view"
+                 style="overflow-y: auto;overflow-x:hidden;position: relative;">
+                <ng-view></ng-view>
+                <span flex></span>
+                <md-divider></md-divider>
+                <div class="text-center cu-footer">
+                    版权所有 ©2017 北京爱狄特信息科技有限公司
+                </div>
+            </div>
+        </div>
+</div>
+<script>
+    console.time("boot time");
+    jQuery = $ = require('jquery');
+    _ = require("lodash");
+    require('./lib/register-support-static-asset');
+  
+    require('./scripts/boot');
+    var wrap = document.getElementById("wrap");
+    document.body.style.background="#eee";
+    wrap.style.display="block";
+    loading.style.display="none";
+   
+    console.timeEnd("boot time");
+</script>
+<script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+</body>
+</html>

@@ -1,0 +1,248 @@
+<style>
+    md-datepicker button, input, select, textarea{
+        vertical-align:middle !important;
+    }
+    .md-datepicker-input{
+        min-width: 230px !important;
+    }
+    .md-datepicker-calendar-pane{
+        z-index: 9999 !important;
+    }
+    .md-datepicker-input-mask{
+        display: none;
+    }
+    .modal-body label{
+        width:111px;
+    }
+</style>
+<div class="padding title-ground" layout="row" layout-align="left center">
+    <div class="navbar-title" layout="row" layout-align="left center">
+        <div class="imgUser margin-right"></div>
+        <b class="titleText">用户管理</b>
+    </div>
+    <span flex></span>
+    <div>
+        <button type="button" class="btn btn-info"
+                data-toggle="modal" data-target="#addUser">新增用户</button>
+    </div>
+</div>
+
+<div class="title-ground padding margin" >
+    <div class="blueColor padding-top padding-bottom margin-bottom-md padding-right">
+        <div class="row">
+            <div class="col-xs-6 col-md-4" layout="row">
+                <label class="margin-top-sm labelWidth text-right">用户ID：</label>
+                <input type="text" class="form-control" ng-model="T.user.uid"
+                       required>
+
+            </div>
+            <div class="col-xs-6 col-md-4" layout="row">
+                <label class="margin-top-sm labelWidth text-right">姓名：</label>
+                <input type="text" class="form-control"  ng-model="T.user.name">
+            </div>
+            <div class="col-xs-6 col-md-4" layout="row">
+                <label class="margin-top-sm labelWidth text-right">所属组织：</label>
+                <input type="text"  class="form-control" ng-model="T.user.organization">
+            </div>
+        </div>
+        <div class="row margin-top">
+            <div  class="col-xs-6 col-md-4" layout="row">
+                <label class="margin-top-sm labelWidth text-right">角色：</label>
+                <select class="form-control" ng-model="T.user.roleId" ng-change="T.show();">
+                    <option value="">请选择</option>
+                    <option  ng-repeat="role in T.roleList" value="{{role.id}}">{{role.name}}</option>
+                </select>
+            </div>
+            <div  class="col-xs-6 col-md-4" layout="row">
+                <label class="margin-top-sm labelWidth text-right">过期日期：</label>
+                <md-datepicker class="form-control" style="padding: 0;"
+                               ng-model="T.user.queryTime"></md-datepicker>
+            </div>
+            <div  class="col-xs-6 col-md-4 ">
+                <button class="btn btn-info btn-search btn-sm margin-right"
+                        ng-click="T.initData(T.user)">搜索</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!--table 表格-->
+    <table class="table margin-top" >
+        <tr class="tableColor">
+            <th>序号</th>
+            <th>用户ID</th>
+            <th>姓名</th>
+            <th>所属组织</th>
+            <th>角色</th>
+            <th>过期日期</th>
+            <th>邮箱</th>
+            <th>手机</th>
+            <th>操作</th>
+        </tr>
+        <tr ng-repeat="user in T.userList">
+            <td>{{($index+1)+(T.$scope.size*(T.$scope.cp-1))}}</td>
+            <td>{{user.uid}}</td>
+            <td>{{user.name}}</td>
+            <td>{{user.organization}}</td>
+            <td>{{user.roleName}}</td>
+            <td>{{user.expiredDate |date:"yyyy-MM-dd hh:mm:ss"}}</td>
+            <td>{{user.mail}}</td>
+            <td>{{user.mobile}}</td>
+            <td style="color:#999">
+                <!--<md-button style="min-width:0;margin:0;"
+                           data-toggle="modal" data-target="#newUser" ng-click="T.updateUser(user.uid)">更新</md-button>
+                <md-button style="min-width:0;margin:0;" ng-click="T.deleteUser(user.uid)">删除</md-button>-->
+                <a href="javascript:" style="text-decoration: none;" class="margin-right" onfocus="this.blur();"
+                   data-toggle="modal" data-target="#newUser" ng-click="T.updateUser(user.uid)">
+                    <md-icon>edit</md-icon>
+                    <md-tooltip>修改</md-tooltip>
+                </a>
+                <a href="javascript:" style="text-decoration: none;" class="margin-right"
+                   ng-click="T.deleteUser(user.uid)" onfocus="this.blur();">
+                    <md-icon>delete</md-icon>
+                    <md-tooltip>删除</md-tooltip>
+                </a>
+            </td>
+        </tr>
+    </table>
+
+    <!--page 分页-->
+    <page class="text-right"></page>
+
+</div>
+
+<!-- Modal 新增用户 -->
+<div class="modal fade" id="addUser" tabindex="-1" role="dialog" style="margin-top:25px;"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width:650px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" ng-click="T.cancel()">&times;</span></button>
+                <h4 class="modal-title">新增用户</h4>
+            </div>
+            <div class="modal-body">
+                <div class="md-dialog-content padding" style="width: 600px;">
+                    <div class="row">
+                        <div class="col-md-6" layout="row">
+                            <label class="margin-top-sm labelWidth text-right">用户ID：</label>
+                            <input type="text" class="form-control" ng-model="T.user1.uid" ng-change="T.uIdBlur()" placeholder="6位或以上a-z字母或者0-9数字">
+                        </div>
+                        <div class="col-md-6" layout="row">
+                            <label class="margin-top-sm labelWidth text-right">密码：</label>
+                            <input type="password" class="form-control" ng-model="T.user1.password" placeholder="六位以上">
+                        </div>
+                    </div>
+                    <div class="row margin-top-md">
+                        <div class="col-md-6" layout="row">
+                            <label class="margin-top-sm labelWidth text-right">姓名：</label>
+                            <input type="text" class="form-control" ng-model="T.user1.name" >
+                        </div>
+                        <div class="col-md-6" layout="row">
+                            <label class="margin-top-sm labelWidth text-right">邮箱：</label>
+                            <input type="email" class="form-control" placeholder="例如：example@163.com" ng-model="T.user1.mail" >
+                        </div>
+                    </div>
+                    <div class="row margin-top-md">
+                        <div class="col-md-6" layout="row">
+                            <label class="margin-top-sm labelWidth text-right">角色：</label>
+                            <select class="form-control"  ng-model="T.user1.roleId">
+                                <option  ng-repeat="role in T.roleList" value="{{role.id}}">{{role.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6" layout="row">
+                            <label class="margin-top-sm labelWidth text-right">手机：</label>
+                            <input type="text" class="form-control" ng-model="T.user1.mobile">
+                        </div>
+                    </div>
+                    <div class="row margin-top-md">
+                        <div class="col-md-6" layout="row">
+                            <label class="margin-top-sm labelWidth text-right">所属组织：</label>
+                            <input type="text" class="form-control" ng-model="T.user1.organization">
+                        </div>
+                        <div class="col-md-6" layout="row">
+                            <label class="margin-top-sm labelWidth text-right">过期日期：</label>
+                            <!--<input type="text"  class="form-control" ng-model="T.user.expiredDate">-->
+                            <md-datepicker class="form-control" style="padding:0 12px;"
+                                           ng-model="T.user1.expiredDate"></md-datepicker>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <span ng-show="T.flag" style ="color:red">用户ID已存在！请重新输入！</span>
+                <button type="button" class="btn btn-info btn-sm "
+                        ng-click="T.addUser()" ng-disabled="T.flag">提交</button>
+                <button type="button" class="btn btn-default btn-sm closeb" id = "close"
+                        ng-click="T.cancel()" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal 修改 -->
+<div class="modal fade" id="newUser" tabindex="-1" role="dialog"  style="margin-top:25px;"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width:650px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" ng-click="T.cancel()">&times;</span></button>
+                <h4 class="modal-title">修改</h4>
+            </div>
+            <div class="modal-body ">
+                <div class="md-dialog-content padding" style="width: 600px;">
+                    <div class="row">
+                        <div class="col-md-6" layout="row">
+                            <label class="margin-top-sm labelWidth text-right">用户ID：</label>
+                            <input type="text" class="form-control" ng-model="T.user1.uid" readonly>
+                        </div>
+                        <div class="col-md-6" layout="row">
+                            <label class="margin-top-sm labelWidth text-right">密码：</label>
+                            <input type="password" class="form-control" ng-model="T.user1.password" placeholder="六位以上">
+                        </div>
+                    </div>
+                    <div class="row margin-top-md">
+                        <div class="col-md-6" layout="row">
+                            <label class="margin-top-sm labelWidth text-right">姓名：</label>
+                            <input type="text" class="form-control" ng-model="T.user1.name" >
+                        </div>
+                        <div class="col-md-6" layout="row">
+                            <label class="margin-top-sm labelWidth text-right">邮箱：</label>
+                            <input type="email" class="form-control" placeholder="例如：example@163.com" ng-model="T.user1.mail" >
+                        </div>
+                    </div>
+                    <div class="row margin-top-md">
+                        <div class="col-md-6" layout="row">
+                            <label class="margin-top-sm labelWidth text-right">角色：</label>
+                            <select class="form-control" ng-model="T.user1.roleId">
+                                <option  ng-repeat="role in T.roleList" value="{{role.id}}">{{role.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6" layout="row">
+                            <label class="margin-top-sm labelWidth text-right">手机：</label>
+                            <input type="text" class="form-control" ng-model="T.user1.mobile">
+                        </div>
+                    </div>
+                    <div class="row margin-top-md">
+                        <div class="col-md-6" layout="row">
+                            <label class="margin-top-sm labelWidth text-right">所属组织：</label>
+                            <input type="text" class="form-control" ng-model="T.user1.organization">
+                        </div>
+                        <div class="col-md-6" layout="row">
+                            <label class="margin-top-sm labelWidth text-right">过期日期：</label>
+                            <!--<input type="text"  class="form-control" ng-model="T.user.expiredDate">-->
+                            <md-datepicker class="form-control" style="padding:0 12px;"
+                                           ng-model="T.user1.expiredDate"></md-datepicker>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info btn-sm"
+                        ng-click="T.addUser()">提交</button>
+                <button type="button" class="btn btn-default btn-sm closeb"
+                        ng-click="T.cancel()" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>

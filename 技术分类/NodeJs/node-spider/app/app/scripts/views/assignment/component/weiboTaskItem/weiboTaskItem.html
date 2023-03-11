@@ -1,0 +1,36 @@
+<md-dialog aria-label="Mango (Fruit)" ng-cloak>
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>任务创建/修改</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="T.cancel()">
+                    <md-icon>close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content" style="width: 400px;">
+                <md-input-container class="md-block">
+                    <input type="text" placeholder="任务名称"
+                           ng-model="T.task.name"
+                           md-autofocus>
+                </md-input-container>
+
+                <md-chips ng-model="T.task.steps"
+                          md-on-add="T.add($chip);"
+                          md-enable-chip-edit="true">
+                    <input type="text" ng-paste="T.paste($event);" placeholder="Enter a words">
+                </md-chips>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions class="text-right">
+            <md-button ng-click="T.answer(T.task)">
+                确定
+            </md-button>
+            <md-button ng-click="T.answer()" style="margin-right:20px;">
+                取消
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

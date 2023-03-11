@@ -1,0 +1,40 @@
+<div>
+    <div  class="padding title-ground" layout="row">
+        <div layout="row" style="padding-bottom: 0">
+            <ul class="nav nav-tabs" style="border-bottom: 0;">
+                <li class="active margin-right-lg"><a href="#useOfRate" data-toggle="tab">资源使用率</a></li>
+                <li><a href="#infoStatus" data-toggle="tab">通讯状况</a></li>
+            </ul>
+        </div>
+        <span flex></span>
+        <div>
+            <button class="btn btn-info btn-sm" type="button" ng-click="T.back()">返回</button>
+        </div>
+    </div>
+    <!-- Nav tabs -->
+
+    <!-- Tab panes -->
+    <div class="tab-content title-ground padding margin">
+        <div class="tab-pane active" id="useOfRate">
+            <md-input-container>
+                <label>显示时间段</label>
+                <md-select ng-model="T.Rate" ng-change="T.show();">
+                    <md-option ng-value="item.key" ng-repeat="item in T.rates">{{item.value}}</md-option>
+                </md-select>
+            </md-input-container>
+            <echart id="main"></echart>
+        </div>
+        <div class="tab-pane" id="infoStatus">
+            <md-input-container>
+                <label>显示时间段</label>
+                <md-select ng-model="T.Info" >
+                    <md-option ng-value="item.key" ng-repeat="item in T.infos">{{item.value}}</md-option>
+                </md-select>
+            </md-input-container>
+            <echarts-communication id="main2"></echarts-communication>
+        </div>
+    </div>
+</div>
+
+
+<script src="../node_modules/echarts/dist/echarts.js"></script>

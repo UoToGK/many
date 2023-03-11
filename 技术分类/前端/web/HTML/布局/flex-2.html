@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .dy {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        height: 100%;
+        min-height: 100%;
+    }
+
+    header {
+        flex: 1;
+        min-height: 300px;
+    }
+
+    article {
+        flex: 8;
+        min-height: 600px;
+        overflow-y: scroll;
+    }
+
+    footer {
+        flex: 1;
+        min-height: 300px;
+    }
+</style>
+
+<body>
+    <div class="dy">
+        <header>
+            父子用> [Ul>li*3]
+            兄弟之间用+,也可以省写 [p+span]，[ul+]
+        </header>
+        <article>
+            <p>
+                对于div高度自适应问题，我总是用一句话：height:auto来解决。
+
+                但是很多时候我们需要的是当div内部有内容时，高度会随着内容的增加和增加，当div中没有内容时，div能够保持一个固定的高度。
+
+                具体可以用以下方法解决：
+
+                height:auto !important;
+
+                min-height:100px;
+
+                height:100px;
+            </p>
+            <p>
+                寻找父亲或者上级用^,反一层用一个，反两层用两个 [div>h2+ul>li*3^span]
+                属性用[], a[title="aaa"]
+            </p>
+
+        </article>
+        <footer>
+            $符号是自动编辑 box>ul>li.items$*10
+            内容用{} .box>ul>li{这是第$行数据}*10
+        </footer>
+    </div>
+</body>
+
+</html>

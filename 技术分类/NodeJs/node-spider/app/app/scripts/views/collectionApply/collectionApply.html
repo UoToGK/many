@@ -1,0 +1,46 @@
+<div style="position: fixed;top: 64px;left: 53px;
+            background-color: rgb(250,250,250);
+            width: calc(100% - 52px - 30px);z-index: 3;">
+    <md-toolbar class="md-menu-toolbar" style="min-height: 0;background-color: rgb(250,250,250);" layout="row">
+        <span flex></span>
+
+        <md-input-container md-no-float class="cu-input">
+            <input type="text" placeholder="过滤器" ng-model="searchName">
+        </md-input-container>
+    </md-toolbar>
+
+    <md-divider></md-divider>
+    <style>
+        ng-view {
+            padding-top: 58px !important;
+        }
+    </style>
+</div>
+
+
+<md-content>
+    <table class="table table-bordered table-condensed small">
+        <thead>
+        <tr class="small">
+            <th>采集名称</th>
+            <th>信源类型</th>
+            <th>网址</th>
+            <th>申请时间</th>
+            <th>申请人</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="item in T.list | filter:{name : searchName}">
+            <td>{{item.acquisitionName}}</td>
+            <td>{{item.acquisitionType}}</td>
+            <td>{{item.url}}</td>
+            <td>{{item.createrTime}}</td>
+            <td>{{item.creater}}</td>
+            <td>
+                <a href="javascript:" ng-click="T.startTask(item)">录制任务</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</md-content>

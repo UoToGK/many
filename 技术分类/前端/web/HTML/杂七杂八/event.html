@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="btn1" onclick="test">btn1</button>
+    <button id="btn2">btn2</button>
+    <a href="https://www.zhangxinxu.com/wordpress/2012/04/js-dom%E8%87%AA%E5%AE%9A%E4%B9%89%E4%BA%8B%E4%BB%B6/"
+        target="_blank" id="gg">漫谈js自定义事件、DOM/伪DOM自定义事件</a>
+</body>
+<script>
+    var event = new Event('click');
+    btn1.addEventListener('click', test)
+    btn2.addEventListener('click', function (event) {
+        alert('btn2 clicked')
+        btn2.innerHTML = "hello"
+    })
+    function test(e) {
+        console.log(e);
+
+        btn2.dispatchEvent(event)
+    }
+
+    gg.addEventListener('mouseenter', test)
+</script>
+
+</html>

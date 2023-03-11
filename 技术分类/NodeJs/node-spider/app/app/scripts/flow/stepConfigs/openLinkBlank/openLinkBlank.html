@@ -1,0 +1,28 @@
+<div ng-controller="StepOpenLinkBlankCtrl as T" layout-padding>
+    <div>
+        <md-input-container class="md-block">
+            <input type="text" ng-model="T.step.url" placeholder="子页面地址" readonly>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>自定义选择器</label>
+            <textarea ng-model="T.step.selector" ng-change="T.select()"></textarea>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>延时时间</label>
+            <div class="hint" style="left:75px">谨慎操作，该操作会导致采集速度降低</div>
+            <md-select ng-model="T.step.deplyTime" ng-change="T.setDeplyTime()">
+                <md-option ng-repeat="deplyTime in T.deplyList " value={{deplyTime}}>
+                    {{deplyTime== 0 ? "请选择" : deplyTime+"秒"}}</md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>是否携带 Cookie</label>
+            <input type="text" ng-model="T.step.cookie" placeholder="带Cookie">
+        </md-input-container>
+        <md-input-container class="md-block">
+            <label>是否携带 Referrer</label>
+            <input type="text" ng-model="T.step.referrer" placeholder="带Referrer">
+        </md-input-container>
+        <md-button class="md-raised md-primary" ng-click="T.gotoDesigner()">设置子页面规则</md-button>
+    </div>
+</div>

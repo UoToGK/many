@@ -1,0 +1,15 @@
+<md-list>
+    <md-subheader class="md-no-sticky">等待运行的任务</md-subheader>
+    <md-list-item ng-repeat="task in T.taskList" ng-click="null">
+        <p>{{task.name}}</p>
+    </md-list-item>
+
+    <md-subheader>正在执行的任务</md-subheader>
+    <md-list-item ng-repeat="task in T.runList" ng-click="null">
+        <p layout="row">
+            <span flex>{{task.name}}</span>
+            <span>持续时间: {{T.getTime(task)}}</span>
+            <span>采集数量: {{T.getTotal(task)}}</span>
+        </p>
+    </md-list-item>
+</md-list>

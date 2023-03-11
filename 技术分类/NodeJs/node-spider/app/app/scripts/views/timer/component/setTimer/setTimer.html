@@ -1,0 +1,183 @@
+<md-dialog aria-label="Mango (Fruit)" ng-cloak>
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>设置计划</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="T.cancel()">
+                    <md-icon>close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content style="overflow-x: hidden;">
+            <style scoped>
+                md-tabs {
+                    border: 1px solid #e1e1e1;
+                }
+
+                md-radio-button {
+                    margin: 0 1em 0 0;
+                }
+            </style>
+            <div class="md-dialog-content" style="width: 700px;">
+                <md-input-container class="md-block" style="margin-bottom: 0;">
+                    <input type="text" placeholder="计划名称" ng-model="T.plan.name" md-autofocus>
+                </md-input-container>
+
+                <md-tabs md-dynamic-height md-selected="T.plan.frequencyType" layout-padding>
+                    <md-tab label="一次" layout-padding>
+                        <div layout="row" layout-align="start center">
+                            <md-input-container class="md-block" flex>
+                                <label>设置启动时间</label>
+                                <cu-time-select multiple ng-model="T.plan.timer.bootTime">
+                                </cu-time-select>
+                            </md-input-container>
+                            <!--设置分钟-->
+                            <md-input-container class="md-block" flex>
+                                <label>设置启动分钟(可选，默认0)</label>
+                                <cu-minute-time-select ng-model="T.plan.timer.bootTimeMinute">
+                                </cu-minute-time-select>
+                            </md-input-container>
+                            <!--end-->
+                            <md-datepicker ng-model="T.plan.startTime" required
+                                           md-placeholder="启动日期" ></md-datepicker>
+                        </div>
+                    </md-tab>
+
+                    <md-tab label="每天">
+                        <div layout="row">
+                            <md-input-container class="md-block" flex>
+                                <label>启动时间</label>
+                                <cu-time-select multiple
+                                                ng-model="T.plan.timer.bootTime"></cu-time-select>
+                            </md-input-container>
+                            <!--添加分钟-->
+                            <md-input-container class="md-block" flex>
+                                <label>设置启动分钟(可选，默认0)</label>
+                                <cu-minute-time-select ng-model="T.plan.timer.bootTimeMinute">
+                                </cu-minute-time-select>
+                            </md-input-container>
+                            <!--end-->
+                            <md-input-container class="md-block" flex>
+                                <label>间隔天数</label>
+                                <input type="number" ng-model="T.plan.timer.interval" min="0">
+                                <div class="hint">每隔多少天触发</div>
+                            </md-input-container>
+                        </div>
+                    </md-tab>
+
+                    <md-tab label="每周">
+                        <div layout="row">
+                            <md-input-container class="md-block" flex>
+                                <label>启动时间</label>
+                                <cu-time-select multiple
+                                                ng-model="T.plan.timer.bootTime"></cu-time-select>
+                            </md-input-container>
+                            <!--添加分钟-->
+                            <md-input-container class="md-block" flex>
+                                <label>设置启动分钟(可选，默认0)</label>
+                                <cu-minute-time-select ng-model="T.plan.timer.bootTimeMinute">
+                                </cu-minute-time-select>
+                            </md-input-container>
+                            <!--end-->
+                            <md-input-container class="md-block" flex>
+                                <label>间隔周数</label>
+                                <input type="number" ng-model="T.plan.timer.interval" min="0">
+                                <div class="hint">每隔多少周触发</div>
+                            </md-input-container>
+                        </div>
+
+                        <div layout="row" layout-wrap>
+                            <md-checkbox ng-repeat="week in T.weeks"
+                                         ng-checked="T.exists(week[0] , T.plan.timer.weekDays)"
+                                         ng-click="T.toggle(week[0], T.plan.timer.weekDays)">{{week[1]}}
+                            </md-checkbox>
+                        </div>
+                    </md-tab>
+
+                    <md-tab label="每月">
+                        <div layout="row">
+                            <md-input-container class="md-block" flex>
+                                <label>启动时间</label>
+                                <cu-time-select multiple
+                                                ng-model="T.plan.timer.bootTime"></cu-time-select>
+                            </md-input-container>
+                            <!--添加分钟-->
+                            <md-input-container class="md-block" flex>
+                                <label>设置启动分钟(可选，默认0)</label>
+                                <cu-minute-time-select ng-model="T.plan.timer.bootTimeMinute">
+                                </cu-minute-time-select>
+                            </md-input-container>
+                            <!--end-->
+                            <md-input-container class="md-block" flex>
+                                <label>选择月</label>
+                                <cu-month-select multiple
+                                                 ng-model="T.plan.timer.months"></cu-month-select>
+                            </md-input-container>
+                        </div>
+
+                        <md-radio-group ng-model="T.plan.timer.type" ng-change="T.groupChange(T.plan)">
+                            <div layout="row" layout-align="start center">
+                                <md-radio-button ng-value="0" class="md-primary">
+                                    天
+                                </md-radio-button>
+                                <md-input-container class="md-block" flex>
+                                    <label>选择天</label>
+                                    <cu-date-select multiple ng-model="T.plan.timer.days"
+                                                    ng-disabled="T.plan.timer.type != 0"></cu-date-select>
+                                </md-input-container>
+                            </div>
+
+                            <div layout="row" layout-align="start center">
+                                <md-radio-button ng-value="1" class="md-primary">
+                                    在
+                                </md-radio-button>
+                                <md-input-container class="md-block" flex>
+                                    <label>周</label>
+                                    <md-select multiple ng-model="T.plan.timer.weeks"
+                                               ng-disabled="T.plan.timer.type != 1">
+                                        <md-option value="1">第一周</md-option>
+                                        <md-option value="2">第二周</md-option>
+                                        <md-option value="3">第三周</md-option>
+                                        <md-option value="4">第四周</md-option>
+                                        <md-option value="5">最后一周</md-option>
+                                    </md-select>
+                                </md-input-container>
+
+                                <md-input-container class="md-block" flex>
+                                    <label>天</label>
+                                    <cu-week-time-select multiple ng-model="T.plan.timer.weekDays"
+                                                         ng-disabled="T.plan.timer.type != 1"></cu-week-time-select>
+                                </md-input-container>
+                            </div>
+                        </md-radio-group>
+
+                    </md-tab>
+                </md-tabs>
+
+                <div ng-if="T.plan.frequencyType != 0">
+                    <h5 style="color: #7C7C7C;margin-bottom: .7em;">计划持续时间</h5>
+                    <div layout="row" layout-align="start center">
+                        <md-datepicker ng-model="T.plan.startTime"
+                                       md-placeholder="开始"></md-datepicker>
+                        <span style="margin: 0 1em 0 2em;">到</span>
+                        <md-datepicker ng-model="T.plan.endTime"
+                                       md-placeholder="结束"></md-datepicker>
+                    </div>
+                </div>
+
+                <p>
+                    {{ T.getMsg() }}
+                </p>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions class="text-right">
+            <md-button ng-click="T.answer(T.plan)" ng-disabled="!T.testValid(T.plan)">
+                确定
+            </md-button>
+            <md-button ng-click="T.answer()" style="margin-right:20px;">
+                取消
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

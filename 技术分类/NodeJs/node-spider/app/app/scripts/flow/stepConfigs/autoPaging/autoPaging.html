@@ -1,0 +1,9 @@
+<div ng-controller="StepAutoPagingCtrl as T" layout-padding>
+    <div>
+        <md-input-container class="md-block">
+            <input type="number" ng-model="T.step.limit"
+                   placeholder="下拉多少次页后中断此步骤" min="0">
+            <div class="hint">默认为0,即采集当前页</div>
+        </md-input-container>
+    </div>
+</div>

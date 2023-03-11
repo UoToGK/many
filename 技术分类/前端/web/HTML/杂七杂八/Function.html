@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>MDN Example - a recursive shortcut to massively modify the DOM</title>
+<script src="./PageBubbleImg.js"></script>
+<script type="text/javascript">
+var domQuery = (function() {
+  var aDOMFunc = [
+        Element.prototype.removeAttribute,
+        Element.prototype.setAttribute,
+        CSSStyleDeclaration.prototype.removeProperty,
+        CSSStyleDeclaration.prototype.setProperty
+      ];
+
+  function setSomething (bStyle, sProp, sVal) {
+    var  bSet = Boolean(sVal), fAction = aDOMFunc[bSet | bStyle << 1],
+         aArgs = Array.prototype.slice.call(arguments, 1, bSet ? 3 : 2),
+         aNodeList = bStyle ? this.cssNodes : this.nodes;
+
+    if (bSet && bStyle) { aArgs.push(""); }
+    for (
+      var nItem = 0, nLen = this.nodes.length;
+      nItem < nLen;
+      fAction.apply(aNodeList[nItem++], aArgs)
+    );
+    this.follow = setSomething.caller;
+    return this;
+  }
+
+  function setStyles (sProp, sVal) { return setSomething.call(this, true, sProp, sVal); }
+  function setAttribs (sProp, sVal) { return setSomething.call(this, false, sProp, sVal); }
+  function getSelectors () { return this.selectors; };
+  function getNodes () { return this.nodes; };
+
+  return (function (sSelectors) {
+    var oQuery = new Function('return arguments.callee.follow.apply(arguments.callee, arguments);');
+    oQuery.selectors = sSelectors;
+    oQuery.nodes = document.querySelectorAll(sSelectors);
+    oQuery.cssNodes = Array.prototype.map.call(oQuery.nodes, function (oInlineCSS) { return oInlineCSS.style; });
+    oQuery.attributes = setAttribs;
+    oQuery.inlineStyle = setStyles;
+    oQuery.follow = getNodes;
+    oQuery.toString = getSelectors;
+    oQuery.valueOf = getNodes;
+    return oQuery;
+  });
+})();
+</script>
+</head>
+
+<body>
+    <h1>大量修改DOM元素的递归快捷方式</h1>
+<p>
+        使用 Function 构造器创建函数是从一个函数中动态地创建一些不确定数量的有可执行代码的在全局范围里可用的新对象的方式之一。
+        在下面的例子中，如果你不想使用闭包，那么每创建一个新的查询函数都不可避免地要调用 Function 构造器。
+
+</p>
+<div class="testClass">Lorem ipsum</div>
+<p>Some text</p>
+<div class="testClass">dolor sit amet</div>
+
+<script type="text/javascript">
+  domQuery('.testClass')
+​    .attributes('lang', 'en')('title', 'Risus abundat in ore stultorum')
+    .inlineStyle('background-color', 'black')('color', 'white')('width', '100px')('height', '50px');
+</script>
+</body>
+
+</html>

@@ -1,0 +1,134 @@
+<md-dialog aria-label="Mango (Fruit)" ng-cloak>
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>设置内容匹配规则</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="T.cancel()">
+                    <md-icon>close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <style scoped>
+                md-radio-button {
+                    margin: 0 1em 0 0;
+                }
+
+                md-datepicker {
+                    margin-bottom: 16px;
+                }
+
+                .md-button.md-icon-button {
+                    top: 5px;
+                }
+
+                .md-errors-spacer {
+                    display: none;
+                }
+
+                .hint {
+                    position: static !important;
+                }
+
+                .md-datepicker-input-container {
+                    margin-left: 0;
+                }
+            </style>
+            <div class="md-dialog-content" style="min-width: 700px;">
+                <md-input-container class="md-block">
+                    <label>内容预览</label>
+                    <textarea ng-model="T.capture.preview" readonly></textarea>
+                </md-input-container>
+                <md-radio-group ng-model="T.capture.match.type">
+                    <div layout="row" layout-align="start center">
+                        <md-radio-button ng-value="0" class="md-primary">
+                            时间匹配
+                        </md-radio-button>
+                        <md-input-container class="md-block" flex>
+                            <label>比较</label>
+                            <md-select ng-model="T.capture.match.dateEq" ng-disabled="T.capture.match.type  != 0">
+                                <md-option value="=">等于</md-option>
+                                <md-option value="<">在.之前</md-option>
+                                <md-option value=">">在.之后</md-option>
+                            </md-select>
+                        </md-input-container>
+                        <md-input-container>
+                            <label>时间</label>
+                            <md-select ng-model="T.capture.match.dateLike" ng-disabled="T.capture.match.type  != 0">
+                                <md-option></md-option>
+                                <md-option value="date">自定义时间</md-option>
+                                <md-option value="today">今天</md-option>
+                                <md-option value="1_days">昨天(1天前)</md-option>
+                                <md-option value="2_days">前天(2天前)</md-option>
+                                <md-option value="3_days">3天前</md-option>
+                                <md-option value="5_days">5天前</md-option>
+                                <md-option value="1_weeks">一周前</md-option>
+                                <md-option value="1_months">一月前</md-option>
+                                <md-option value="1_years">一年前的</md-option>
+                            </md-select>
+                        </md-input-container>
+                        <md-datepicker ng-model="T.capture.match.date" ng-if="T.capture.match.dateLike == 'date'"
+                            ng-disabled="T.capture.match.type != 0"></md-datepicker>
+                    </div>
+
+                    <div layout="row" layout-align="start center">
+                        <md-radio-button ng-value="1" class="md-primary">
+                            内容匹配
+                        </md-radio-button>
+                        <md-input-container class="md-block" flex>
+                            <label>包含</label>
+                            <input ng-model="T.capture.match.include" ng-disabled="T.capture.match.type != 1" />
+                            <div class="hint">请输入需要包含的内容,英文逗号分隔</div>
+                        </md-input-container>
+                        <md-input-container class="md-block" flex>
+                            <label>不包含</label>
+                            <input ng-model="T.capture.match.noInclude" ng-disabled="T.capture.match.type != 1" />
+                            <div class="hint">请输入不需要包含的关键字,英文逗号分隔</div>
+                        </md-input-container>
+                    </div>
+                    <div layout="row" layout-align="start center">
+                        <md-radio-button ng-value="2" class="md-primary">
+                            正则匹配
+                        </md-radio-button>
+                        <md-input-container class="md-block" flex>
+                            <label>正则表达式</label>
+                            <input type="text" ng-model="T.capture.match.regexpText"
+                                ng-disabled="T.capture.match.type != 2">
+                        </md-input-container>
+                        <md-input-container class="md-block">
+                            <label>匹配模式</label>
+                            <md-select multiple ng-model="T.capture.match.regexpMode"
+                                ng-disabled="T.capture.match.type != 2">
+                                <md-option value="i">忽略大小写</md-option>
+                            </md-select>
+                        </md-input-container>
+                    </div>
+                    <div layout="row" layout-align="start center">
+                        <md-radio-button ng-value="4" class="md-primary">
+                            函数过滤
+                        </md-radio-button>
+                        <md-input-container class="md-block" flex>
+                            <label>函数过滤</label>
+                            <input type="text" ng-model="T.capture.match.function"
+                                ng-disabled="T.capture.match.type != 4">
+                        </md-input-container>
+                    </div>
+                    <div layout="row" layout-align="start center">
+                        <md-radio-button ng-value="3" class="md-primary">
+                            不做任何匹配
+                        </md-radio-button>
+                    </div>
+                </md-radio-group>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions class="text-right">
+            <md-button ng-click="T.answer(T.capture.match)">
+                保存
+            </md-button>
+            <md-button ng-click="T.answer(false)" style="margin-right:20px;">
+                取消
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

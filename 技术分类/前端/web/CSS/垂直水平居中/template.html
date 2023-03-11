@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>css 布局之垂直水平居中</title>
+  <link rel="stylesheet" href="./template.css" />
+</head>
+
+<body>
+  <div class="parent1">
+
+    <div class="child1">
+
+    </div>
+  </div>
+  <style>
+    .flex-box {
+      display: flex;
+      height: 200px;
+      width: 100%;
+      background: red;
+    }
+
+    .item:nth-child(2) {
+      flex: 1;
+      background: red;
+    }
+
+    .left {
+      position: absolute;
+      left: 0;
+      width: 300px;
+      background-color: red;
+    }
+
+    .center {
+      position: absolute;
+      left: 300px;
+      right: 300px;
+      background-color: blue;
+    }
+
+    .right {
+      position: absolute;
+      right: 0;
+      width: 300px;
+      background-color: #3A2CAC;
+    }
+
+    .main::after {
+      content: '';
+      display: block;
+      clear: both;
+    }
+
+    .container {
+      width: 100%;
+      background-color: #eee;
+      display: flex;
+      flex-wrap: warp;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .container div {
+      background-color: #fff;
+      margin-right: 10px;
+    }
+
+    .col-4 {
+      width: 33.33%;
+    }
+  </style>
+
+  <div class="flex-box">
+    <div class="item" style="width:200px;background:yellow">
+      左
+    </div>
+    <div class="item">
+      中
+    </div>
+    <div class="item" style="width:200px;background:yellow">
+      右
+    </div>
+  </div>
+
+  <!-- <article class="main">
+    <div class="left">左</div>
+    <div class="center">中
+      <h2>绝对定位</h2>
+    </div>
+    <div class="right">右</div>
+  </article> -->
+
+  <p>Flexbox nuovo</p>
+  <div class="container">
+    <div class="col-4">LEFT</div>
+    <div class="col-4">centercentercenter<br>
+      centercentercenter</div>
+    <div class="col-4">right "C:\Program Files (x86)\Google\Chrome\Application\chrome.ex</div>
+  </div>
+
+
+  <p>Flexbox nuovo</p>
+  <div class="flex">
+    <div>uno</div>
+    <div>due</div>
+    <div>tre</div>
+  </div>
+  <style>
+    .flex {
+      /* 基本样式 */
+      width: 350px;
+      height: 200px;
+      border: 1px solid #555;
+      font: 14px Arial;
+
+      /*  建立弹性框 */
+      display: -webkit-flex;
+      -webkit-flex-direction: row;
+
+      display: flex;
+      flex-direction: row;
+    }
+
+    .flex>div {
+      -webkit-flex: 1 1 auto;
+      flex: 1 1 auto;
+
+      width: 30px;
+      /* 让过渡表现良好。（从/到"width:auto"的过渡
+                      至少在 Gecko 和 Webkit 上是有 bug 的。
+                      更多信息参见 http://bugzil.la/731886 ） */
+
+      -webkit-transition: width 0.7s ease-out;
+      transition: width 0.7s ease-out;
+    }
+
+    /* colors */
+    .flex>div:nth-child(1) {
+      background: #009246;
+    }
+
+    .flex>div:nth-child(2) {
+      background: #F1F2F1;
+    }
+
+    .flex>div:nth-child(3) {
+      background: #CE2B37;
+    }
+
+    .flex>div:hover {
+      width: 200px;
+    }
+  </style>
+</body>
+
+</html>

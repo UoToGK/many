@@ -1,0 +1,5 @@
+flask==2.0.2
+prometheus_client==0.11.0
+requests==2.24.0
+jinja2==3.0.3
+pymongo

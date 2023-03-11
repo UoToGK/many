@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Submit for</title>
+</head>
+
+<body>
+    <form action="" name="form1" onsubmit="return foo()">
+        <input type="radio" name="radioName" id="">
+        <input type="radio" name="radioName" id="">
+        <input type="radio" name="radioName" id="">
+        <input type="radio" name="radioName" id="">
+        <input type="radio" name="radioName" id="">
+        <input type="submit" value="submit" onsubmit="return foo()">
+
+
+    </form>
+</body>
+<script>
+    function foo() {
+        var c = document.getElementsByName("radioName");
+        for (var i = 0; i < c.length; i++) {
+            if (c[i].checked) {
+                alert(i);
+                return;
+            } else {
+                alert(-1);
+            }
+        }
+
+    }
+</script>
+<script>
+
+
+</script>
+
+</html>

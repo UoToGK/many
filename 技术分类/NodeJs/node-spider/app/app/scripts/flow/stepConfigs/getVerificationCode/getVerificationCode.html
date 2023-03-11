@@ -1,0 +1,23 @@
+<div ng-controller="StepGetVerificationCodeCtrl as T" layout-padding>
+
+    <div layout="row">
+        <md-input-container class="md-block" style="width: 200px;">
+            验证码类型
+            <md-select placeholder="验证码类型"
+                       ng-model="T.step.captchaType" ng-change="T.typeChange()">
+                <md-option ng-repeat="type in T.captchaTypeList " value={{type.code}}>{{type.name}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+        <md-input-container class="md-block" style="width: 200px;">
+            验证码长度
+            <md-select placeholder="验证码长度"
+                       ng-model="T.step.captchaLen">
+                <md-option ng-repeat="chdType in T.captchaChdTypeList" value={{chdType.code}}>
+                    {{chdType.name}}
+                </md-option>
+            </md-select>
+
+        </md-input-container>
+    </div>
+</div>

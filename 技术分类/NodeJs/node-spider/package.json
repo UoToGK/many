@@ -1,0 +1,23 @@
+{
+  "name": "spider",
+  "version": "1.0.0",
+  "description": "node spider",
+  "main": "spider.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "uoto",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.6.2",
+    "axios": "^0.18.0",
+    "body-parser": "^1.19.0",
+    "cheerio": "^1.0.0-rc.3",
+    "download": "^7.1.0",
+    "eventproxy": "^1.0.0",
+    "iconv-lite": "^0.4.24",
+    "officegen": "^0.6.0",
+    "request": "^2.88.0",
+    "restify-clients": "^2.6.6"
+  }
+}

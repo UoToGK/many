@@ -1,0 +1,99 @@
+hosts修改后释放 命令行：ipconfig/release   会导致所有网站都不可以访问，需要重启网络
+
+重建本地DNS缓存 命令行：ipconfig /flushdns
+
+# GitHub520 Host Start
+# 140.82.112.26                 alive.github.com
+# 140.82.112.25                 live.github.com
+# 185.199.108.154               github.githubassets.com
+# 140.82.114.22                 central.github.com
+# 185.199.108.133               desktop.githubusercontent.com
+# 185.199.108.153               assets-cdn.github.com
+# 185.199.108.133               camo.githubusercontent.com
+# 185.199.108.133               github.map.fastly.net
+# 199.232.69.194                github.global.ssl.fastly.net
+# 140.82.114.3                  gist.github.com
+185.199.108.153               github.io
+# 140.82.112.3                  github.com
+192.0.66.2                    github.blog
+# 140.82.114.6                  api.github.com
+# 185.199.108.133               raw.githubusercontent.com
+# 185.199.108.133               user-images.githubusercontent.com
+# 185.199.108.133               favicons.githubusercontent.com
+# 185.199.108.133               avatars5.githubusercontent.com
+# 185.199.108.133               avatars4.githubusercontent.com
+# 185.199.108.133               avatars3.githubusercontent.com
+# 185.199.108.133               avatars2.githubusercontent.com
+# 185.199.108.133               avatars1.githubusercontent.com
+# 185.199.108.133               avatars0.githubusercontent.com
+# 185.199.108.133               avatars.githubusercontent.com
+# 140.82.114.10                 codeload.github.com
+# 52.216.76.12                  github-cloud.s3.amazonaws.com
+# 52.216.88.203                 github-com.s3.amazonaws.com
+# 52.217.196.169                github-production-release-asset-2e65be.s3.amazonaws.com
+# 52.217.97.244                 github-production-user-asset-6210df.s3.amazonaws.com
+# 52.217.91.180                 github-production-repository-file-5c1aeb.s3.amazonaws.com
+# 185.199.108.153               githubstatus.com
+64.71.144.202                 github.community
+23.100.27.125                 github.dev
+# 185.199.108.133               media.githubusercontent.com
+# 蓝奏云
+118.31.212.253        www.lanzous.com
+118.31.212.253        lanzous.com
+118.31.212.253        *.lanzous.com
+
+# Update time: 2021-11-03T22:05:20+08:00
+# Update url: https://raw.hellogithub.com/hosts
+# Star me: https://github.com/521xueweihan/GitHub520
+# GitHub520 Host End
+127.0.0.1   dldir1.qq.com
+# 禁止访问抖音，虎牙，4399以及哔哩哔哩
+37.3.192.17   www.bilibili.com
+37.3.192.17   manga.bilibili.com
+37.3.192.17   show.bilibili.com
+37.3.192.17   live.bilibili.com
+37.3.192.17   game.bilibili.com
+37.3.192.17   space.bilibili.com
+37.3.192.17   passport.bilibili.com
+37.3.192.17   www.douyin.com
+37.3.192.17   live.douyin.com
+37.3.192.17   www.4399.com
+37.3.192.17   4399.com
+37.3.192.17   www.kuaishou.com
+37.3.192.17   kuaishou.com
+37.3.192.17   www.huya.com
+37.3.192.17   wan.huya.com
+37.3.192.17   www.douyu.com
+37.3.192.17   wan.douyu.com
+37.3.192.17   game.2345.com
+37.3.192.17   game.163.com
+37.3.192.17   17173.com
+37.3.192.17   9375.com
+37.3.192.17   9377.com
+37.3.192.17   game.yeyou.com
+
+
+
+
+131.253.33.219 edge.microsoft.com
+131.253.33.219 msedgeextensions.sf.tlu.dl.delivery.mp.microsoft.com
+————————————————
+#Edge翻译
+117.28.245.88 edge.microsoft.com
+#商店扩展
+117.28.245.88 msedgeextensions.sf.tlu.dl.delivery.mp.microsoft.com
+#微软账户
+#117.28.245.88 logincdn.msauth.net
+#117.28.245.88 login.live.com
+#117.28.245.88 account.live.com
+#117.28.245.88 acctcdn.msauth.net
+
+
+101.132.130.88 LiWeiJianWeb
+120.229.33.117 dldir1.qq.com
+# Added by Docker Desktop
+192.168.1.14 host.docker.internal
+192.168.1.14 gateway.docker.internal
+# To allow the same kube context to work on the host and the container:
+127.0.0.1 kubernetes.docker.internal
+# End of section

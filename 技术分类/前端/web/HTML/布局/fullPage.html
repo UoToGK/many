@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Full Page Demo</title>
+  </head>
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+    #wrap {
+      width: 100%;
+      overflow: hidden;
+      background-color: #ccc;
+    }
+    #main {
+      width: 100%;
+      background-color: #ccc;
+      position: relative;
+      top: 0;
+      transition: all 2s ease;
+    }
+
+    .page {
+      width: 100%;
+      margin: 0;
+    }
+    #page1 {
+      background: #e4e6ce;
+    }
+    #page2 {
+      background: #6ce26c;
+    }
+    #page3 {
+      background: #bf4938;
+    }
+    #page4 {
+      background: #2932e1;
+    }
+  </style>
+
+  <body>
+    <div id="wrap">
+      <div id="main">
+        <div id="page1" class="page">第1屏</div>
+        <div id="page2" class="page">第2屏</div>
+        <div id="page3" class="page">第3屏</div>
+        <div id="page4" class="page">第4屏</div>
+      </div>
+    </div>
+  </body>
+  <script>
+    var pages = document.getElementsByClassName('page');
+    var wrap = document.getElementById('wrap');
+    var len = document.documentElement.clientHeight;
+    var main = document.getElementById('main');
+
+    wrap.style.height = len + 'px';
+
+    for (var i = 0; i < pages.length; i++) {
+      pages[i].style.height = len + 'px';
+    }
+
+    document.addEventListener('mousewheel', scrollFun, false);
+
+    var startTime = 0;
+    var endTime = 0;
+    var now = 0;
+    function scrollFun(e) {
+      startTime = new Date().getTime();
+      var event = e || window.event;
+      var dir = event.detail || -event.wheelDelta;
+      if (startTime - endTime > 1000) {
+        console.log(startTime - endTime);
+        if (dir > 0 && now > -3 * len) {
+          now -= len;
+          console.log(now);
+          main.style.top = now + 'px';
+          endTime = new Date().getTime();
+        } else if (dir < 0 && now < 0) {
+          now += len;
+          main.style.top = now + 'px';
+          endTime = new Date().getTime();
+        }
+      } else {
+        event.preventDefault();
+      }
+    }
+  </script>
+</html>

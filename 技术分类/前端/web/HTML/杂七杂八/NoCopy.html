@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+    <title>Document</title>
+  </head>
+  <body onpaste="myScript" id="bodyMain" contenteditable="true">
+    <p>
+      <br />
+      .closest() --ab &nbsp;.parents()--12
+      <br />
+      a. 从当前元素开始 从父元素开始 沿 DOM 树向上遍历，直到找到已应用选择器的一个匹配为止。 <br />
+      1.
+      沿DOM树向上遍历，直到文档的根元素为止，将每个祖先元素添加到一个临时的集合；如果应用了选择器，则会基于该选择器对这个集合进行筛选。
+      <br />b. 返回包含零个或一个元素的 jQuery 对象 <br />2. 返回包含零个、一个或多个元素的 jQuery 对象
+    </p>
+    <p>
+      几组VSCode快捷键 <br />
+      1. 代码补全 control + 空格 ctrl + 空格 <br />
+      2. 快速修复 command + . ctrl + . <br />
+      3. 重构（重命名）fn + f2 f2 <br />
+    </p>
+  </body>
+  <script>
+    var bodyMain = document.getElementById('bodyMain');
+
+    //禁止复制
+    bodyMain.oncopy = function() {
+      return false;
+    };
+    //禁止粘贴
+    bodyMain.onpaste = function() {
+      return false;
+    };
+  </script>
+</html>

@@ -1,0 +1,135 @@
+<div class="padding title-ground" layout="row" layout-align="left center">
+    <div class="navbar-title" layout="row" layout-align="left center">
+        <div class="imgUser margin-right"></div>
+        <b class="titleText">通知设置</b>
+    </div>
+    <span flex></span>
+    <div>
+        <button type="button" class="btn btn-info"
+                data-toggle="modal" data-target="#addUser">新增通知设置</button>
+    </div>
+</div>
+
+<div class="title-ground padding margin" >
+    <div class="blueColor padding-top padding-bottom margin-bottom-md padding-right">
+        <div class="row">
+            <div class="col-xs-6 col-md-4" layout="row">
+                <label class="margin-top-sm labelWidth text-right">名称：</label>
+                <input type="text" class="form-control" ng-model="T.paging.params.projectId"
+                       required>
+            </div>
+            <button class="btn btn-info btn-search btn-sm margin-right"
+                    ng-click="T.query()">搜索
+            </button>
+            <button class="btn btn-info btn-search btn-sm margin-right"
+                    ng-click="T.clear()">清空
+            </button>
+        </div>
+    </div>
+
+    <!--table 表格-->
+    <table class="table margin-top" >
+        <tr class="tableColor">
+            <th>序号</th>
+            <th>类别</th>
+            <th>名称</th>
+            <th>类型</th>
+            <th>收件人</th>
+            <th>创建时间</th>
+            <th>操作</th>
+        </tr>
+        <tr ng-repeat="data in T.paging.resultList">
+            <td>{{($index+1)+(T.paging.currentPage*(T.paging.limit))}}</td>
+            <td>{{data.category |emailSettingType}}</td>
+            <td ng-if="data.category == 0">{{data.projectId}}</td>
+            <td ng-if="data.category == 1">{{data.projectId | emailSettingType3:T.projectList}}</td>
+            <td>{{data.esType |emailSettingType1}}</td>
+            <td>{{data.receiveUsers}}</td>
+            <td>{{data.createTime |date:"yyyy-MM-dd hh:mm:ss"}}</td>
+            <td style="color:#999">
+                <a href="javascript:" style="text-decoration: none;" class="margin-right" onfocus="this.blur();"
+                   data-toggle="modal" data-target="#addUser" ng-click="T.updateEmailSetting(data.id)">
+                    <md-icon>edit</md-icon>
+                    <md-tooltip>修改</md-tooltip>
+                </a>
+                <a href="javascript:" style="text-decoration: none;" class="margin-right"
+                   ng-click="T.deleteEmailSetting(data.id)" onfocus="this.blur();">
+                    <md-icon>delete</md-icon>
+                    <md-tooltip>删除</md-tooltip>
+                </a>
+            </td>
+        </tr>
+    </table>
+
+    <!--page 分页-->
+    <remote-paging option="T.paging"></remote-paging>
+</div>
+
+<!-- Modal 新增用户 -->
+<div class="modal fade" id="addUser" tabindex="-1" role="dialog" style="margin-top:25px;"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width:650px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" ng-click="T.cancel()">&times;</span></button>
+                <h4 class="modal-title" ng-click="T.add()">新增通知设置</h4>
+            </div>
+            <div class="modal-body">
+                <div class="md-dialog-content padding" style="width: 600px;">
+                    <md-radio-group ng-model="T.item.category" style="margin: 0;">
+                        <div layout="row" layout-align="start center">
+                            <md-radio-button ng-value="0" class="md-primary" style="margin: 0">
+                                系统类
+                            </md-radio-button>
+                        </div>
+                        <div class="row" layout="row">
+                            <label class="margin-top-sm labelWidth text-right">名称：</label>
+                            <input type="text" class="form-control" ng-model="T.item.projectId" ng-disabled="T.item.category!='0'"/>
+                        </div>
+                        <div class="row" layout="row">
+                            <label class="margin-top-sm labelWidth text-right">收件人：</label>
+                            <dd ng-repeat="user in T.userList"
+                                layout="row" layout-align="left center">
+                                <input type="checkbox" ng-disabled="T.item.category!='0'" ng-model="user.selected">
+                                {{user.name}}
+                            </dd>
+                        </div>
+                        <div layout="row" layout-align="start center">
+                            <md-radio-button ng-value="1" class="md-primary" style="margin: 0">
+                                项目类
+                            </md-radio-button>
+
+                        </div>
+                        <div class="row" layout="row">
+                            <label class="margin-top-sm labelWidth text-right">项目：</label>
+                            <select class="form-control" ng-model="T.item.projectId" ng-disabled="T.item.category!='1'">
+                                <option ng-repeat="opt in T.projectList" value="opt.id">{{ opt.name }}</option>
+                            </select>
+                        </div>
+                        <div class="row" layout="row">
+                            <label class="margin-top-sm labelWidth text-right">类型：</label>
+                            <select class="form-control" ng-model="T.item.esType" ng-disabled="T.item.category!='1'">
+                                <option ng-repeat="opt in T.typeList" value="opt.key">{{opt.value}}</option>
+                            </select>
+                        </div>
+                        <div class="row" layout="row">
+                            <label class="margin-top-sm labelWidth text-right">收件人：</label>
+                            <dd ng-repeat="user in T.userList"
+                                layout="row" layout-align="left center">
+                                <input type="checkbox" ng-disabled="T.item.category!='1'" ng-model="user.selected" ng-checked="user.selected">
+                                {{user.name}}
+                            </dd>
+                        </div>
+                    </md-radio-group>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info btn-sm "
+                        ng-click="T.addEmailSetting(T.item)">保存</button>
+                <button type="button" class="btn btn-default btn-sm closeb" id = "close"
+                        data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</div>

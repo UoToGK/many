@@ -1,0 +1,48 @@
+<style>
+    ul,ul li{
+        list-style: none; margin:0; padding:0;
+    }
+    ul li{
+        padding:8px;
+    }
+    ul li:nth-child(even){
+        background-color:#f1f1f1;
+    }
+</style>
+<div>
+    <div  class="padding title-ground" layout="row">
+        <b style="height: 32px;cursor:default">修改模板字段</b>
+        <span flex></span>
+        <div>
+            <button class="btn btn-info btn-sm" type="button" ng-click="T.back()">返回</button>
+        </div>
+    </div>
+
+    <div class="title-ground padding margin">
+        <div layout="row" class="margin-bottom">
+            <input type="text" class="form-control margin-right" style="width: 265px;height:30px;"
+                   ng-model="T.columnName" placeholder="请输入中文的字段名称">
+            <button type="button" ng-click="T.save()" style="height:30px;padding-top:4px;"
+                    class="btn btn-info ">{{T.button}} </button>
+        </div>
+        <ul>
+            <li layout="row" ng-repeat="item in T.items" layout-align="center center">
+                <div style="width:50px;"><span class="TIcon">F</span></div>
+                <div style="padding-top:3px;">{{item.columnDesc}}</div>
+                <div flex></div>
+                <div style="vertical-align: top">
+                    <a href="javascript:" style="text-decoration: none;" class="margin-right" onfocus="this.blur();"
+                       ng-click="T.edit(item.id)">
+                        <md-icon>edit</md-icon>
+                        <md-tooltip>修改</md-tooltip>
+                    </a>
+                    <a href="javascript:" style="text-decoration: none;" class="margin-right" onfocus="this.blur();"
+                       ng-click="T.remove(item.id)">
+                        <md-icon>delete</md-icon>
+                        <md-tooltip>删除</md-tooltip>
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>

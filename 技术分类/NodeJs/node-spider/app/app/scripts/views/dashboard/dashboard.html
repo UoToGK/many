@@ -1,0 +1,57 @@
+<style scope>
+    .yellow {
+        color: #f65c5c;
+    }
+
+    md-datepicker button,
+    input,
+    select,
+    textarea {
+        vertical-align: middle !important;
+    }
+
+    .md-datepicker-calendar-pane {
+        z-index: 9999 !important;
+    }
+
+    .modal-body label {
+        width: 111px;
+    }
+
+    .chart {
+        width: 600px;
+        height: 300px;
+    }
+
+    .btn-lg {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+</style>
+<p class="text-center">
+    <strong>欢迎您使用iRIS数据采集工具(版本号：v3.0)</strong>
+</p>
+
+
+
+<md-list>
+    <md-subheader class="md-no-sticky"><strong>采集概况</strong></md-subheader>
+    <md-divider></md-divider>
+    <!--<md-list-item ng-repeat="log in T.logs"> &lt;!&ndash;ng-click="T.showLogDetails(log, $event)"&ndash;&gt;
+        <p flex>{{ log.name }}</p>
+        <span class="md-no-sticky md-caption">{{log.time}}</span>
+    </md-list-item>-->
+</md-list>
+
+
+
+<div class="row" style="margin-top: 25px;margin-left: -6px">
+    <div class="col-md-6" style="position: relative;">
+            <loading></loading>
+        <div e-charts e-option="option" class="chart"></div>
+    </div>
+    <div class="col-md-6">
+            <loading></loading>
+        <div e-charts e-option="_option" class="chart"></div>
+    </div>
+</div>

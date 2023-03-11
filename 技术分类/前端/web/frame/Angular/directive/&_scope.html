@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh" ng-app="myApp">
+  <head>
+    <meta charset="UTF-8" />
+    <title>AngularJS入门学习</title>
+    <script type="text/javascript" src="https://cdn.bootcss.com/angular.js/1.7.8/angular.min.js"></script>
+  </head>
+  <body>
+    <h3>
+      & 局部 scope 属性<br />
+
+      & 方式提供一种途经是 directive 能在父 scope 的上下文中执行一个表达式。此表达式可以是一个 function。 比如当你写了一个
+      directive，当用户点击按钮时，directive 想要通知 controller，controller 无法知道 directive 中发生了什么，也许你可以通过使用 angular 中的 event
+      广播来做到，但是必须要在 controller 中增加一个事件监听方法。 最好的方法就是让 directive 可以通过一个父 scope 中的 function，当 directive
+      中有什么动作需要更新到父 scope 中的时候，可以在父 scope 上下文中执行一段代码或者一个函数。
+    </h3>
+    <div ng-controller="myController">
+      <div>
+        父scope：
+        <div>Say：{{ value }}</div>
+      </div>
+      <div>
+        隔离scope：
+        <div isolated-directive action12="action1()"></div>
+      </div>
+    </div>
+  </body>
+  <script type="text/javascript">
+    var app = angular.module('myApp', []);
+    app
+      .controller('myController', function($scope) {
+        $scope.value = 'hello world';
+        $scope.action1 = function() {
+          $scope.value = Math.random();
+        };
+      })
+      .directive('isolatedDirective', function() {
+        return {
+          scope: {
+            action12: '&'
+          },
+          template: '<input type="button" value="在directive中执行父scope定义的方法" ng-click="action12()"/>'
+        };
+      });
+  </script>
+</html>

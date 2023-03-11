@@ -1,0 +1,347 @@
+<style>
+    .listUL, .listUL li {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .listUL li {
+        padding: 8px;
+    }
+
+    .listUL li:nth-child(even) {
+        background-color: #f1f1f1;
+    }
+
+    ._md-select-menu-container {
+        z-index: 9999 !important;
+    }
+
+    .md-datepicker-calendar-pane {
+        z-index: 9999 !important;
+    }
+    .ztree li span.button.iconTask_ico_docu{
+        background-position: -112px -49px;
+        background-repeat: no-repeat;
+    }
+    .ztree li span.button.iconGroup_ico_close,.ztree li span.button.iconGroup_ico_docu{
+        background-position: -112px 0px;
+        background-repeat: no-repeat;
+    }
+    .ztree li span.button.iconGroup_ico_open{
+        background-position: -111px -17px;
+        background-repeat: no-repeat;
+    }
+    .margin-zero{
+        margin-right: 0px;
+    }
+
+</style>
+
+
+<div class="padding title-ground" layout="row">
+    <div class="navbar-title" layout="row" layout-align="left center">
+
+        <div class="imgTimer margin-right"></div>
+        <b class="titleText">计划管理</b>
+    </div>
+    <span flex></span>
+    <div>
+        <!--<button id="newBtn" class="btn btn-info" data-toggle="modal" data-target="#editPlan" ng-click="T.showButton(0)">-->
+            <!--新增计划-->
+        <!--</button>-->
+        <button id="newBtn" class="btn btn-info" ng-click="T.editTimer($event , true)">
+            新增计划
+        </button>
+    </div>
+</div>
+
+<div class="title-ground margin padding">
+    <!--<div layout="row" class="padding-bottom">
+        <div layout="row">
+            <label class="margin-top-sm">过滤器：</label>
+            <input type="text" class="form-control margin-right" style="width:300px;height:30px;" ng-model="T.searchName">
+        </div>
+        <button class="btn btn-info" type="button" style="height:30px;padding-top:4px;" ng-click="T.queryList()">搜索</button>
+    </div>-->
+
+    <table class="table table-hover">
+        <thead>
+        <tr class="tableColor">
+            <th>序号</th>
+            <th>计划名称</th>
+            <th>计划执行周期</th>
+            <th>上次计划执行时间</th>
+            <th>下次计划执行时间</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="item in T.list">
+            <td>{{($index+1)+(T.$scope.size*(T.$scope.cp-1))}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.startTime|date:"yyyy/MM/dd "}}~{{item.endTime|date:"yyyy/MM/dd "}}</td>
+            <td>{{item.preDateTime|date:"yyyy-MM-dd HH:mm:ss"}}</td>
+            <td>{{item.nextDateTime|date:"yyyy-MM-dd HH:mm:ss"}}</td>
+            <td>
+                {{item.delFlg=='0'?'启用':'停用'}}
+            </td>
+            <!--<td>{{T.getMsg(item)}}</td>-->
+            <td>
+                <a href="javascript:" style="text-decoration: none;" ng-click="T.editTimer(item)">
+                    <md-icon>mode_edit</md-icon>
+                    <md-tooltip>修改计划</md-tooltip>
+                </a>
+                <a href="javascript:" style="text-decoration: none;" class="margin-zero"
+                   ng-click="T.initTreeData(item.id,'search')"
+                   data-toggle="modal" data-target="#configurePlan" onfocus="this.blur();">
+                    <md-icon>playlist_add</md-icon>
+                    <md-tooltip>配置任务</md-tooltip>
+                </a>
+                <a href="javascript:" style="text-decoration: none;" class="margin-zero" ng-show="item.delFlg!=0"
+                   ng-click="T.start(item.id)" onfocus="this.blur();">
+                    <md-icon>play_arrow</md-icon>
+                    <md-tooltip>启用计划</md-tooltip>
+                </a>
+                <a href="javascript:" style="text-decoration: none;" class="margin-zero" ng-show="item.delFlg==0"
+                   ng-click="T.suspend(item.id)" onfocus="this.blur();">
+                    <md-icon><i class="mdui-icon material-icons">&#xe034;</i></md-icon>
+                    <md-tooltip>暂停计划</md-tooltip>
+                </a>
+                <a href="javascript:" style="text-decoration: none;" class="margin-right"
+                   ng-click="T.remove(item.id)" onfocus="this.blur();">
+                    <md-icon>delete</md-icon>
+                    <md-tooltip>删除</md-tooltip>
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <!--    <ul class="listUL">
+            <li layout="row" ng-repeat="item in T.list">
+              &lt;!&ndash;  <div style="width:50px;"><span class="TIcon">{{$index+1}}</span></div>&ndash;&gt;
+                <div style="width:50px;">{{$index+1}}</div>
+                <div style="padding-top:3px; width:180px; overflow:hidden; text-overflow:ellipsis; white-space: nowrap;">{{item.name}}</div>
+                <div style="padding:3px 0 0 20px;width: 380px;overflow:hidden; text-overflow:ellipsis; white-space: nowrap;">{{T.getMsg(item)}}</div>
+                <div flex></div>
+                <div style="vertical-align: top;width: 110px;">
+                    <a href="javascript:" style="text-decoration: none;" class="margin-right" ng-click="T.queryPlan(item.id)"
+                       data-toggle="modal" data-target="#editPlan" onfocus="this.blur();">
+                        <md-icon>mode_edit</md-icon>
+                        <md-tooltip>修改计划</md-tooltip>
+                    </a>
+                    <a href="javascript:" style="text-decoration: none;" class="margin-right" ng-click="T.initTreeData(item.id)"
+                       data-toggle="modal" data-target="#configurePlan" onfocus="this.blur();">
+                        <md-icon>playlist_add</md-icon>
+                        <md-tooltip>配置任务</md-tooltip>
+                    </a>
+                    <a href="javascript:" style="text-decoration: none;" class="margin-right"
+                       ng-click="T.remove(item.id)" onfocus="this.blur();">
+                        <md-icon>delete</md-icon>
+                        <md-tooltip>删除</md-tooltip>
+                    </a>
+                </div>
+            </li>
+        </ul>-->
+    <!--page 分页-->
+    <page class="text-right"></page>
+</div>
+
+
+<!-- Modal 配置任务 -->
+<div class="modal fade" id="configurePlan" tabindex="-1" role="dialog" style="margin-top:25px;"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width:700px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" ng-click="T.cancel()">&times;</span></button>
+                <h4 class="modal-title">配置任务</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <input type="text" ng-change="T.initTreeData('')" ng-model="T.filterKey" placeholder="输入关键词过滤"/>
+                    <tree id="treeDemo"></tree>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info btn-sm"
+                        ng-click="T.savePlan()" data-dismiss="modal">提交
+                </button>
+                <button type="button" class="btn btn-default btn-sm"
+                        ng-click="T.cancel()" data-dismiss="modal">关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal 添加计划-->
+<div class="modal fade" id="editPlan" tabindex="-1" role="dialog" style="margin-top:25px;"
+     aria-labelledby="myModalLabel" ng-click="T.close()">
+    <div class="modal-dialog" role="document" style="width:720px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" ng-click="T.cancel()">&times;</span></button>
+                <h4 class="modal-title">添加计划</h4>
+            </div>
+            <div class="modal-body">
+                <div class="md-dialog-content" style="width: 700px;">
+                    <md-input-container class="md-block" style="margin-bottom: 0;">
+                        <input type="text" placeholder="计划名称" ng-model="T.currentPlan.name" md-autofocus>
+                    </md-input-container>
+
+                    <md-tabs md-dynamic-height md-selected="T.currentPlan.frequencyType" layout-padding>
+                        <md-tab label="一次" layout-padding>
+                            <div layout="row" layout-align="start center">
+                                <md-input-container class="md-block" flex>
+                                    <label>设置启动时间</label>
+                                    <cu-time-select multiple ng-model="T.currentPlan.timer.bootTime"></cu-time-select>
+                                </md-input-container>
+                                <!--设置分钟-->
+                                <md-input-container class="md-block" flex>
+                                    <label>设置启动分钟(可选，默认0)</label>
+                                    <cu-minute-time-select
+                                            ng-model="T.currentPlan.timer.bootTimeMinute"></cu-minute-time-select>
+                                </md-input-container>
+                                <!--end-->
+                                <md-datepicker ng-model="T.currentPlan.startTime" required
+                                               md-placeholder="启动日期"></md-datepicker>
+                            </div>
+                        </md-tab>
+
+                        <md-tab label="每天">
+                            <div layout="row">
+                                <md-input-container class="md-block" flex>
+                                    <label>启动时间</label>
+                                    <cu-time-select multiple
+                                                    ng-model="T.currentPlan.timer.bootTime"></cu-time-select>
+                                </md-input-container>
+                                <!--添加分钟-->
+                                <md-input-container class="md-block" flex>
+                                    <label>设置启动分钟(可选，默认0)</label>
+                                    <cu-minute-time-select ng-model="T.currentPlan.timer.bootTimeMinute">
+                                    </cu-minute-time-select>
+                                </md-input-container>
+                                <!--end-->
+                                <md-input-container class="md-block" flex>
+                                    <label>间隔天数</label>
+                                    <input type="number" ng-model="T.currentPlan.timer.interval" min="0">
+                                    <div class="hint">每隔多少天触发</div>
+                                </md-input-container>
+                            </div>
+                        </md-tab>
+
+                        <md-tab label="每周">
+                            <div layout="row">
+                                <md-input-container class="md-block" flex>
+                                    <label>启动时间</label>
+                                    <cu-time-select multiple
+                                                    ng-model="T.currentPlan.timer.bootTime"></cu-time-select>
+                                </md-input-container>
+                                <!--添加分钟-->
+                                <md-input-container class="md-block" flex>
+                                    <label>设置启动分钟(可选，默认0)</label>
+                                    <cu-minute-time-select ng-model="T.currentPlan.timer.bootTimeMinute">
+                                    </cu-minute-time-select>
+                                </md-input-container>
+                                <!--end-->
+                                <md-input-container class="md-block" flex>
+                                    <label>间隔周数</label>
+                                    <input type="number" ng-model="T.currentPlan.timer.interval" min="0">
+                                    <div class="hint">每隔多少周触发</div>
+                                </md-input-container>
+                            </div>
+
+                            <div layout="row" layout-wrap>
+                                <md-checkbox ng-repeat="week in T.weeks"
+                                             ng-checked="T.exists(week[0] , T.currentPlan.timer.weekDays)"
+                                             ng-click="T.toggle(week[0], T.plan.timer.weekDays)">{{week[1]}}
+                                </md-checkbox>
+                            </div>
+                        </md-tab>
+
+                        <md-tab label="每月">
+                            <div layout="row">
+                                <md-input-container class="md-block" flex>
+                                    <label>启动时间</label>
+                                    <cu-time-select multiple
+                                                    ng-model="T.currentPlan.timer.bootTime"></cu-time-select>
+                                </md-input-container>
+                                <!--添加分钟-->
+                                <md-input-container class="md-block" flex>
+                                    <label>设置启动分钟(可选，默认0)</label>
+                                    <cu-minute-time-select style="z-index: 9999"
+                                                           ng-model="T.currentPlan.timer.bootTimeMinute">
+                                    </cu-minute-time-select>
+                                </md-input-container>
+                                <!--end-->
+                                <md-input-container class="md-block" flex>
+                                    <label>选择月</label>
+                                    <cu-month-select multiple
+                                                     ng-model="T.currentPlan.timer.months"></cu-month-select>
+                                </md-input-container>
+                            </div>
+
+                            <md-radio-group ng-model="T.currentPlan.timer.type">
+                                <div layout="row" layout-align="start center">
+                                    <md-radio-button ng-value="0" class="md-primary">
+                                        天
+                                    </md-radio-button>
+                                    <md-input-container class="md-block" flex>
+                                        <label>选择天</label>
+                                        <cu-date-select multiple ng-model="T.currentPlan.timer.days"
+                                                        ng-disabled="T.currentPlan.timer.type != 0"></cu-date-select>
+                                    </md-input-container>
+                                </div>
+
+                                <div layout="row" layout-align="start center">
+                                    <md-radio-button ng-value="1" class="md-primary">
+                                        在
+                                    </md-radio-button>
+
+                                    <md-input-container class="md-block" flex>
+                                        <label>天</label>
+                                        <cu-week-time-select multiple ng-model="T.currentPlan.timer.weekDays"
+                                                             ng-disabled="T.currentPlan.timer.type != 1"></cu-week-time-select>
+                                    </md-input-container>
+                                </div>
+                            </md-radio-group>
+
+                        </md-tab>
+                    </md-tabs>
+
+                    <div ng-if="T.currentPlan.frequencyType != 0">
+                        <h5 style="color: #7C7C7C;margin-bottom: .7em;">计划持续时间</h5>
+                        <div layout="row" layout-align="start center">
+                            <md-datepicker ng-model="T.currentPlan.startTime"
+                                           md-placeholder="开始"></md-datepicker>
+                            <span style="margin: 0 1em 0 2em;">到</span>
+                            <md-datepicker ng-model="T.currentPlan.endTime"
+                                           md-placeholder="结束"></md-datepicker>
+                        </div>
+                    </div>
+
+                    <p>
+                        {{ T.getMsg() }}
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info btn-sm" ng-if="T.add"
+                        ng-click="T.addPlan()">添加
+                </button>
+                <button type="button" class="btn btn-info btn-sm" ng-if="T.update"
+                        ng-click="T.updatePlan()">保存
+                </button>
+                <button type="button" class="btn btn-default btn-sm"
+                        ng-click="T.cancel()" data-dismiss="modal">关闭
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

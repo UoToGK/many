@@ -1,0 +1,122 @@
+<style>
+    md-datepicker button, input, select, textarea{
+        vertical-align:middle !important;
+    }
+    .md-datepicker-input{
+        min-width: 160px !important;
+    }
+    .md-datepicker-calendar-pane{
+        z-index: 9999 !important;
+    }
+    .md-dialog-content label{
+        width:111px;
+    }
+    .position{position: relative}
+    .help-block{
+        position: absolute;left:105px;top:30px;font-size: 12px;
+    }
+</style>
+<md-dialog aria-label="Mango (Fruit)" ng-cloak>
+    <form>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2>新增</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="T.cancel()">
+                    <md-icon>close</md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content" style="width: 600px;">
+                <form name="add" novalidate="novalidate" class="padding-top margin-bottom-md">
+                    <div class="row">
+                        <div class="col-md-6 position" layout="row">
+                            <label class="margin-top-sm labelWidth text-right">用户ID：</label>
+                            <input type="text" class="form-control" ng-model="T.user.uid" name="uid"
+                                   ng-blur="T.checkUnique(T.user.uid);" required>
+                            <span class="help-block"
+                                  ng-show="add.uid.$dirty&&add.uid.$error.required"
+                                  style="color:red">
+                                请填写用户ID
+                            </span>
+                        </div>
+                        <div class="col-md-6" layout="row">
+                            <label class="margin-top-sm labelWidth text-right">密码：</label>
+                            <input type="password" class="form-control"  ng-model="T.user.password"
+                            name="password">
+                            <span class="help-block"
+                                  ng-show="add.password.$dirty&&add.password.$error.required"
+                                  style="color:red">
+                                请填写正确的密码
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row margin-top">
+                        <div class="col-md-6" layout="row">
+                            <label class="margin-top-sm labelWidth text-right">姓名：</label>
+                            <input type="text" class="form-control"  ng-model="T.user.name" name="name">
+                            <span class="help-block"
+                                ng-show="add.name.$dirty&&add.name.$error.required"
+                                style="color:red">
+                                请填写用户名
+                            </span>
+                        </div>
+                        <div class="col-md-6" layout="row">
+                            <label class="margin-top-sm labelWidth text-right">邮箱：</label>
+                            <input type="email" class="form-control" ng-model="T.user.mail" name="mail">
+                            <span class="help-block"
+                                  ng-show="add.mail.$dirty&&add.mail.$error.required"
+                                  style="color:red">
+                                email格式不正确
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row margin-top-md">
+                        <div class="col-md-6" layout="row">
+                            <label class="margin-top-sm labelWidth text-right">角色：</label>
+                            <select class="form-control"  ng-model="Group">
+                                <option  ng-repeat="role in T.roleList" value="{{role.id}}"
+                                         ng-model="T.user.roleId">{{role.name}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6" layout="row">
+                            <label class="margin-top-sm labelWidth text-right">手机：</label>
+                            <input type="text" class="form-control" ng-model="T.user.mobile" name="mobile">
+                            <span class="help-block"
+                                  ng-show="add.mobile.$dirty&&add.mobile.$error.required"
+                                  style="color:red">
+                                格式不正确
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row margin-top">
+                        <div class="col-md-6" layout="row">
+                            <label class="margin-top-sm labelWidth text-right">所属组织：</label>
+                            <input type="email" class="form-control"  ng-model="T.user.organization"
+                                   name="organization">
+                            <span class="help-block"
+                                  ng-show="add.organization.$dirty&&add.organization.$error.required"
+                                  style="color:red">
+                                格式不正确
+                            </span>
+                        </div>
+                        <div class="col-md-6" layout="row">
+                            <label class="margin-top-sm labelWidth text-right">过期日期：</label>
+                            <md-datepicker class="form-control" style="padding:0 12px;"
+                                           ng-model="T.user.expiredDate"></md-datepicker>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions class="text-right" ng-click="T.saveUser(T.user);">
+            <md-button >
+                提交
+            </md-button>
+            <md-button style="margin-right:20px;" ng-click="T.cancel()">
+                取消
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

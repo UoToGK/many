@@ -1,0 +1,138 @@
+<style>
+    dl{
+        list-style: none; margin:0; padding:0;
+        width:300px;
+        min-height: 300px;
+        border:1px solid #ededed;
+    }
+    dl dt{
+        background: #e9ebfa;
+        color:#666;
+        text-align: center;
+    }
+    dl dt,dd{
+        height:40px;
+        line-height: 40px;
+        border-bottom: 1px solid #ededed;
+    }
+    dl dd{
+        padding-left:100px;
+    }
+    dl dd input{
+        padding-left:20px;
+    }
+    dl dd.active{
+        background: #a6c0d9;
+        color:#fff;
+    }
+    .actionBar{
+        text-align: center;
+        height:40px;
+        line-height: 40px;
+        background: #e9f0f8;
+    }
+    .actionBar span{color:#7cb3eb}
+    .transIcon{
+        margin:150px 30px 0 30px;
+        transform:rotate(90deg);
+        -ms-transform:rotate(90deg); /* Internet Explorer */
+        -moz-transform:rotate(90deg); /* Firefox */
+        -webkit-transform:rotate(90deg); /* Safari 和 Chrome */
+        -o-transform:rotate(90deg); /* Opera */
+    }
+    input[type="radio"]{
+        margin-top:0 !important;
+        margin-right:5px !important;
+    }
+    input[type="checkbox"]{
+        margin-right:5px !important;
+    }
+</style>
+<div class="padding title-ground" layout="row">
+    <div class="navbar-title" layout="row" layout-align="left center">
+        <div class="imgMember margin-right"></div>
+        <b class="titleText">成员管理</b>
+    </div>
+</div>
+<div class="title-ground padding margin">
+    <div layout="row" style="margin:0 auto;width:674px;">
+        <div>
+            <dl style="height: 500px; overflow-y: auto;">
+                <dt>项目</dt>
+                <dd ng-repeat="item in T.porjectList" ng-click="T.userClick($event,item.id)"
+                    layout="row" layout-align="left center">
+                    <input type="radio" name="roles" ng-checked="item.selected">
+                    <span>{{item.name}}</span>
+                </dd>
+            </dl>
+        </div>
+        <div class="">
+            <span class="transIcon glyphicon glyphicon-sort"></span>
+        </div>
+        <div>
+            <dl>
+                <dt>用户列表</dt>
+                <dd ng-repeat="item in T.roleUserListRAW"
+                    layout="row" layout-align="left center">
+                    <input type="checkbox" ng-checked="item.selected" ng-model="item.selected">
+                    {{item.name}}
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <div class="text-center margin-top">
+        <button type="button" class="btn btn-sm margin-right" ng-click="T.save()">确认</button>
+        <button type="button" class="btn btn-sm">取消</button>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="addRole" tabindex="-1" role="dialog"  style="margin-top:25px;"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width: 340px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">添加</h4>
+            </div>
+            <div class="modal-body">
+                <div layout="row">
+                    <input hidden ng-model="T.updateItem.id">
+                    <input class="form-control margin-right" type="text" style="height:30px;padding-top:4px;"
+                           ng-model="T.roleName">
+                    <button class="btn btn-info btn-sm" ng-click="T.addRole();" data-dismiss="modal">确定</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editRole" tabindex="-1" role="dialog"  style="margin-top:25px;"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog " role="document" style="width:340px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">修改</h4>
+            </div>
+            <div class="modal-body">
+                <div layout="row">
+                    <input class="form-control margin-right" type="text" style="height:30px;padding-top:4px;"
+                           ng-model="T.roleName">
+                    <button class="btn btn-info btn-sm" ng-click="T.updateRole();" data-dismiss="modal">确定</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

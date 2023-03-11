@@ -1,0 +1,50 @@
+/* 
+  animation-timing-function 使用名为三次贝塞尔（Cubic Bezier）函数的数学函数，来生成速度曲线。您能够在该函数中使用自己的值，也可以预定义的值：
+linear	动画从头到尾的速度是相同的。	
+ease	默认。动画以低速开始，然后加快，在结束前变慢。	
+ease-in	动画以低速开始。	
+ease-out	动画以低速结束。	
+ease-in-out	动画以低速开始和结束。	
+cubic-bezier(n,n,n,n)	在 cubic-bezier 函数中自己的值。可能的值是从 0 到 1 的数值
+
+animation-iteration-count: n|infinite;
+n	定义动画播放次数的数值。	
+infinite	规定动画应该无限次播放
+
+animation-direction: normal|alternate;
+normal	默认值。动画应该正常播放。	
+alternate	动画应该轮流反向播放。
+
+animation-fill-mode : none | forwards | backwards | both;
+none	不改变默认行为。
+forwards	当动画完成后，保持最后一个属性值（在最后一个关键帧中定义）。
+backwards	在 animation-delay 所指定的一段时间内，在动画显示之前，应用开始属性值（在第一个关键帧中定义）。
+both	向前和向后填充模式都被应用。
+ */
+@keyframes mymove {
+  from {
+    top: 0px;
+  }
+  to {
+    top: 200px;
+  }
+}
+.test {
+  /* animation: name duration timing-function delay iteration-count direction fill-mode; */
+  animation: mymove 5s ease-in-out infinite alternate both;
+  width: 200px;
+  height: 200px;
+  background: red;
+  position: relative;
+  /* 一定要加position:relative;  */
+}
+.container {
+  width: 100%;
+  height: 100px;
+  padding: 200px;
+  border: 1px solid red;
+}
+.testFloat {
+  float: left;
+  border: 1px solid yellow;
+}

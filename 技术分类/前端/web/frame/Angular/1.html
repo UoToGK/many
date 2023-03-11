@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="plunker">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <!-- https://www.cnblogs.com/baobaodada/p/6005802.html -->
+  <title>Document</title>
+</head>
+<script src="./源码.js"></script>
+
+<body>
+  <level-one>
+    <level-two>
+      <level-three>
+        Hello
+        <div ng-controller="myController">
+          {{name}}
+        </div>
+      </level-three>
+    </level-two>
+  </level-one>
+</body>
+<script>
+  var app = angular.module("plunker", []);
+
+  function createDirective(name) {
+    return function () {
+      return {
+        restrict: "E",
+        compile: function (tElem, tAttrs) {
+          // console.log(name + ": compile => " + tElem.html());
+          return {
+            pre: function (scope, iElem, iAttrs) {
+              // console.log(name + ": pre link => " + iElem.html());
+            },
+            post: function (scope, iElem, iAttrs) {
+              // console.log(name + ": post link => " + iElem.html());
+            }
+          };
+        }
+      };
+    };
+  }
+
+
+  app.directive("levelOne", createDirective("levelOne"));
+  app.directive("levelTwo", createDirective("levelTwo"));
+  app.directive("levelThree", createDirective("levelThree"));
+  app.controller("myController", function ($scope) {
+    $scope.name = "hello world";
+  })
+</script>
+
+</html>

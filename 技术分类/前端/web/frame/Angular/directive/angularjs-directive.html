@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh" ng-app="myApp">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Angular Directive</title>
+  </head>
+  <script src="https://cdn.bootcss.com/angular.js/1.7.8/angular.min.js"></script>
+
+  <body>
+    <p>
+      Directive（指令）笔者认为是AngularJ非常强大而有有用的功能之一。
+      它就相当于为我们写了
+      <strong>公共的自定义DOM元素或CLASS属性或ATTR属性</strong>
+      并且它不只是单单如此，你还可以在它的基础上来操作scope、绑定事件、更改样式等。
+      通过这个Directive，我们可以封装很多公共指令，比如分页指令、自动补全指令等等。
+      然后在HTML页面里只需要简单的写一行代码就可以实现很多强大的功能。
+      一般情况下，需要用Directive有下面的情景：
+      1.使你的Html更具语义化，不需要深入研究代码和逻辑即可知道页面的大致逻辑。
+      2. 抽象一个自定义组件，在其他地方进行重用。
+    </p>
+    AngularJs的指令定义大致如下
+    <br />
+    <textarea>
+	angular.module("app",[]).directive("directiveName",function(){
+		return{
+		 //通过设置项来定义
+		};
+	})
+</textarea>
+	<span>只要讲解一下scope用法</span>
+	<p>
+		scope <br />
+（1）默认值false。表示继承父作用域; <br />
+
+（2）true。表示继承父作用域，并创建自己的作用域（子作用域）; <br />
+
+（3）{}。表示创建一个全新的隔离作用域； <br />
+	</p>
+	当为false时候，儿子继承父亲的值，改变父亲的值，儿子的值也随之变化，反之亦如此。（继承不隔离）<br>
+
+	当为true时候，儿子继承父亲的值，改变父亲的值，儿子的值随之变化，但是改变儿子的值，父亲的值不变。（继承隔离）<br>
+
+	为{}时候，没有继承父亲的值，所以儿子的值为空，改变任何一方的值均不能影响另一方的值。（不继承隔离）<br>
+
+	当你想要创建一个可重用的组件时隔离作用域是一个很好的选择，通过隔离作用域我们确保指令是‘独立’的,并可以轻松地插入到任何HTML app中，<br>
+	并且这种做法防止了父作用域被污染；<br>
+
+	<ul>隔离作用域可以通过绑定策略来访问父作用域的属性。
+
+		<li>@ 绑定一个局部 scope 属性到当前 dom 节点的属性值。结果总是一个字符串，因为 dom 属性是字符串。
+			<li>
+				@ 方式局部属性用来访问 directive 外部环境定义的字符串值，主要是通过 directive 所在的标签属性绑定外部字符串值。这种绑定是单向的，即父 scope 的绑定变化，directive 中的 scope 的属性会同步变化，而隔离 scope 中的绑定变化，父 scope 是不知道的。
+			</li>
+		</li>
+		<li> 提供一种方式执行一个表达式在父 scope 的上下文中。如果没有指定 attr 名称，则属性名称为相同的本地名称。
+			<li></li>
+		</li>
+		<li>= 通过 directive 的 attr 属性的值在局部 scope 的属性和父 scope 属性名之间建立双向绑定。</li>
+	</ul>
+	<div ng-controller='MainController'>
+        父亲:{{name}}<input ng-model="name" />
+        <div my-directive></div>
+  </div>
+<script type="text/javascript">
+var app = angular.module('myApp', []);
+app.controller('MainController', function ($scope) {
+           $scope.name = 'UOWO';
+});
+app.directive('myDirective', function () {
+            return {
+                restrict: 'EA',
+                scope:false,
+                template: '<div>儿子:{{ name }}<input ng-model="name"/></div>'
+            };
+});
+</script>
+  </body>
+</html>

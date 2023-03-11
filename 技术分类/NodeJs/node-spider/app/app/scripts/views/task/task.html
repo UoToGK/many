@@ -1,0 +1,83 @@
+<div>
+    <!-- 设计器主视图 -->
+    <designer-main option="T.steps" setting="T.setting"  current-task="T.task" instance="designerMain"></designer-main>
+
+
+    <!-- 左侧菜单 -->
+    <div class="mini-task-navbar" ng-class="{open : true}"  style="width:60px;margin-left:10;">
+        <div class="mini-task-navbar-bg" layout="column">
+            <md-button class="md-icon-button" layout="row"
+                       ng-click="designerMain.create(T.BEHAVIOR.openLink)">
+                <md-icon>link</md-icon>
+                <md-tooltip md-direction="right">
+                    访问链接
+                </md-tooltip>
+            </md-button>
+            <md-button class="md-icon-button" layout="row"
+                       ng-click="designerMain.create(T.BEHAVIOR.customCycle)">
+                <md-icon>autorenew</md-icon>
+                <md-tooltip md-direction="right">
+                    自定义循环
+                </md-tooltip>
+            </md-button>
+            <md-button class="md-icon-button" layout="row">
+                <md-icon class="rotate-180">call_split</md-icon>
+                <md-tooltip md-direction="right">
+                    流程控制
+                </md-tooltip>
+            </md-button>
+            <md-button class="md-icon-button" layout="row"
+                       ng-click="designerMain.create(T.BEHAVIOR.pageTitle)">
+                <md-icon class="rotate-180">title</md-icon>
+                <md-tooltip md-direction="right">抓取当前标题</md-tooltip>
+            </md-button>
+
+            <md-button class="md-icon-button" layout="row"
+                       ng-click="designerMain.create(T.BEHAVIOR.pageUrl)">
+                <md-icon class="rotate-180">link</md-icon>
+                <md-tooltip md-direction="right">抓取当前链接</md-tooltip>
+            </md-button>
+            <md-button class="md-icon-button" layout="row"
+                       ng-click="designerMain.create(T.BEHAVIOR.pageContent)">
+                <md-icon class="rotate-180">content_paste</md-icon>
+                <md-tooltip  md-direction="right">抓取当前内容</md-tooltip>
+            </md-button>
+            <md-button class="md-icon-button" layout="row"
+                       ng-click="designerMain.create(T.BEHAVIOR.autoPaging)">
+                <md-icon class="rotate-180"> <i class="mdui-icon material-icons">&#xe920;</i></md-icon>
+                <md-tooltip  md-direction="right">下拉分页</md-tooltip>
+            </md-button>
+
+            <span flex></span>
+
+            <md-button class="md-icon-button" layout="row"
+                       ng-show="T.executor"
+                       ng-click="T.remove()">
+                <md-icon>close</md-icon>
+                <md-tooltip md-direction="right">关闭测试</md-tooltip>
+            </md-button>
+            <md-button class="md-icon-button" layout="row"
+                       ng-show="!T.isRunning"
+                       ng-click="T.testRun()">
+                <md-icon>play_arrow</md-icon>
+                <md-tooltip md-direction="right">测试运行</md-tooltip>
+            </md-button>
+            <md-button class="md-icon-button" layout="row"
+                       ng-show="T.isRunning"
+                       ng-click="T.stopRun()">
+                <md-icon>stop_arrow</md-icon>
+                <md-tooltip md-direction="right">结束运行</md-tooltip>
+            </md-button>
+            <md-button class="md-icon-button" layout="row"
+                       ng-click="T.save()" ng-hide="T.isRunning">
+                <md-icon>save</md-icon>
+                <md-tooltip md-direction="right">保存</md-tooltip>
+            </md-button>
+            <md-button class="md-icon-button" layout="row"
+                       ng-click="T.exit()" ng-hide="T.isRunning">
+                <md-icon>exit_to_app</md-icon>
+                <md-tooltip md-direction="right">返回</md-tooltip>
+            </md-button>
+        </div>
+    </div>
+</div>

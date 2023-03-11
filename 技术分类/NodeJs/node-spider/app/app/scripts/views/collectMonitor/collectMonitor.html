@@ -1,0 +1,45 @@
+<div class="padding title-ground" layout="row">
+    <div class="navbar-title" layout="row" layout-align="left center">
+        <div class="imgCollect margin-right"></div>
+        <b class="titleText">采集端监控</b>
+    </div>
+    <span flex></span>
+    <div>
+        <label style="color:#6b6b6b">最近刷新时间:</label>
+        <span>{{T.currentTime}}</span>
+    </div>
+</div>
+
+<div class="title-ground padding margin">
+    <div class="form-group" layout="row">
+        <label class="margin-top-sm">更新频率：</label>
+        <select class="form-control" ng-model="T.selectedRate" ng-change="T.show();" style="width:200px;height:30px;">
+            <option ng-repeat="item in T.ratelist" value="{{item.minute}}">{{item.value}}</option>
+        </select>
+    </div>
+
+
+    <!--table 表格-->
+    <table class="table">
+        <tr class="tableColor">
+            <th>序号</th>
+            <th>采集端名称</th>
+            <th>TOKEN</th>
+            <th>采集端IP</th>
+            <th>当前负载</th>
+            <th>上线时间</th>
+            <th>最近一次下线时间</th>
+            <th>状态</th>
+        </tr>
+        <tr ng-repeat="collect in T.collectList">
+            <td>{{$index+1}}</td>
+            <td>{{collect.name}}</td>
+            <td>{{collect.token}}</td>
+            <td>{{collect.ip}}:{{collect.port}}</td>
+            <td>{{collect.currentSize}}/{{collect.capacity}}</td>
+            <td>{{collect.onlineTime}}</td>
+            <td>{{collect.offlineTime}}</td>
+            <td>{{collect.collectorState}}</td>
+        </tr>
+    </table>
+</div>

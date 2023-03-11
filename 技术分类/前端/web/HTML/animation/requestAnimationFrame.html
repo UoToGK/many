@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>requestAnimationFrame Demos</title>
+</head>
+<style>
+    #status {
+        background-color: green;
+        height: 20px;
+        width: 1%;
+    }
+</style>
+
+<body>
+    <div id="status" style="width: 100px"></div>
+    <p>常见误区
+        element.style.width
+
+        通过 element.style.width 这个方法，获取到的是在html元素中内联的宽度。
+
+        比如：
+        <pre>
+            &ltdiv id="div1" style="width: 100px;"&gt &lt/div&gt
+        </pre>
+
+        如果是上面这种写法，用 div1.style.width 这种方法就可以获取div1的宽度。
+
+        但是如果div1的样式都是在里
+        <pre>
+            &ltstyle &gt
+        </pre>写的，或者是连了别的css文件，用 element.style.xxx 这种写法就获取不到元素对应的样式属性了
+    </p>
+</body>
+<script>
+
+    (function () {
+
+        var div = document.getElementById("status");
+        function updateProgress() {
+            div.style.width = (parseInt(div.style.width) + (10 * Math.random() + 5)) + 'px'
+            if (parseInt(div.style.width) < 1000) { setTimeout(updateProgress, 16.7); } else {
+                console.timeEnd('dd')
+            }
+
+        }
+        console.time('dd')
+        setTimeout(updateProgress, 16.7);
+
+    })();
+
+
+
+    function getStyle(obj, styleName) {
+        if (obj.currentStyle) {
+            return obj.currentStyle[styleName];
+        } else {
+            return getComputedStyle(obj, false)[styleName];
+        }
+    }
+    console.time('renderer')
+    function renderer() {
+        var div = document.getElementById("status");
+        console.log(div.style.width, parseInt(div.style.width) < 1000);
+
+        div.style.width = (parseInt(div.style.width) + (10 * Math.random() + 5)) + 'px';
+        let id = requestAnimationFrame(renderer)
+
+        if (parseInt(div.style.width) > 1000) { cancelAnimationFrame(id); console.timeEnd('renderer') }
+    }
+
+    renderer()
+
+</script>
+
+</html>

@@ -1,0 +1,87 @@
+<div ng-controller="StepCapturesCtrl as T" layout-padding>
+    <div>
+        <style scoped>
+            md-switch {
+                margin: 0;
+            }
+
+            input {
+                width: 65px;
+                height: 24px;
+            }
+        </style>
+
+        <div style="overflow: hidden">
+            <h4 style="margin: .7em 0;float: left">数据抓取</h4>
+            <input style="float: right;width:25px;" type="button" value="+" ng-click="T.addFixValue()" />
+        </div>
+    </div>
+
+    <table class="table table-bordered table-hover table-condensed table-captures">
+        <thead>
+            <tr>
+                <th style="width: 50px;">唯一</th>
+                <th style="width: 120px;">字段描述</th>
+                <th>预览</th>
+                <th style="width: 60px;">全局获取</th>
+                <th style="width: 175px;">操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="capture in T.step.captures">
+                <td>
+                    <md-switch ng-model="capture.unique" ng-change="T.changeId(capture)" aria-label="Switch ID">
+                    </md-switch>
+                </td>
+                <td>
+                    <select class="form-control" ng-model="capture.columnName" ng-change="T.colChange(capture)">
+                        <option ng-repeat="item in T.COLUMNS" value="{{item.columnName}}">{{item.columnDesc}}</option>
+                    </select>
+                </td>
+                <td>
+                    <span ng-if="capture.behavior!='fixValue'">采集值：</span><span ng-if="capture.behavior!='fixValue'"
+                        title="{{capture.preview}}">{{capture.preview | overflow:50}}</span>
+                    <input class="form-control" ng-if="capture.behavior=='fixValue'" type="text"
+                        ng-model="capture.preview" />
+
+                    <span ng-if="capture.behavior!='fixValue'">
+                        <br />
+                        <span ng-if="!T.isEdit(capture)">选择器：</span>
+                        <span ng-if="!T.isEdit(capture)">{{capture.selector}}</span>
+                        <!--<input style="width: 80%;" ng-if="T.isEdit(capture)" type="text" ng-model="capture.selector"/>-->
+
+                        <div class="input-group" ng-if="T.isEdit(capture)">
+                            <span class="input-group-addon">选择器</span>
+                            <input type="text" class="form-control" ng-model="capture.selector" ng-change="">
+                            <span class="input-group-addon" ng-click="T.toggleEdit(capture)">ok</span>
+                            <span class="input-group-addon" ng-click="T.cancelEdit(capture)">X</span>
+                        </div>
+                    </span>
+
+                </td>
+                <td>
+                    <md-switch ng-model="capture.isGlobalPath" aria-label="全局获取"></md-switch>
+                </td>
+                <td>
+                    <a href="javascript:" ng-click="T.remove($index)">删除</a>
+                    <a href="javascript:" role="button" ng-if="capture.behavior=='contentList'"
+                        ng-click="T.expand(capture)">扩大</a>
+                    <a href="javascript:" role="button" ng-if="capture.behavior=='contentList'"
+                        ng-click="T.reset(capture)">还原</a>
+                    <a href="javascript:" ng-click="T.filter(capture)">匹配规则</a>
+                    <a href="javascript:" ng-if="capture.behavior!='fixValue'&&!T.isEdit(capture)"
+                        ng-click="T.toggleEdit(capture)">编辑</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="hint" style="margin-left: 1em;">
+        tips:同时只能存在一个主键,主键用来在抓取数据时,不处理重复数据,当重复数据达到一定数量后,循环程序将自动终止
+    </div>
+
+    <div class="hint" style="margin-left: 1em;">
+        tips:关于匹配规则,如果目标数据无法满足匹配规则时,本次循环的数据将会丢弃,进入下一次循环
+    </div>
+</div>
+</div>

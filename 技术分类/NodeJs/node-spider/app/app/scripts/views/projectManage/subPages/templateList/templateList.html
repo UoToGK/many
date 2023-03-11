@@ -1,0 +1,155 @@
+<style>
+    ul,ul li{
+        list-style: none; margin:0; padding:0;
+    }
+    ul li{
+        padding:8px;
+    }
+    ul li:nth-child(even){
+        background-color:#f1f1f1;
+    }
+    .line_link{
+        text-decoration: none;
+        cursor: pointer;
+    }
+    .templateDatail{
+        width: 89%;
+        min-height: 100px;
+        background: #28E;
+        position: absolute;
+        top: 128px;
+        left: 51px;
+    }
+
+</style>
+
+<div class="padding title-ground" layout="row">
+    <div>
+        <button type="button" class="btn btn-info"
+                data-toggle="modal" data-target="#addTemplate" ng-click="T.addTemplate()">新增模板</button>
+        <!-- <a class="btn btn-primary btn-search"
+            ng-href="#/projectManage/templateList/templateAdd?pid={{T.pid}}">新增模板
+         </a>-->
+    </div>
+    <span flex></span>
+    <div>
+        <button class="btn btn-info btn-sm" type="button" ng-click="T.back()">返回</button>
+    </div>
+</div>
+
+
+<div class="title-ground padding margin" >
+    <ul>
+        <!--pid={{T.pid}}&tid={{group.id}}">-->
+        <li layout="row" ng-repeat="group in T.groupList">
+            <div style="width:50px;"><span class="TIcon">T</span></div>
+            <div style="padding-top:3px;width: 50%">{{group.name}}</div>
+            <div style="padding-top:3px;"> </div>
+            <div style="padding-top:3px;">{{group.id}}</div>
+            <div flex></div>
+            <div style="vertical-align: top">
+                <a class="margin-right line_link" onfocus="this.blur();"
+                   data-toggle="modal" data-target="#templateRes"
+                   ng-click="T.templateRes(T.pid,group.id)">
+                    <md-icon>share</md-icon>
+                    <md-tooltip>模板详情</md-tooltip>
+                </a>
+                <a href="javascript:" style="text-decoration: none;" class="margin-right" onfocus="this.blur();"
+                        data-toggle="modal" data-target="#addTemplate" ng-click="T.editTemplate(group.id,group.name,group.snapshotFlag)">
+                <md-icon>edit</md-icon>
+                <md-tooltip>修改模板名称</md-tooltip>
+            </a>
+                <a href="javascript:" ng-click="T.remove(group.id)" onfocus="this.blur();"
+                   style="text-decoration: none;" class="margin-right">
+                    <md-icon>delete</md-icon>
+                    <md-tooltip>删除模板</md-tooltip>
+                </a>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<!--模板详情-->
+<div class="modal fade" id="templateRes" tabindex="-1" role="dialog"  style="margin-top:25px;"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width:340px">
+        <div class="modal-content">
+            <div class="modal-body" style="padding: 0;">
+                <div class="templateDatail" ng-show="temShow">
+                    <div  class="padding title-ground" layout="row" style="background:#28E">
+                        <b style="height: 32px;cursor:default;line-height: 32px;color: #fff;
+        font-weight: normal;">修改模板字段</b>
+                        <span flex></span>
+                        <div>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span></button>
+                        </div>
+                    </div>
+
+                    <div class="title-ground padding">
+                        <div layout="row" class="margin-bottom">
+                            <input type="text" class="form-control margin-right" style="width: 265px;height:30px;"
+                                   ng-model="T.columnName" placeholder="请输入中文的字段名称">
+                            <button type="button" ng-click="T.temSave()" style="height:30px;padding-top:4px;"
+                                    class="btn btn-info ">{{T.button}} </button>
+                        </div>
+                        <ul>
+                            <li layout="row" ng-repeat="item in T.items" layout-align="center center">
+                                <div style="width:50px;"><span class="TIcon">F</span></div>
+                                <div style="padding-top:3px;">{{item.columnDesc}}</div>
+                                <div flex></div>
+                                <div style="vertical-align: top">
+                                    <a href="javascript:" style="text-decoration: none;" class="margin-right" onfocus="this.blur();"
+                                       ng-click="T.editColumn(item)">
+                                        <md-icon>edit</md-icon>
+                                        <md-tooltip>修改</md-tooltip>
+                                    </a>
+                                    <a href="javascript:" style="text-decoration: none;" class="margin-right" onfocus="this.blur();"
+                                       ng-click="T.temRemove(item.id)">
+                                        <md-icon>delete</md-icon>
+                                        <md-tooltip>删除</md-tooltip>
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Modal 新增项目 -->
+<div class="modal fade" id="addTemplate" tabindex="-1" role="dialog"  style="margin-top:25px;"
+     aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width:400px ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">{{T.title}}新模板</h4>
+            </div>
+            <div class="modal-body">
+                <div layout="row" class="margin-bottom">
+                    <span style="height:34px;line-height: 34px;">模板名称：</span><input type="text" style="width: 75%;"  class="form-control margin-right"
+                           placeholder="请输入名称" ng-model="T.templateName">
+                </div>
+                <div layout="row" class="margin-bottom">
+                    <span style="height:34px;line-height: 34px;">保存快照：</span>
+                    <input type="radio" name="snapshotFlag" style="width: 15px;margin-right: 10px;" value="Y" class="form-control margin-right" ng-model="T.snapshotFlag" />
+                    <span style="line-height: 38px;margin-right: 20px;">是</span>
+                    <input type="radio" name="snapshotFlag" style="width: 15px;margin-right: 10px;" value="N" class="form-control margin-right" ng-model="T.snapshotFlag" />
+                    <span style="line-height: 38px;">否</span>
+                    <!--<input type="radio" name="snapshotFlag" style="width: 75%;" value="Y" class="form-control margin-right" ng-model="T.snapshotFlag" /> 是-->
+                    <!--<input type="radio" name="snapshotFlag" style="width: 75%;" value="N" class="form-control margin-right" ng-model="T.snapshotFlag" /> 否-->
+                </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-info" ng-click="T.save()" data-dismiss="modal">保存</button>
+                <!--<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>-->
+            </div>
+        </div>
+    </div>
+</div>

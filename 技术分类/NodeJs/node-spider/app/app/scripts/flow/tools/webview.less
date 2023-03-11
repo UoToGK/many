@@ -1,0 +1,41 @@
+@defaultColor: #004bdb;
+@cycleColor: #f16320;
+@hoverColor: #ff0057;
+@pagingColor: #e645ce;
+
+// 循环的节点标记的样式
+.iris_cycle, [iris-cycle] {
+  outline: @cycleColor solid 1px !important;
+  outline-offset: -1px;
+  background-color: rgba(131, 255, 130, 0.3) !important;
+  color: #000 !important;
+}
+
+[iris-cycle-childs] > * {
+  outline: @cycleColor solid 1px !important;
+}
+
+// 分页的节点标记的样式
+.iris_paging, [iris-paging] {
+  outline: @pagingColor solid 1px !important;;
+  outline-offset: -1px;
+  background-color: rgba(131, 255, 130, 0.10) !important;
+  color: #000 !important;
+}
+
+// 一般使用此样式来标记,表示元素有动作绑定
+.iris_behavior, [iris-behavior] {
+  outline: @defaultColor solid 1px !important;;
+  outline-offset: -1px;
+  background-color: rgba(145, 149, 255, 0.10) !important;;
+}
+
+// 鼠标滑过时的样式
+.iris_hover, [iris-hover] {
+  outline: @hoverColor dotted thin;
+  outline-offset: .5px;
+  color: #000 !important;
+  background-color: rgba(145, 149, 255, 0.10) !important;;
+  box-shadow: 0 0 3px 2px fadeout(@hoverColor, 50%);
+  cursor: pointer;
+}

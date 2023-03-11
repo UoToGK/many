@@ -1,0 +1,489 @@
+<style>
+    .ztree li span.button.iconTask_ico_docu {
+        background-position: -112px -49px;
+        background-repeat: no-repeat;
+    }
+
+    .ztree li span.button.iconGroup_ico_close,
+    .ztree li span.button.iconGroup_ico_docu {
+        background-position: -112px 0px;
+        background-repeat: no-repeat;
+    }
+
+    .ztree li span.button.iconGroup_ico_open {
+        background-position: -111px -17px;
+        background-repeat: no-repeat;
+    }
+
+    .listUl {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: inherit;
+
+    }
+
+    .listUl,
+    .listUl li {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .listUl li {
+        /* <!-- padding:8px; --> */
+        width: 325px;
+        /*flex: 4;*/
+        height: 168px;
+        display: flex;
+        border: 2px #fcf7fb solid;
+        flex-direction: column;
+        margin-right: 10px;
+    }
+
+    /*.listUl li*/
+    .listUl li .top {
+        display: flex;
+        /*background: #6699FF;*/
+        color: #696768;
+        width: 100%;
+        justify-content: space-between;
+        border-bottom: 1px #f7f2f6 solid;
+        padding-bottom: 7px;
+    }
+
+    .change-true {
+        padding-top: 3px;
+        width: 55%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .change-false {
+        padding-top: 3px;
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+
+    input[readonly='readonly'] {
+        border: 0;
+        background-color: transparent;
+    }
+
+    .glyphicon {
+        color: #ccc;
+        margin-left: 5px;
+    }
+
+    .form-input {
+        padding-left: 10px;
+        height: 26px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    .form-input:focus {
+        border-color: #66afe9;
+        outline: 0;
+        /* box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 4px rgba(102,175,233,.6);
+        -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 4px rgba(102,175,233,.6);*/
+    }
+
+    .setTexts {
+        width: 100%;
+        height: 44px;
+        line-height: 44px;
+        text-align: center;
+        background: #f8f3f7;
+    }
+
+    dl {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        width: 300px;
+        min-height: 300px;
+        border: 1px solid #ededed;
+    }
+
+    dl dt {
+        background: #e9ebfa;
+        color: #666;
+        text-align: center;
+    }
+
+    dl dt,
+    dd {
+        height: 40px;
+        line-height: 40px;
+        border-bottom: 1px solid #ededed;
+    }
+
+    dl dd {
+        padding-left: 100px;
+    }
+
+    dl dd input {
+        padding-left: 20px;
+    }
+
+    dl dd.active {
+        background: #a6c0d9;
+        color: #fff;
+    }
+
+    .actionBar {
+        text-align: center;
+        height: 40px;
+        line-height: 40px;
+        background: #e9f0f8;
+    }
+
+    .actionBar span {
+        color: #7cb3eb
+    }
+
+    .transIcon {
+        margin: 150px 30px 0 30px;
+        transform: rotate(90deg);
+        -ms-transform: rotate(90deg);
+        /* Internet Explorer */
+        -moz-transform: rotate(90deg);
+        /* Firefox */
+        -webkit-transform: rotate(90deg);
+        /* Safari 和 Chrome */
+        -o-transform: rotate(90deg);
+        /* Opera */
+    }
+
+    input[type="radio"] {
+        margin-top: 0 !important;
+        margin-right: 5px !important;
+    }
+
+    input[type="    text-align: center;checkbox"] {
+        margin-right: 5px !important;
+    }
+
+    .userIcon {
+        display: inline-block;
+        height: 21px;
+        line-height: 21px;
+        font-size: 10px;
+        color: #fff;
+        border-radius: 5px;
+        padding: 0 5px;
+        position: absolute;
+        top: 24px;
+        left: -24px;
+        background: #726f71;
+    }
+</style>
+
+
+<div class="padding title-ground" layout="row">
+    <div class="navbar-title" layout="row" layout-align="left center">
+        <div class="imgProject margin-right"></div>
+        <b class="titleText">项目管理</b>
+    </div>
+    <span flex></span>
+    <span flex> <input type="text" class="form-control" ng-change="T.initData()" placeholder="请输入检索项目名"
+            ng-model="T.searchName"></span>
+    <span flex></span>
+    <div>
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#addProject"
+            ng-click="T.addProject()">新增项目</button>
+
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#taskImportModal">导入任务</button>
+    </div>
+
+</div>
+
+<div class="title-ground padding margin">
+    <!-- <div layout="row" class="padding-bottom">
+        <div layout="row">
+            <label class="margin-top-sm">过滤器：</label>
+            <input type="text" class="form-control margin-right" style="width:300px;height:30px;" ng-model="T.searchName">
+        </div>
+        <button class="btn btn-info" type="button" style="height:30px;padding-top:4px;" ng-click="T.initData()">搜索</button>
+    </div>-->
+    <ul class="listUl">
+        <li layout="row" ng-repeat="group in T.groupList" style="margin-bottom:20px;width: 30%;margin-left: 17px;"
+            layout-align="center center" ng-dblclick="T.editContent(group.id,group.name)">
+            <div class="top">
+                <div class="change-{{timeCss}}">
+                    <span class="TIcon" style="display: inline-block;margin-left: 7px;">{{$index+1}}</span>
+                    <input style="width: 80px" type="text" id="{{group.id}}" ng-model="group.name"
+                        ng-keyup="T.editProject(group.id,group.name)" class="form-input" readonly="readonly"
+                        value="{{group.name}}">
+                    <span class="glyphicon glyphicon-ok" id="but1{{group.id}}" style="display: none"
+                        onfocus="this.blur();" ng-click="T.doEdit(group,true)"></span>
+                    <span class="glyphicon glyphicon-remove" id="but2{{group.id}}" style="display: none"
+                        onfocus="this.blur();" ng-click="T.doEdit(group,false)"></span>
+                    <!--<input type="button" id="but1{{group.id}}" style="display: none" value="保存" ng-click="T.doEdit(group,true)">
+                <input type="button" id="but2{{group.id}}" style="display: none" value="取消" ng-click="T.doEdit(group,false)">-->
+                </div>
+                <!--时间格式-->
+                <!--yyyy-MM-dd hh:mm:ss-->
+                <div style="line-height: 31px" ng-show="timeShow">
+                    {{group.createTime|date:"yyyy-MM-dd"}}&nbsp;&nbsp;&nbsp;</div>
+            </div>
+            <div flex></div>
+            <div style="vertical-align: top" class="setTexts">
+                &nbsp;
+                <a style="text-decoration: none;" class="margin-right" onfocus="this.blur();"
+                    ng-href="#/projectManage/templateList?pid={{group.id}}">
+                    <md-icon>share</md-icon>
+                    <md-tooltip>模板管理</md-tooltip>
+                </a>
+                <a href="javascript:" style="text-decoration: none;" class="margin-right" onfocus="this.blur();"
+                    ng-click="T.editProjects(group)">
+                    <md-icon>edit</md-icon>
+                    <md-tooltip>修改</md-tooltip>
+                </a>
+                <a href="javascript:" style="text-decoration: none;" class="margin-right"
+                    ng-click="T.deleteProject(group.id)" onfocus="this.blur();">
+                    <md-icon>delete</md-icon>
+                    <md-tooltip>删除</md-tooltip>
+                </a>
+                <a style="text-decoration: none;position: relative" class="margin-right" data-toggle="modal"
+                    ng-mouseenter="T.userMovePro(group)" ng-mouseleave="T.downPro(group)" data-target="#userPro"
+                    onfocus="this.blur();" ng-click="T.userClick(group,$event,group.id)" href="javascript:void(0)">
+                    <md-icon>account_circle</md-icon>
+                    <span class="userIcon" ng-show="group.showUser">成员管理</span>
+                </a>
+                <a style="text-decoration: none;" class="margin-right" onfocus="this.blur();"
+                    ng-click="T.showTaskList(group.id,group.name)" href="javascript:void(0)">
+                    <md-icon>archive</md-icon>
+                    <md-tooltip>查看任务组</md-tooltip>
+                </a>
+                <a style="text-decoration: none;" class="margin-right" onfocus="this.blur();"
+                    ng-click="T.triggerExportTask(group.id,group.name)" href="javascript:void(0)">
+                    <md-icon><i class="mdui-icon material-icons">&#xe0c3;</i></md-icon>
+                    <md-tooltip>导出任务</md-tooltip>
+                </a>
+            </div>
+        </li>
+    </ul>
+    <!--page 分页-->
+    <page_project class="text-right"></page_project>
+</div>
+<!--导出任务-->
+<div class="modal fade" id="taskTreeModal" tabindex="-1" role="dialog" style="margin-top:25px;"
+    aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width:700px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" ng-click="T.cancelExport()">&times;</span></button>
+                <h4 class="modal-title">任务导出</h4>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <newztree></newztree>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info btn-sm" ng-click="T.exportTask()" data-dismiss="modal">导出
+                </button>
+                <button type="button" class="btn btn-default btn-sm" ng-click="T.cancelExport()" data-dismiss="modal">取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="taskImportModal" tabindex="-1" role="dialog" style="margin-top:25px;"
+    aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width:700px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" ng-click="T.cancelImport()">&times;</span></button>
+                <h4 class="modal-title">任务导入</h4>
+            </div>
+            <div class="modal-body" style="line-height: 40px">
+                <div class="row">
+
+                    <div class="col-md-2" style="margin-right: -36px;">任务文件：</div>
+                    <div class="col-md-10" style="margin-top:12px;">
+                        <input type="file" id="taskFile">
+                    </div>
+                </div>
+                <div>
+                    是否覆盖：
+                    <input type="radio" value="1" name="fg" checked>是
+                    <input type="radio" value="0" name="fg">否
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info btn-sm" ng-click="T.importTask(false)" data-dismiss="modal">导入
+                </button>
+                <button type="button" class="btn btn-default btn-sm" ng-click="T.cancelImport()" data-dismiss="modal">取消
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal 新增项目 -->
+<div class="modal fade" id="addProject" tabindex="-1" role="dialog" style="margin-top:25px;"
+    aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width:340px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">{{T.title}}新项目</h4>
+            </div>
+            <div class="modal-body">
+                <div layout="row" class="margin-bottom">
+                    <input type="text" class="form-control margin-right" style="height:30px;" placeholder="请输入名称"
+                        class="margin-right" ng-model="T.projectName">
+                    <button type="button" class="btn btn-info" style="height:30px;padding-top:4px;"
+                        ng-click="T.save(true)" data-dismiss="modal">保存</button>
+                </div>
+            </div>
+            <!--<div class="modal-footer">-->
+            <!--<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">关闭</button>-->
+            <!--</div>-->
+        </div>
+    </div>
+</div>
+<!--查询项目--->
+<!--<div class="modal fade" id="selectProject" tabindex="-1" role="dialog"  style="margin-top:25px;"-->
+<!--aria-labelledby="myModalLabel">-->
+<!--<div class="modal-dialog" role="document" style="width:340px">-->
+<!--<div class="modal-content">-->
+<!--<div class="modal-header">-->
+<!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--<span aria-hidden="true">&times;</span></button>-->
+<!--<h4>项目名称</h4>-->
+<!--</div>-->
+<!--<div class="modal-body">-->
+<!--<div layout="row" class="margin-bottom">-->
+<!--<input type="text"  class="form-control margin-right" style="height:30px;"-->
+<!--placeholder="请输入名称" class="margin-right" ng-model="T.projectName">-->
+<!--<button type="button" class="btn btn-info"  style="height:30px;padding-top:4px;"-->
+<!--ng-click="T.init()init" data-dismiss="modal">查询</button>-->
+<!--<button type="button" class="btn btn-info"  style="height:30px;padding-top:4px;"-->
+<!--ng-click="T.initProjectList()" data-dismiss="modal">查询所有</button>-->
+<!--</div>-->
+<!--</div>-->
+<!--<div class="modal-footer">-->
+<!--<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">关闭</button>-->
+<!--</div>-->
+</div>
+</div>
+</div>
+
+<!-- 成员管理 -->
+
+<div class="modal fade" id="userPro" tabindex="-1" role="dialog" style="margin-top:25px;"
+    aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width:340px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">成员管理</h4>
+            </div>
+            <div class="modal-body">
+                <div class=" padding margin">
+                    <div layout="row" style="margin:0 auto;">
+                        <!-- <div>
+                            <dl style="height: 500px;width:300px; overflow-y: auto;border: 1px solid #ededed;">
+                                <dt>项目<dt>
+                                <dd ng-repeat="item in T.porjectList" ng-click="T.userClick($event,item.id)"
+                                    layout="row" layout-align="left center">
+                                    <input type="radio" name="roles" ng-checked="item.selected">
+                                    <span>{{item.name}}</</span>
+                                </dd>
+                            </dl>
+                        </div> -->
+                        <!-- <div class="">
+                            <span class="transIcon glyphicon glyphicon-sort"></span>
+                        </div> -->
+                        <div style="margin: 0 auto;">
+                            <dl style="border: 1px solid #ededed;width:253px">
+                                <dt>用户列表</dt>
+                                <dd ng-repeat="item in T.roleUserListRAW" layout="row" layout-align="left center">
+                                    <input type="checkbox" ng-checked="item.selected" ng-model="item.selected">
+                                    {{item.name}}
+                                </dd>
+                            </dl>
+                        </div>
+                    </div>
+                    <div class="text-center margin-top">
+                        <button type="button" class="btn btn-default btn-sm" ng-click="T.userSave   ()">确认</button>
+                        <!--<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">关闭</button>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--<div ng-show="flag" class="memberManage" style="display: block;width: 90%;min-height: 200px;-->
+<!--background: #ccc;position: absolute;left: 42px;top: 64px;">-->
+<!--<div class="padding title-ground" layout="row" style="background:#17C">-->
+<!--<div class="navbar-title" layout="row" layout-align="left center">-->
+<!--<div class="imgMember margin-right"></div>-->
+<!--<b class="titleText">成员管理</b>-->
+<!--</div>-->
+<!--</div>-->
+
+<!-- Modal -->
+<div class="modal fade" id="addRole" tabindex="-1" role="dialog" style="margin-top:25px;"
+    aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width: 340px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">添加</h4>
+            </div>
+            <div class="modal-body">
+                <div layout="row">
+                    <input hidden ng-model="T.updateItem.id">
+                    <input class="form-control margin-right" type="text" style="height:30px;padding-top:4px;"
+                        ng-model="T.roleName">
+                    <button class="btn btn-info btn-sm" ng-click="T.addRole();" data-dismiss="modal">确定</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editRole" tabindex="-1" role="dialog" style="margin-top:25px;"
+    aria-labelledby="myModalLabel">
+    <div class="modal-dialog " role="document" style="width:340px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">修改</h4>
+            </div>
+            <div class="modal-body">
+                <div layout="row">
+                    <input class="form-control margin-right" type="text" style="height:30px;padding-top:4px;"
+                        ng-model="T.roleName">
+                    <button class="btn btn-info btn-sm" ng-click="T.updateRole();" data-dismiss="modal">确定</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--</div>-->

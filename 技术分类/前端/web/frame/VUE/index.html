@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>VUE STUDY</title>
+  </head>
+  <style>
+    .static {
+      background: pink;
+      height: 50px;
+      width: 50px;
+    }
+    .text-danger {
+      background: yellow;
+      height: 50px;
+      width: 50px;
+    }
+    .active {
+      background: red;
+      height: 150px;
+      width: 50px;
+    }
+  </style>
+  <script src="https://cdn.bootcss.com/vue/2.6.10/vue.min.js"></script>
+  <body>
+    <h1>Hello World !</h1>
+    <div id="example">
+      <p>Original message: "{{ message }}"</p>
+      <p>Computed reversed message: "{{ reversedMessageFun() }}"</p>
+      <button @click="changeColor">点击变色</button>
+      <div
+        class="static"
+        v-bind:class="{ active: isActive, 'text-danger': hasError }"
+      >
+        {{ isActive }}
+      </div>
+      <div v-on:click="doParent">
+        doParent
+
+        <a v-on:click.stop="doThis">doThis</a>
+      </div>
+    </div>
+    <!-- 可以开启两个vue实例 -->
+    <div id="example-6">
+      <select v-model="selected" multiple style="width: 50px;">
+        <option>A</option>
+        <option>B</option>
+        <option>C</option>
+      </select>
+      <br />
+      <span>Selected: {{ selected }}</span>
+    </div>
+  </body>
+  <script src="./demo/1.js"></script>
+</html>

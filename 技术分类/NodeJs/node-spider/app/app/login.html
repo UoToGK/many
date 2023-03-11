@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>登录</title>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="./styles/logoin.css">
+</head>
+
+<body>
+    <div class="logoin-bg" style="user-select: none;">
+        <div class="header row drag" style="cursor:pointer">
+            <div class="col-md-6 col-xs-6 drag">
+                <img src="./styles/images/logo.png" alt="">
+            </div>
+            <div class="col-md-6 col-xs-6 text-right drag">
+            </div>
+        </div>
+        <div class="logoin-content row margin-top">
+            <div class="col-xs-6 col-md-6 text-center">
+                <div class="dataText">大数据----<span>触手可及</span></div>
+                <div class="marginOut">
+                    <div class="grad">数据采集</div>
+                </div>
+                <div class="text-center imgLeft">
+                    <img src="styles/images/loginLeft.png" alt="">
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6">
+                <div class="logoin-content">
+                    <p class="text-center">IRIS客户端登录</p>
+                    <div class="logoin-panel">
+                        <!-- <p style="color:#0a73ce">登录</p>-->
+                        <form class="padding-bottom">
+                            <div class=margin-top">
+                                <input type="text" class="form-control doc" value="" id="uid" placeholder="登录名">
+                            </div>
+                            <div class="margin-top">
+                                <input type="password" class="form-control" value="" id="password" placeholder="密码">
+                            </div>
+                            <div class="margin-top">
+                                <input type="checkbox" id="usered"><span style="color:#27D"> 记住用户名</span>
+                            </div>
+                            <div class="text-center margin-top">
+                                <button type="button" class="btn btn-primary" style="width:100%"
+                                    onclick="login()">登录</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p style="color:#fff;padding-bottom: 10px;" class="text-center">版权所有 ©2017 北京爱狄特信息科技有限公司</p>
+
+    </div>
+
+    <script>
+        jQuery = $ = require('jquery');
+        _ = require("lodash");
+        require('./lib/register-support-static-asset');
+        require('./scripts/boot');
+
+        let config = require("./resource/config.yaml");
+
+        $(function () {
+            let userName = window.localStorage.getItem("userName");
+            if (userName) {
+                $("#uid").val(userName);
+            }
+            if (($("#uid").val()).length > 0) {
+                $("#password").focus();
+            } else {
+                $("#uid").focus();
+            }
+
+            $(document).keypress(function (e) {
+                if (e.which == 13) {
+                    login();
+                }
+            });
+        });
+
+        function login() {
+            let uid = document.getElementById("uid").value;
+            let password = document.getElementById("password").value;
+            if (uid && password) {
+                $.ajax({
+                    method: "post",
+                    url: config.api_address + "/api/v1/user/login/",
+                    data: {
+                        uid: uid,
+                        password: password
+                    }
+                }).success(function (response) {
+                    if (Number(response.code) === 10000) {
+                        sessionStorage.setItem("user", uid);
+                        sessionStorage.setItem("roleList", JSON.stringify(response.data.authorities));
+                        sessionStorage.setItem("token", response.data.token);
+                        if ($("#usered").prop('checked')) {
+                            window.localStorage.setItem("userName", $("#uid").val());
+                        }
+                        window.location.href = "index.html";
+                    } else {
+                        alert("用户名或者密码不正确");
+                    }
+
+                });
+            } else {
+                alert("请输入用户名或密码");
+            }
+        }
+
+    </script>
+</body>
+
+</html>

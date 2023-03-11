@@ -1,0 +1,32 @@
+<style>
+    .listUl,.listUl li{
+        list-style: none; margin:0; padding:0;
+    }
+    .listUl li{
+        padding:8px;
+    }
+    .listUl li:nth-child(even){
+        background-color:#f1f1f1;
+    }
+</style>
+
+<div class="padding title-ground">
+    <div class="navbar-title">
+        <md-icon class="margin-right iconColor" >data_usage</md-icon>
+        <b class="titleText">查看列表</b>
+    </div>
+</div>
+
+<div class="title-ground padding margin" >
+    <ul class="listUl">
+        <li layout="row" ng-repeat="group in T.groupList" layout-align="center center">
+            <div style="width:50px;"><span class="TIcon">{{$index+1}}</span></div>
+            <div style="padding-top:3px; width:300px; max-width:300px; overflow:hidden; text-overflow:ellipsis; white-space: nowrap;">{{group.name}}</div>
+            <div style="padding:3px 0 0 20px;">{{group.createTime|date:"yyyy-MM-dd hh:mm:ss"}}</div>
+        </li>
+    </ul>
+    <!--page 分页-->
+    <page class="text-right"></page>
+</div>
+
+
