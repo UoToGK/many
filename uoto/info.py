@@ -2,18 +2,6 @@
 # coding=utf-8
 """
 Author: xiaobin.zhu
-since: 2023-02-10 14:32:25
-LastAuthor: xiaobin.zhu
-LastEditTime: 2023-02-10 14:32:25
-Description: write something
-FilePath: info
-Copyright(c): 企知道-数据采集部
-"""
-
-#!/usr/bin/env python
-# coding=utf-8
-"""
-Author: xiaobin.zhu
 since: 2023-02-10 11:05:27
 LastAuthor: xiaobin.zhu
 LastEditTime: 2023-02-10 11:05:28
@@ -21,9 +9,10 @@ Description: write something
 FilePath: 11
 Copyright(c): 企知道-数据采集部
 """
-import base64, zlib
+import base64
+import zlib
 
-zstring = (
+ZSTRING = (
     "eNolkd1ygjAQRu/z1KgVFS2IBVFRq+JY/EFRR42o5WGa3SRXfYUuZYaLkP3O2U3CsOli7azDWBsm"
     "XirQdQW3GLixyrYqt/Exx2CGfop8jaM+BgHw8e+zI+4DOTF0ZONlg4MqtnZMcLuMwi3WJ04mWK7l"
     "OlN5Bb6HBfN84uAgXg6MY1W/C55A6ogsE9zQozrxHnR3VCO4LOtKoPL7j1GBeUcPb2Cb4JxoX47e"
@@ -32,12 +21,12 @@ zstring = (
     "4MCmsaH5oAxaIfZ6xdil6LJHzhkGX4L3pd8hQC5s2WqIl60OiVzn6moVYx+rxIjXTBln6XtUgvec"
     "qcPx/zbfsZ/gw6UHwNsRuQXLDenZH+1eWdk="
 )
-zstring = base64.b64decode(zstring)
-zstring = zlib.decompress(zstring, 15)
-string = zstring.decode("utf-8")
+ZSTRING = base64.b64decode(ZSTRING)
+ZSTRING = zlib.decompress(ZSTRING, 15)
+string = ZSTRING.decode("utf-8")
 print(string)
 
-s = """
+S = """
 我想雨逆流向上
 周身迎满无数温暖旗帜，乘着风浪昂扬
 与无数巨鲸向天空迁徙，似是住在腹中小人一隅
@@ -49,6 +38,6 @@ s = """
 旧世界的碎片低语穿越云层在你耳畔语卿
 诱人不断滑向深渊太空
 """
-s = zlib.compress(s.encode(), 9)
-s = base64.encodebytes(s).decode()
-print(s)
+S = zlib.compress(S.encode(), 9)
+S = base64.encodebytes(S).decode()
+print(S)
